@@ -1,0 +1,49 @@
+<div class="center-content">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div>
+            <img alt="homepage" src="./assets/img/logo 1.png">
+            <h4>Inicio de Sesión</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab label="Inicio Sesión">
+            <mat-form-field class="example-full-width">
+              <mat-label>Usuario</mat-label>
+              <input type="text" matInput placeholder="Usuario" value="" [(ngModel)]="email">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="example-full-width">
+              <mat-label>Contraseña</mat-label>
+              <input type="password" matInput placeholder="Contraseña" [(ngModel)]="password">
+              <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+            <button mat-button color="primary" (click)="login()">Iniciar Sesión</button>
+          </mat-tab>
+          <mat-tab label="Recupera Contraseña">
+            <mat-form-field class="example-full-width">
+              <mat-label>Usuario</mat-label>
+              <input type="text" matInput placeholder="Usuario" value="" [(ngModel)]="remail">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="example-full-width">
+              <mat-label>Nueva contraseña</mat-label>
+              <input type="password" matInput placeholder="nueva contraseña" [(ngModel)]="newPassword">
+              <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Confirmar contraseña</mat-label>
+              <input type="password" matInput placeholder="confirmar contraseña" [(ngModel)]="confirmPassword">
+              <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+            <button mat-button color="primary" (click)="register()">Register</button>
+          </mat-tab>
+        </mat-tab-group>
+  
+      </mat-card-content>
+  
+    </mat-card>
+  </div>
