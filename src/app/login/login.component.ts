@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   newPassword:string | undefined;
   confirmPassword:string | undefined;
 
-  constructor(private snackBar:MatSnackBar) { }
+  constructor(private snackBar:MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   login() {
     if(this.email=="admin" && this.password=="admin"){
         this.snackBar.open('Login Successful','',{duration:1000})
+        this.router.navigate(['navigation']);
     }else{
       this.snackBar.open('Login error','',{duration:1000})
     }
