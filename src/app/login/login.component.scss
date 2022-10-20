@@ -3,11 +3,11 @@
     // max-width: 400px;
     // justify-content: center; /* align horizontal */
     // align-items: center; /* align vertical */
-    width: 25%;
-    height: 30%;
-    display: block;
-    margin-left:auto;
-    margin-right:auto;
+    // width: 25%;
+    // height: 30%;
+    // display: block;
+    // margin-left:auto;
+    // margin-right:auto;
 }
   
   .example-header-image {
@@ -37,6 +37,39 @@
     background-color: #ee1a1a;
   }
 
+  .text-center {
+    text-align: center;
+  }
+
+
+  .login-register {
+
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle, rgba(255,217,217,1) 0%, rgba(255,95,95,1) 49%);
+    height: 100vh;
+    display: flex;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+    align-items: center;
+  }
+  .mat-card {
+    margin: 0px 15px;
+  }
+  .mat-form-field {
+    width: 100%;
+  }
+  .login-register-box {
+    max-width: 400px;
+    min-width: 280px;
+    margin: 0 auto;
+    vertical-align: middle;
+  }
+  .support-text {
+    margin-top: -15px;
+    display: block;
+    padding-bottom: 15px;
+  }
   .text-center {
     text-align: center;
   }

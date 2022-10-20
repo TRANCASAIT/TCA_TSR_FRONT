@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   login() {
     if(this.email=="admin" && this.password=="admin"){
         this.snackBar.open('Login Successful','',{duration:1000})
-        this.router.navigate(['navigation']);
+        this.router.navigate(['navigation/solicitudes']);
     }else{
       this.snackBar.open('Login error','',{duration:1000})
     }
