@@ -28,4 +28,8 @@ export class ServicesBackendService {
   getStatuses(): any {
     return this.http.get(`${this._URL}/Status/GetStatuses`);
   }
+
+  getStops(): any {
+    return this.http.get(`${this._URL}/Stops/GetStops`);
+  }
 }
