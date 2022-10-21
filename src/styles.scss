@@ -37,3 +37,70 @@ $TCA_TSR_FrontEnd-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color:rgb(216, 216, 216);}
+
+table{
+  width: 100%;
+}
+
+.green-snackbar {
+  background: #34d813;
+  color:#ffffff
+}
+
+.red-snackbar {
+  background: #f80808;
+  color:#ffffff
+}
+
+.activo{
+  color: green
+}
+
+.inactivo {
+  color: red
+}
+
+.imagen {
+  /* height: 100px;
+  width: 133px;
+  text-align: center; */
+  border-radius: 15px;
+  padding: 5px;
+  width: 120px;
+}
+
+
+.mat-body p, .mat-body-1 p, .mat-typography .mat-body p, .mat-typography .mat-body-1 p, .mat-typography p {
+  margin: 0;
+}
+
+
+
+.mat-body p, .mat-body-1 p, .mat-typography .mat-body p, .mat-typography .mat-body-1 p, .mat-typography p {
+  margin: 0;
+}
+
+.bg-danger {
+background-color:#e53935;
+color: white;
+
+}
+
+.mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab{
+  color: #ffffff;
+}
+
+.closeBtn {
+  background-color: rgb(121, 121, 121);
+}
+
+.actionBtn {
+  background-color: #e53935;
+}
+
+.responsiveDiv {    
+  overflow-x: auto;
+}
+.excelColor {
+  background-color: rgb(29, 111, 66) !important;
+}

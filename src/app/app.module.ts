@@ -27,6 +27,8 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { EstadoComponent } from './dialogs/estado/estado.component';
+import { EstadosComponent } from './components/estados/estados.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
     SolicitudesComponent,
     ClientesComponent,
     ReportesComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    EstadosComponent,
+    EstadoComponent
   ],
   imports: [
     BrowserModule,

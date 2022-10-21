@@ -7,7 +7,7 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
-
+import { EstadosComponent } from './components/estados/estados.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path:'login', component:LoginComponent },
@@ -17,7 +17,8 @@ const routes: Routes = [
       { path:'solicitudes', component: SolicitudesComponent},
       { path:'clientes', component: ClientesComponent},
       { path: 'reportes', component: ReportesComponent },
-      { path: 'usuarios', component: UsuariosComponent}
+      { path: 'usuarios', component: UsuariosComponent},
+      { path: 'estados', component: EstadosComponent}
     ]
   },
 
