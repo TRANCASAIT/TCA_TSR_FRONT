@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
   register() {
-
+    //Hola
   }
   login() {
     if(this.email=="admin" && this.password=="admin"){
