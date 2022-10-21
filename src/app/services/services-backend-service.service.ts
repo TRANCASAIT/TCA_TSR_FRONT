@@ -25,4 +25,7 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/States/GetStates`);
   }
   
+  getStatuses(): any {
+    return this.http.get(`${this._URL}/Status/GetStatuses`);
+  }
 }

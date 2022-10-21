@@ -36,6 +36,7 @@ import { StopsComponent } from './components/stops/stops.component';
 import { StopComponent } from './dialogs/stop/stop.component';
 import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuarios.component';
 import { TipoUsuarioComponent } from './dialogs/tipo-usuario/tipo-usuario.component';
+import { EstatusComponentDialog } from './dialogs/estatus/estatus.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { TipoUsuarioComponent } from './dialogs/tipo-usuario/tipo-usuario.compon
     CiudadesComponent,
     CiudadComponent,
     EstatusComponent,
+    EstatusComponentDialog,
     StopsComponent,
     StopComponent,
     TiposUsuariosComponent,
