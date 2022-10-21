@@ -13,8 +13,8 @@
                             </mat-form-field>
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
                                     <div fxFlex="50" fxLayoutAlign="center center">
-                                            <button [disabled]="stopsForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.createStatus()"> Crear </button>
-                                            <button [disabled]="stopsForm.invalid" *ngIf="type === 'edit'" class="actionBtn" mat-raised-button (click)="this.updateStatus()"> Editar </button>
+                                            <button [disabled]="stopsForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.createStop()"> Crear </button>
+                                            <button [disabled]="stopsForm.invalid" *ngIf="type === 'edit'" class="actionBtn" mat-raised-button (click)="this.updateStop()"> Editar </button>
 
                                     </div>
                                     <div fxFlex="50"  fxLayoutAlign="center center">

@@ -57,7 +57,7 @@ export class StopComponent implements OnInit {
     }
   }
 
-  createStatus(): void {
+  createStop(): void {
     this.userId = localStorage.getItem('userId');
     if(this.stopsForm.invalid) return;
     const stop = {
@@ -96,7 +96,7 @@ export class StopComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  updateStatus(): void {
+  updateStop(): void {
     this.userId = localStorage.getItem('userId');
     const stop = {
       Stop_Id: this.formGroup.stopId.value,
