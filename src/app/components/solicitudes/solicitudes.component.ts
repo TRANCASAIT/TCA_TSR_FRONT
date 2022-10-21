@@ -69,7 +69,7 @@ const ELEMENT_DATA: any = [
 export class SolicitudesComponent implements OnInit {
   displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW', 'estatus','factMX',
                                 'factUS', 'factuMX','factuUS','BOL', 'InwardManif','ACE','layout','layoutAcep','NumCartPorte',
-                               'XML','PDFOrig','PDFOper','comentarios'];
+                               'XML','PDFOrig','PDFOper','comentarios','edit','delete'];
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
@@ -92,5 +92,26 @@ export class SolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  search(){
+    console.log('search');
+  }
+
+  add(){
+    console.log('add');
+  }
+
+  edit( _element: any ){
+    console.log('update', _element);
+  }
+
+  delete( _folio: number ){
+    console.log('delete', _folio);
+  }
+
+  pdfclick( _id: any ){
+
+  }
+
 
 }

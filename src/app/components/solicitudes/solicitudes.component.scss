@@ -22,10 +22,76 @@
     margin-left: 35%;
     // margin: 12px 0;
   }
+
+  .example-section-button {
+    margin-left: 25%;
+    // margin: 12px 0;
+  }
   .example-margin {
     margin: 0 30px;
   }
   table {
+    width: auto;
+    table-layout: fixed;
+  }
+
+  th, td {
+    overflow: hidden;
+    width: 80px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .example-table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  table {
     width: 100%;
   }
   
+  .example-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-rate-limit-reached {
+    max-width: 360px;
+    text-align: center;
+  }
+  
+  /* Column Widths */
+  .mat-column-number,
+  .mat-column-state {
+    max-width: 64px;
+  }
+  
+  .mat-column-created {
+    max-width: 124px;
+  }
+
+  tr:hover{
+    background-color:rgb(221, 221, 221);
+  }
+
+
+.img-redimension {
+  width:200px;
+  height:40px;
+}
+
+img {
+  width: 35px;
+  height: 30px;
+}
