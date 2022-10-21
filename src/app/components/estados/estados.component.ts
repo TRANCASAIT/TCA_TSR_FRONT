@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { EstadoComponent } from 'src/app/dialogs/estado/estado.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
 @Component({
@@ -33,16 +34,14 @@ export class EstadosComponent implements OnInit {
   
     dialogConfig.panelClass = '';
   
-    //const dialogRef = this.dialog.open( DepartamentoComponent  , dialogConfig);
+    const dialogRef = this.dialog.open( EstadoComponent  , dialogConfig);
   
-    //dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+    dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
   setPagination() {
     this.userId = localStorage.getItem('userId');
     this.backEndServices.getStates().subscribe((res: any) => {
-      console.log(res);
-      
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
           duration:5000,

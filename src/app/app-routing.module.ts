@@ -8,6 +8,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { EstadosComponent } from './components/estados/estados.component';
+import { CiudadesComponent } from './components/ciudades/ciudades.component';
+import { EstatusComponent } from './components/estatus/estatus.component';
+import { StopsComponent } from './components/stops/stops.component';
+import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuarios.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path:'login', component:LoginComponent },
@@ -18,7 +22,12 @@ const routes: Routes = [
       { path:'clientes', component: ClientesComponent},
       { path: 'reportes', component: ReportesComponent },
       { path: 'usuarios', component: UsuariosComponent},
-      { path: 'estados', component: EstadosComponent}
+      { path: 'estados', component: EstadosComponent},
+      { path: 'ciudades', component: CiudadesComponent},
+      { path: 'estatus', component: EstatusComponent},
+      { path: 'stops', component: StopsComponent},
+      { path: 'tipos-usuarios', component: TiposUsuariosComponent},
+
     ]
   },
 

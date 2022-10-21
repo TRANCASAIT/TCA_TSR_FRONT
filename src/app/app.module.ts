@@ -29,6 +29,13 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { EstadoComponent } from './dialogs/estado/estado.component';
 import { EstadosComponent } from './components/estados/estados.component';
+import { CiudadesComponent } from './components/ciudades/ciudades.component';
+import { CiudadComponent } from './dialogs/ciudad/ciudad.component';
+import { EstatusComponent } from './components/estatus/estatus.component';
+import { StopsComponent } from './components/stops/stops.component';
+import { StopComponent } from './dialogs/stop/stop.component';
+import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuarios.component';
+import { TipoUsuarioComponent } from './dialogs/tipo-usuario/tipo-usuario.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +48,14 @@ import { EstadosComponent } from './components/estados/estados.component';
     ReportesComponent,
     UsuariosComponent,
     EstadosComponent,
-    EstadoComponent
+    EstadoComponent,
+    CiudadesComponent,
+    CiudadComponent,
+    EstatusComponent,
+    StopsComponent,
+    StopComponent,
+    TiposUsuariosComponent,
+    TipoUsuarioComponent
   ],
   imports: [
     BrowserModule,
