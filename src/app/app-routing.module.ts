@@ -12,6 +12,7 @@ import { CiudadesComponent } from './components/ciudades/ciudades.component';
 import { EstatusComponent } from './components/estatus/estatus.component';
 import { StopsComponent } from './components/stops/stops.component';
 import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuarios.component';
+import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path:'login', component:LoginComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'estatus', component: EstatusComponent},
       { path: 'stops', component: StopsComponent},
       { path: 'tipos-usuarios', component: TiposUsuariosComponent},
+      { path: 'tipos-operaciones', component: TiposOperacionesComponent},
 
     ]
   },

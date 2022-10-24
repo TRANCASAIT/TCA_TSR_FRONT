@@ -36,4 +36,8 @@ export class ServicesBackendService {
   getUserTypes(): any {
     return this.http.get(`${this._URL}/UserTypes/GetUserTypes`);
   }
+
+  getOperationTypes(): any {
+    return this.http.get(`${this._URL}/OperationTypes/GetOperationTypes`);
+  }
 }

@@ -1,0 +1,29 @@
+<div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="operationTypesForm">
+            <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
+                    <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
+                            <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Tipo de operacion</h3>
+                                <input matInput placeholder="id" formControlName="operationTypeId"
+                                        [errorStateMatcher]="matcher" hidden>
+                            <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                                    <input matInput placeholder="Nombre" formControlName="operationType_Name"
+                                            [errorStateMatcher]="matcher">
+                                    <mat-error> Este campo es requerido </mat-error>
+                            </mat-form-field>
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
+                                    <div fxFlex="50" fxLayoutAlign="center center">
+                                            <button [disabled]="operationTypesForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.createOperationType()"> Crear </button>
+                                            <button [disabled]="operationTypesForm.invalid" *ngIf="type === 'edit'" class="actionBtn" mat-raised-button (click)="this.updateOperationType()"> Editar </button>
+
+                                    </div>
+                                    <div fxFlex="50"  fxLayoutAlign="center center">
+                                            <button mat-raised-button class="closeBtn" (click)="dialogRef.close()"> Cerrar </button>
+                                    </div>
+                            </div>
+                            
+                    </div>
+            </div>
+           
+    </form>
+</div>
