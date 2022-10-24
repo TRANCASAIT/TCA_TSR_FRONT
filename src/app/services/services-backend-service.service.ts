@@ -44,4 +44,8 @@ export class ServicesBackendService {
   getCities(): any {
     return this.http.get(`${this._URL}/Cities/GetCities`);
   }
+
+  getUsers(): any {
+    return this.http.get(`${this._URL}/Users/GetUsers`);
+  }
 }
