@@ -46,10 +46,7 @@ export class StopComponent implements OnInit {
   ngOnInit(): void {
     this.type = this.stop.type;
     if(this.type === 'edit'){
-      
       const {stop_Id, stop_Number} = this.stop.stop;
-      console.log(this.stop);
-      
       this.stopsForm.patchValue({
         stopId: stop_Id,
         stopNumber: stop_Number

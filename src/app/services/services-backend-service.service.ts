@@ -32,4 +32,8 @@ export class ServicesBackendService {
   getStops(): any {
     return this.http.get(`${this._URL}/Stops/GetStops`);
   }
+
+  getUserTypes(): any {
+    return this.http.get(`${this._URL}/UserTypes/GetUserTypes`);
+  }
 }
