@@ -40,4 +40,8 @@ export class ServicesBackendService {
   getOperationTypes(): any {
     return this.http.get(`${this._URL}/OperationTypes/GetOperationTypes`);
   }
+
+  getCities(): any {
+    return this.http.get(`${this._URL}/Cities/GetCities`);
+  }
 }
