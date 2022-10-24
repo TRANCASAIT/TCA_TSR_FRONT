@@ -20,54 +20,49 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     );
   }
 }
-
 @Component({
-  selector: 'app-ciudad',
-  templateUrl: './ciudad.component.html',
-  styleUrls: ['./ciudad.component.scss']
+  selector: 'app-tipo-operacion',
+  templateUrl: './tipo-operacion.component.html',
+  styleUrls: ['./tipo-operacion.component.scss']
 })
-export class CiudadComponent implements OnInit {
-  estados: any;
+export class TipoOperacionComponent implements OnInit {
+  operationTypes: any;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public city :any,
-    public dialogRef: MatDialogRef<CiudadComponent>,
+    @Inject(MAT_DIALOG_DATA) public operationType :any,
+    public dialogRef: MatDialogRef<TipoOperacionComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
   ) { }
-  states: any;
+
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
-  citiesForm = new FormGroup({
-    cityId: new FormControl(0),
-    cityName : new FormControl('', [Validators.required]),
-    state    : new FormControl(''),
+  operationTypesForm = new FormGroup({
+    operationTypeId: new FormControl(0),
+    operationType_Name : new FormControl('', [Validators.required]),
   })
   userId!: string|null;
   show:boolean = false;
-  get formGroup() { return this.citiesForm.controls; }
-  
-  async ngOnInit() {
-    this.type = this.city.type;
+  get formGroup() { return this.operationTypesForm.controls; }
+
+  ngOnInit(): void {
+    this.type = this.operationType.type;
     if(this.type === 'edit'){
-      const {city_Id, city_Name, state_Id} = this.city.city;
-      this.citiesForm.patchValue({
-        cityId: city_Id,
-        cityName: city_Name
-      });
-      this.citiesForm.controls['state'].setValue(state_Id);
+      const {operationType_Id, operationType_Name} = this.operationType.operationType;
+      this.operationTypesForm.patchValue({
+        operationTypeId: operationType_Id,
+        operationType_Name: operationType_Name
+      })
     }
-   await this.getStates();
   }
 
-  createCity(): void {
+  createOperationType(): void {
     this.userId = localStorage.getItem('userId');
-    if(this.citiesForm.invalid) return;
-    const city = {
-      City_Name: this.formGroup.cityName.value,
-      State_Id : this.formGroup.state.value,
+    if(this.operationTypesForm.invalid) return;
+    const operationType = {
+      OperationType_Name: this.formGroup.operationType_Name.value,
       User_Logged: this.userId
     }
-    axios.post(`${environment.API_URL}`+"Cities/CreateCity",city).then(data => {
+    axios.post(`${environment.API_URL}`+"OperationTypes/CreateOperationType",operationType).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,
@@ -99,15 +94,14 @@ export class CiudadComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  updateCity(): void {
+  updateOperationType(): void {
     this.userId = localStorage.getItem('userId');
-    const city = {
-      City_Id: this.formGroup.cityId.value,
-      City_Name: this.formGroup.cityName.value,
-      State_Id : this.formGroup.state.value,
+    const operationType = {
+      OperationType_Id: this.formGroup.operationTypeId.value,
+      OperationType_Name: this.formGroup.operationType_Name.value,
       User_Logged: this.userId
     }
-    axios.put(`${environment.API_URL}`+ "Cities/UpdateCity",city).then(data => {
+    axios.put(`${environment.API_URL}`+ "OperationTypes/UpdateOperationType",operationType).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,
@@ -133,9 +127,5 @@ export class CiudadComponent implements OnInit {
         panelClass: ['red-snackbar']
       });
     });
-  }
-
-  async getStates(){
-    await this.backEndServices.getStates().subscribe((res:any) => {this.states = res})
   }
 }

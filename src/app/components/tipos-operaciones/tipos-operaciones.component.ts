@@ -4,17 +4,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { CiudadComponent } from 'src/app/dialogs/ciudad/ciudad.component';
+import { TipoOperacionComponent } from 'src/app/dialogs/tipo-operacion/tipo-operacion.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
 @Component({
-  selector: 'app-ciudades',
-  templateUrl: './ciudades.component.html',
-  styleUrls: ['./ciudades.component.scss']
+  selector: 'app-tipos-operaciones',
+  templateUrl: './tipos-operaciones.component.html',
+  styleUrls: ['./tipos-operaciones.component.scss']
 })
-export class CiudadesComponent implements OnInit {
+export class TiposOperacionesComponent implements OnInit {
   dataSource !: MatTableDataSource<any>;
-  displayedColumns: string[] = ['estado','ciudad','editar'];
+  displayedColumns: string[] = ['operations','editar'];
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   dataObs$!: Observable<any>;
   userId!: string|null;
@@ -33,14 +33,14 @@ export class CiudadesComponent implements OnInit {
   
     dialogConfig.panelClass = '';
   
-    const dialogRef = this.dialog.open( CiudadComponent  , dialogConfig);
+    const dialogRef = this.dialog.open( TipoOperacionComponent  , dialogConfig);
   
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
   setPagination() {
     this.userId = localStorage.getItem('userId');
-    this.backEndServices.getCities().subscribe((res: any) => {
+    this.backEndServices.getOperationTypes().subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
           duration:5000,
@@ -48,8 +48,6 @@ export class CiudadesComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
-        console.log(res);
-        
       }else{
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;

@@ -39,6 +39,9 @@ import { TipoUsuarioComponent } from './dialogs/tipo-usuario/tipo-usuario.compon
 import { EstatusComponentDialog } from './dialogs/estatus/estatus.component';
 import { ClienteComponent } from './dialogs/cliente/cliente.component';
 import { UsuarioComponent } from './dialogs/usuario/usuario.component';
+import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
+import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { UsuarioComponent } from './dialogs/usuario/usuario.component';
     TiposUsuariosComponent,
     TipoUsuarioComponent,
     ClienteComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    TiposOperacionesComponent,
+    TipoOperacionComponent
+
   ],
   imports: [
     BrowserModule,
