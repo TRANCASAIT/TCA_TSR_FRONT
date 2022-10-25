@@ -40,16 +40,16 @@ export class ClienteComponent implements OnInit {
   states: any;
   customerForm = new FormGroup({
     customerId: new FormControl(0),
-    name : new FormControl('', [Validators.required]),//
-    rfc : new FormControl('', [Validators.required]),//
-    street : new FormControl('', [Validators.required]),//
-    streetExt : new FormControl('', [Validators.required]),//
-    suburb : new FormControl('', [Validators.required]),//
-    streetInt : new FormControl(''),//
-    zipCode : new FormControl('', [Validators.required]),//
-    city : new FormControl('', [Validators.required]),//
-    state : new FormControl('', [Validators.required]),//
-    phoneNumber : new FormControl('', [Validators.required]),//
+    name : new FormControl('', [Validators.required]),
+    rfc : new FormControl('', [Validators.required]),
+    street : new FormControl('', [Validators.required]),
+    streetExt : new FormControl('', [Validators.required]),
+    suburb : new FormControl('', [Validators.required]),
+    streetInt : new FormControl(''),
+    zipCode : new FormControl('', [Validators.required]),
+    city : new FormControl('', [Validators.required]),
+    state : new FormControl('', [Validators.required]),
+    phoneNumber : new FormControl('', [Validators.required]),
     email : new FormControl('', [Validators.required]),
   });
   userId!: string|null;
