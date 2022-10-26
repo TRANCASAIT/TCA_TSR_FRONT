@@ -46,6 +46,14 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Cities/GetCities`);
   }
 
+  getCitiesFiltered(stateId:any): any {
+    return this.http.get(`${this._URL}/Cities/GetCitiesFiltered/${stateId}`);
+  }
+
+  getCustomers(): any {
+    return this.http.get(`${this._URL}/Customers/GetCustomers`);
+  }
+
   getUsers(): any {
     return this.http.get(`${this._URL}/Users/GetUsers`);
   }

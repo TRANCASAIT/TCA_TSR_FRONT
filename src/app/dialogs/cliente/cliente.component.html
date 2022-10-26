@@ -1,1 +1,101 @@
-<p>cliente works!</p>
+<div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="customerForm">
+            <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
+                    <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
+                            <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Cliente</h3>
+                                <input matInput placeholder="id" formControlName="customerId"
+                                        [errorStateMatcher]="matcher" hidden>
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Cliente" formControlName="name"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="RFC" formControlName="rfc"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Calle" formControlName="street"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Num. Ext." formControlName="streetExt"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Num. Int." formControlName="streetInt"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+                                        
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Colonia" formControlName="suburb"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="C.P." formControlName="zipCode"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+                                        
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Numero de telefono" formControlName="phoneNumber"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                                                <input matInput placeholder="Email" formControlName="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" 
+                                                        [errorStateMatcher]="matcher">
+                                                <mat-error> Este campo es requerido </mat-error>
+                                            </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                                <mat-select placeholder="Seleccione un estado" formControlName="state" (selectionChange)="onStateChanged()">
+                                                <mat-option 
+                                                        *ngFor="let item of states " 
+                                                        [value]="item.state_Id" >
+                                                        {{ item['state_Name'] }}
+                                                </mat-option>
+                                                </mat-select>
+                                        <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                                <mat-select placeholder="Seleccione una ciudad" formControlName="city">
+                                                <mat-option 
+                                                        *ngFor="let item of cities " 
+                                                        [value]="item.city_Id" >
+                                                        {{ item['city_Name'] }}
+                                                </mat-option>
+                                                </mat-select>
+                                        <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
+                                    <div fxFlex="50" fxLayoutAlign="center center">
+                                            <button [disabled]="customerForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.createCustomer()"> Crear </button>
+                                            <button [disabled]="customerForm.invalid" *ngIf="type === 'edit'" class="actionBtn" mat-raised-button (click)="this.updateCustomer()"> Editar </button>
+
+                                    </div>
+                                    <div fxFlex="50"  fxLayoutAlign="center center">
+                                            <button mat-raised-button class="closeBtn" (click)="dialogRef.close()"> Cerrar </button>
+                                    </div>
+                            </div>
+                            
+                    </div>
+            </div>
+           
+    </form>
+</div>

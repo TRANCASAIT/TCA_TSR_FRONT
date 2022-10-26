@@ -1,1 +1,79 @@
-<p>clientes works!</p>
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+          <mat-card>
+                  <mat-card-content>
+                      <mat-card-title>Clientes</mat-card-title>
+                      <div fxLayoutAlign="end center">
+                          <button class="bg-danger" mat-raised-button (click)="openDialog(({type:'new'}))">Crear cliente</button>
+                      </div>
+                      <div>
+                          <table mat-table [dataSource]="dataSource" >
+                            <ng-container matColumnDef="cliente">
+                              <th mat-header-cell *matHeaderCellDef>  Cliente </th>
+                              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="rfc">
+                              <th mat-header-cell *matHeaderCellDef>  RFC </th>
+                              <td mat-cell *matCellDef="let element"> {{element.rfc}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="direccion">
+                              <th mat-header-cell *matHeaderCellDef>  Direccion </th>
+                              <td mat-cell *matCellDef="let element"> {{element.street}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="telefono">
+                              <th mat-header-cell *matHeaderCellDef>  Telefono </th>
+                              <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estado">
+                              <th mat-header-cell *matHeaderCellDef>  Estado </th>
+                              <td mat-cell *matCellDef="let element"> {{element.state_Name}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ciudad">
+                              <th mat-header-cell *matHeaderCellDef>  Ciudad </th>
+                              <td mat-cell *matCellDef="let element"> {{element.city_Name}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="email">
+                              <th mat-header-cell *matHeaderCellDef>  Email </th>
+                              <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                            </ng-container>
+
+
+
+                            <!-- Weight Column -->
+                          <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef> Estatus </th>
+                            <td mat-cell *matCellDef="let element">
+                               <div *ngIf="element.status == true" (click)="ChangeState(element)">
+                                <mat-icon class="activo">circle</mat-icon>
+                               </div>
+                               <div *ngIf="element.status == false" (click)="ChangeState(element)">
+                                <mat-icon class="inactivo">circle</mat-icon>
+                             </div>
+                            </td>
+                          </ng-container>
+
+                            <ng-container matColumnDef="editar">
+                              <th mat-header-cell *matHeaderCellDef> Editar </th>
+                              <td mat-cell *matCellDef="let element">
+                                <mat-icon class="inactivo" (click)="openDialog({type: 'edit', customer:element})">edit</mat-icon>
+                              </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
+                          <mat-paginator
+                            [pageSizeOptions]="[5, 10, 25, 100]"
+                            [pageSize]="5"
+                          ></mat-paginator>
+                        </div>
+                  </mat-card-content>        
+          </mat-card>
+    </div>
+</div>
