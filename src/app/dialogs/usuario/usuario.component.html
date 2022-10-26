@@ -1,1 +1,70 @@
-<p>usuario works!</p>
+<div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="formNewUser">
+        <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
+            <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
+                <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Nuevo usuario</h3>
+                <input matInput placeholder="id" formControlName="user_Id" hidden>
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                    <input matInput placeholder="Nombres" formControlName="names"
+                    [ngClass]="{ 'is-invalid': submitted && f['names'].errors }">
+                    <mat-error *ngIf="submitted && f['names'].errors">
+                        <mat-error *ngIf="submitted && f['names'].errors">Este campo es requerido</mat-error>
+                    </mat-error>          
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                    <input matInput placeholder="Apellidos" formControlName="lastnames"
+                            [ngClass]="{ 'is-invalid': submitted && f['lastnames'].errors }"
+                            (change)="getUserName()">
+                    <mat-error *ngIf="submitted && f['lastnames'].errors">
+                        <mat-error *ngIf="submitted && f['lastnames'].errors"> Este campo es requerido </mat-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                    <input matInput placeholder="Usuario" formControlName="username" [value]="this.nickName" [readonly]="true"
+                            [ngClass]="{ 'is-invalid': submitted && f['username'].errors }">
+                    <mat-error *ngIf="submitted && f['username'].errors"> Este campo es requerido  </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100"> 
+                    <mat-select placeholder="Seleccione tipo usuario" formControlName="userType" #usertypes>
+                        <mat-option *ngFor="let item of userTypeList " [value]="item.userType_Id" >
+                            {{ item['userType_Name'] }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error> Este campo es requerido </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                    <input matInput placeholder="Correo" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                    <mat-error *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                        <mat-error *ngIf="submitted && f['email'].errors"> Este campo es requerido </mat-error>
+                        <mat-error *ngIf="f['email'].errors['email']">Correo no valido</mat-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                    <input type="password" matInput placeholder="Contraseña" formControlName="password">
+                    <mat-error *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                            <mat-error *ngIf="f['password'].errors['required']">Este campo es requerido</mat-error>
+                            <mat-error *ngIf="f['password'].errors['minlength']">La contraseña debe de contener al menos 6 caracteres</mat-error>
+                            <mat-error *ngIf="f['password'].errors['maxlength']">La contraseña no debe de exceder 40 caracteres</mat-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                    <input type="password" matInput placeholder="Confirma contraseña" formControlName="confirmPassword"
+                    [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }">
+                    <mat-error  *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                            <mat-error *ngIf="f['confirmPassword'].errors['required']"> Este campo es requerido</mat-error>
+                            <mat-error *ngIf="f['confirmPassword'].errors['matching']">No coinciden las contraseñas</mat-error>
+                    </mat-error>
+                </mat-form-field>
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
+                    <div fxFlex="50" fxLayoutAlign="center center">
+                        <button  *ngIf="type === 'new'" mat-raised-button class="actionBtn" (click)="this.createNewUser()"> Crear </button>
+                        <button  *ngIf="type === 'edit'" mat-raised-button class="actionBtn" (click)="this.editUser()"> Editar </button>
+                    </div>
+                    <div fxFlex="50"  fxLayoutAlign="center center">
+                        <button mat-raised-button class="closeBtn" (click)="dialogRef.close()"> Cerrar </button>
+                    </div>
+                </div>   
+            </div>
+        </div>        
+    </form>
+</div>

@@ -1,0 +1,11 @@
+<mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+    <mat-select [formControl]="staffCtrl" formControlName="nameReceive" placeholder="Responsable" #singleSelect3>
+      <mat-option>
+        <ngx-mat-select-search [formControl]="staffFilterCtrl" placeholderLabel="Buscar" noEntriesFoundLabel="No se encontró resultado"></ngx-mat-select-search>
+      </mat-option>
+
+      <mat-option *ngFor="let staff of filteredStaff | async" [value]="staff.staff_Id">
+        {{staff.staff_Name}}
+      </mat-option>
+    </mat-select>
+</mat-form-field> 

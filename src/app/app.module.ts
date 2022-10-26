@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { LoginComponent } from './login/login.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 //Components Material.
@@ -41,6 +42,7 @@ import { ClienteComponent } from './dialogs/cliente/cliente.component';
 import { UsuarioComponent } from './dialogs/usuario/usuario.component';
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
+import { SelectClientComponent } from './tools/select-client/select-client.component';
 
 
 @NgModule({
@@ -66,7 +68,8 @@ import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.
     ClienteComponent,
     UsuarioComponent,
     TiposOperacionesComponent,
-    TipoOperacionComponent
+    TipoOperacionComponent,
+    SelectClientComponent
 
   ],
   imports: [
@@ -86,7 +89,8 @@ import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.
     MatCardModule,
     MatMenuModule,
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxMatSelectSearchModule
   ],
   providers: [],
   bootstrap: [AppComponent]
