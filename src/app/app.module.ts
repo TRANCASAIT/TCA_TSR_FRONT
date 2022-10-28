@@ -8,7 +8,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { LoginComponent } from './login/login.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-
 //Components Material.
 import  { ComponentsMaterialModule } from './components-material/components-material.module';
 import { FormsModule } from '@angular/forms';
@@ -69,7 +68,9 @@ import { SelectClientComponent } from './tools/select-client/select-client.compo
     ClienteComponent,
     UsuarioComponent,
     TiposOperacionesComponent,
-    TipoOperacionComponent
+    TipoOperacionComponent,
+    SolicitudComponent,
+    SelectClientComponent
 
   ],
   imports: [
@@ -90,7 +91,7 @@ import { SelectClientComponent } from './tools/select-client/select-client.compo
     MatMenuModule,
     FlexLayoutModule,
     HttpClientModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
