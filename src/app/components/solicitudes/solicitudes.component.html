@@ -61,7 +61,7 @@
                           <div>
                               <section class="example-section">
                                 <button mat-raised-button color="warn" class="example-margin" (click)="search()">Buscar</button>
-                                <button mat-raised-button color="warn" class="example-margin" (click)="add()">Agregar</button>
+                                <button mat-raised-button color="warn" class="example-margin" (click)="openDialog(({type:'new'}))">Agregar</button>
                               </section>
                           </div>
                         </form>
@@ -76,113 +76,167 @@
 
                             <ng-container matColumnDef="prioridad" sticky>
                               <th mat-header-cell *matHeaderCellDef> Prioridad. </th>
-                              <td mat-cell *matCellDef="let element"> {{element.prioridad}} </td>
+                              <td mat-cell *matCellDef="let element">
+                                <mat-icon *ngIf="element.priority === true" color="warn">priority_high</mat-icon>                             
+                              </td>
                             </ng-container>
 
                             <ng-container matColumnDef="folio" sticky>
                               <th mat-header-cell *matHeaderCellDef> Folio </th>
-                              <td mat-cell *matCellDef="let element"> {{element.folio}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.invoiceNumber}} </td>
                             </ng-container>
 
 
                             <ng-container matColumnDef="cliente" sticky>
                               <th mat-header-cell *matHeaderCellDef> Cliente </th>
-                              <td mat-cell *matCellDef="let element"> {{element.cliente}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="numCaja" sticky>
                               <th mat-header-cell *matHeaderCellDef> Núm. Caja </th>
-                              <td mat-cell *matCellDef="let element"> {{element.numCaja}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.box_Number}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="tipoOp" sticky>
                               <th mat-header-cell *matHeaderCellDef> Núm. tipoOp </th>
-                              <td mat-cell *matCellDef="let element"> {{element.tipoOp}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.operationType_Name}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="stops" sticky>
                               <th mat-header-cell *matHeaderCellDef> Stops </th>
-                              <td mat-cell *matCellDef="let element"> {{element.stops}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.stop_Number}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="fechaHora" sticky>
                               <th mat-header-cell *matHeaderCellDef> Fecha-Hora </th>
-                              <td mat-cell *matCellDef="let element"> {{element.fechaHora}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.creation_Date}} </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="ordTMW" >
+                            <ng-container matColumnDef="ordTMW" sticky>
                               <th mat-header-cell *matHeaderCellDef> Orden TMW</th>
-                              <td mat-cell *matCellDef="let element"> {{element.ordTMW}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.tmwOrder}} </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="estatus">
                               <th mat-header-cell *matHeaderCellDef> estatus </th>
-                              <td mat-cell *matCellDef="let element"> {{element.estatus}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.status_Description}} </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="factMX">
                               <th mat-header-cell *matHeaderCellDef>Factura MX</th>
-                              <td mat-cell *matCellDef="let element"> <img id="factMX" src="./assets/svg/PDF.svg" (click)="pdfclick(this)"></td> 
+                              <td mat-cell *matCellDef="let element">
+                                  <button class="btnBgPdf">
+                                    <input id="facMx{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  </button>
+                                  <button id="btnFacMX{{element.document_Id}}" class="noDisplayed"  color="primary" (click)="uploadFile(element, 1)">
+                                    <mat-icon class="icon">publish</mat-icon>
+                                  </button>
+                                </td> 
                             </ng-container>
                             
                             <ng-container matColumnDef="factUS">
                               <th mat-header-cell *matHeaderCellDef> Factura USA </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td> 
-                            </ng-container>
-                            
-                            <ng-container matColumnDef="factuMX">
-                              <th mat-header-cell *matHeaderCellDef> Factura MX </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"></td>
-                            </ng-container>
-                            
-                            <ng-container matColumnDef="factuUS">
-                              <th mat-header-cell *matHeaderCellDef> Factura USA </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> 
+                                <button class="btnBgPdf">
+                                  <input id="facUsa{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnFacUSA{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 2)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td> 
                             </ng-container>
                             
                             <ng-container matColumnDef="BOL">
                               <th mat-header-cell *matHeaderCellDef> Bill of Lading </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> <button class="btnBgPdf">
+                                <input id="bol{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                              </button>
+                              <button id="btnBol{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 3)">
+                                <mat-icon class="icon">publish</mat-icon>
+                              </button>
+                             </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="InwardManif">
                               <th mat-header-cell *matHeaderCellDef> Inward/Manifest </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> 
+                                <button class="btnBgPdf">
+                                  <input id="inwd{{element.document_Id}}"  type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnInwd{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 4)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="ACE">
                               <th mat-header-cell *matHeaderCellDef> ACE </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> 
+                                <button class="btnBgPdf">
+                                  <input id="ace{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnAce{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 5)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="layout">
                               <th mat-header-cell *matHeaderCellDef> layout </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/Excel.svg"> </td>
+                              <td mat-cell *matCellDef="let element">
+                                <button class="btnBgXlsx">
+                                  <input id="layout{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnLayout{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 6)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="layoutAcep">
                               <th mat-header-cell *matHeaderCellDef> Layout Aceptado </th>
-                              <td mat-cell *matCellDef="let element"> {{element.layoutAcep}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.accepted_Layout}} </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="NumCartPorte">
                               <th mat-header-cell *matHeaderCellDef> Núm. Carta Porte </th>
-                              <td mat-cell *matCellDef="let element"> {{element.NumCartPorte}} </td>
+                              <td mat-cell *matCellDef="let element"> {{element.consigment_Note}} </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="XML">
                               <th mat-header-cell *matHeaderCellDef> XML </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/XML.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> 
+                                <button class="btnBgXml">
+                                  <input id="xml{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"  accept="text/xml"/>
+                                </button>
+                                <button id="btnXml{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 7)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="PDFOrig">
                               <th mat-header-cell *matHeaderCellDef> PDF Original </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element">
+                                <button class="btnBgPdf">
+                                  <input id="oriPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnOriPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 8)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="PDFOper">
                               <th mat-header-cell *matHeaderCellDef> PDF operacional </th>
-                              <td mat-cell *matCellDef="let element"> <img src="./assets/svg/PDF.svg"> </td>
+                              <td mat-cell *matCellDef="let element"> 
+                                <button class="btnBgPdf">
+                                  <input id="opPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                </button>
+                                <button id="btnOpPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 9)">
+                                  <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                              </td>
                             </ng-container>
                             
                             <ng-container matColumnDef="comentarios">
@@ -193,7 +247,7 @@
                             <ng-container matColumnDef="edit">
                               <th mat-header-cell *matHeaderCellDef> Editar </th>
                               <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button matTooltip="Clic para editar" class="iconbutton" color="primary" (click)="edit(element)">
+                                <button mat-icon-button matTooltip="Clic para editar" class="iconbutton" color="success" (click)="edit(element)">
                                   <mat-icon>edit</mat-icon>
                                 </button> 
                               </td>
@@ -212,6 +266,9 @@
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           </table>
                       </div>
+                      
+                      
+                      
                       <mat-paginator
                       [pageSizeOptions]="[5, 10, 25, 100]"
                       [pageSize]="5"

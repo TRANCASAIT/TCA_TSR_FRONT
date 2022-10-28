@@ -42,6 +42,7 @@ import { ClienteComponent } from './dialogs/cliente/cliente.component';
 import { UsuarioComponent } from './dialogs/usuario/usuario.component';
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
+import { SolicitudComponent } from './dialogs/solicitud/solicitud.component';
 import { SelectClientComponent } from './tools/select-client/select-client.component';
 
 
@@ -68,8 +69,7 @@ import { SelectClientComponent } from './tools/select-client/select-client.compo
     ClienteComponent,
     UsuarioComponent,
     TiposOperacionesComponent,
-    TipoOperacionComponent,
-    SelectClientComponent
+    TipoOperacionComponent
 
   ],
   imports: [

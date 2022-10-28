@@ -1,0 +1,58 @@
+<div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="srequestForm">
+            <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
+                    <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
+                            <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Solicitud de Servicio</h3>
+                                <input matInput placeholder="id" formControlName="srId"
+                                        [errorStateMatcher]="matcher" hidden>
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Numero de caja" formControlName="boxNumber"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <input matInput placeholder="Referencia" formControlName="reference"
+                                                    [errorStateMatcher]="matcher">
+                                            <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                            <mat-select placeholder="Seleccione stops" formControlName="stop">
+                                            <mat-option 
+                                                    *ngFor="let item of stops " 
+                                                    [value]="item.stop_Id" >
+                                                    {{ item['stop_Number'] }}
+                                            </mat-option>
+                                            </mat-select>
+                                    <mat-error> Este campo es requerido </mat-error>
+                                    </mat-form-field>
+
+                                        <mat-form-field fxFlex.gt-xs="45" fxFlex="100">
+                                                <mat-select placeholder="Seleccione una operacion" formControlName="operationType">
+                                                <mat-option 
+                                                        *ngFor="let item of operations " 
+                                                        [value]="item.operationType_Id" >
+                                                        {{ item['operationType_Name'] }}
+                                                </mat-option>
+                                                </mat-select>
+                                        <mat-error> Este campo es requerido </mat-error>
+                                        </mat-form-field>
+
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
+                                    <div fxFlex="50" fxLayoutAlign="center center">
+                                            <button [disabled]="srequestForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.createServiceRequest()"> Crear </button>
+                                            <button [disabled]="srequestForm.invalid" *ngIf="type === 'edit'" class="actionBtn" mat-raised-button (click)="this.createServiceRequest()"> Editar </button>
+
+                                    </div>
+                                    <div fxFlex="50"  fxLayoutAlign="center center">
+                                            <button mat-raised-button class="closeBtn" (click)="dialogRef.close()"> Cerrar </button>
+                                    </div>
+                            </div>
+                            
+                    </div>
+            </div>
+           
+    </form>
+</div>
