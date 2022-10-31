@@ -114,7 +114,7 @@
                             
                             <ng-container matColumnDef="ordTMW" sticky>
                               <th mat-header-cell *matHeaderCellDef> Orden TMW</th>
-                              <td mat-cell *matCellDef="let element"> {{element.tmwOrder}} </td>
+                              <td mat-cell *matCellDef="let element" (click)="setTMW(element)"> {{element.tmwOrder}} </td>
                             </ng-container>
                             
                             <!-- <ng-container matColumnDef="estatus">

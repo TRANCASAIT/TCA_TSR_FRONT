@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.component';
+import { TmwOrderComponent } from 'src/app/dialogs/tmw-order/tmw-order.component';
 import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
@@ -121,7 +122,6 @@ export class SolicitudesComponent implements OnInit {
   }
 
   uploadFileDialog(obj:any): void {
-    //this.common.spinner.show();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '60%';
     dialogConfig.maxWidth = '100vw';
@@ -131,6 +131,17 @@ export class SolicitudesComponent implements OnInit {
   
     const dialogRef = this.dialog.open( UploadFileComponent  , dialogConfig);
   
+    dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+  }
+
+  setTMW(obj: any) {
+    obj.type = 'new';
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '25%';
+    dialogConfig.maxWidth = '70vw';
+    dialogConfig.data = obj;
+    dialogConfig.panelClass = '';
+    const dialogRef = this.dialog.open( TmwOrderComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
