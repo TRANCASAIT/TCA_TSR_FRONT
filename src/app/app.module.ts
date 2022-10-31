@@ -43,6 +43,7 @@ import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-
 import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
 import { SolicitudComponent } from './dialogs/solicitud/solicitud.component';
 import { SelectClientComponent } from './tools/select-client/select-client.component';
+import { UploadFileComponent } from './dialogs/upload-file/upload-file.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { SelectClientComponent } from './tools/select-client/select-client.compo
     TiposOperacionesComponent,
     TipoOperacionComponent,
     SolicitudComponent,
-    SelectClientComponent
+    SelectClientComponent,
+    UploadFileComponent
 
   ],
   imports: [

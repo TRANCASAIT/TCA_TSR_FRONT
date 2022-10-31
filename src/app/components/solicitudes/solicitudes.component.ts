@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.component';
+import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -42,7 +43,7 @@ export class SolicitudesComponent implements OnInit {
   opPDF = false;
 
   dataSource !: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
   dataObs$!: Observable<any>;
 
 
@@ -90,9 +91,8 @@ export class SolicitudesComponent implements OnInit {
     
   }
 
-  displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW', 'estatus','factMX',
-                                'factUS','BOL', 'InwardManif','ACE','layout','layoutAcep','NumCartPorte',
-                               'XML','PDFOrig','PDFOper','comentarios','edit','delete'];
+  displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW',
+                               'upload','edit','delete'];
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   // dataSource = ELEMENT_DATA;
 
@@ -120,6 +120,19 @@ export class SolicitudesComponent implements OnInit {
     this.setPagination();
   }
 
+  uploadFileDialog(obj:any): void {
+    //this.common.spinner.show();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '60%';
+    dialogConfig.maxWidth = '100vw';
+    dialogConfig.data = obj;
+  
+    dialogConfig.panelClass = '';
+  
+    const dialogRef = this.dialog.open( UploadFileComponent  , dialogConfig);
+  
+    dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+  }
 
   openDialog(obj:any): void {
     const dialogConfig = new MatDialogConfig();
