@@ -15,6 +15,10 @@
       <a mat-list-item routerLink="/navigation/stops">STOPs</a>
       <a mat-list-item routerLink="/navigation/tipos-usuarios">Tipos de usuario</a>
       <a mat-list-item routerLink="/navigation/tipos-operaciones">Tipos de operacion</a>
+      <a mat-list-item (click)="logout()"><mat-icon>arrow_forward</mat-icon>
+        <span>Cerrar sesion</span>
+        <span fxFlex></span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

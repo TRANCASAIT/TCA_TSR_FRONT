@@ -13,10 +13,18 @@ import { EstatusComponent } from './components/estatus/estatus.component';
 import { StopsComponent } from './components/stops/stops.component';
 import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuarios.component';
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
+import { AuthGuard } from './services/auth.guard';
+import { environment } from 'src/environments/environment';
+
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path:'login', component:LoginComponent },
+
   { path:'navigation', component: NavigationComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [environment.UserRoles.Rol1]
+    },
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path:'solicitudes', component: SolicitudesComponent},
@@ -32,6 +40,7 @@ const routes: Routes = [
 
     ]
   },
+  { path:'**', redirectTo: 'login', pathMatch: 'full'},
 
   
 ];  

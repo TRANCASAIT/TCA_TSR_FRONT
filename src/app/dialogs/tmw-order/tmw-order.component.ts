@@ -62,8 +62,6 @@ export class TmwOrderComponent implements OnInit {
       TMWOrder: this.formGroup.tmwOrder.value,
       User_Logged: this.userId
     }
-    console.log(sr);
-    
     axios.post(`${environment.API_URL}`+ "ServiceRequests/setTMWOrder",sr).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
