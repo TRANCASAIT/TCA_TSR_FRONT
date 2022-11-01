@@ -31,7 +31,7 @@
                             <ng-container matColumnDef="habilitado">
                                 <th mat-header-cell *matHeaderCellDef>  Habilitado </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <mat-icon class="activo" *ngIf="element.status === true" fontIcon="check_circle">{{ element.status }}</mat-icon>
+                                    <mat-icon class="activo" *ngIf="element.status === true" (click)="DeleteUserDialog({type: 'delete', usuario:element})" fontIcon="check_circle">{{ element.status }}</mat-icon>
                                     <mat-icon class="inactivo" *ngIf="element.status === false"  fontIcon="cancel"> {{ element.status }} </mat-icon>
                                 </td>
                             </ng-container>
@@ -42,15 +42,18 @@
                             <ng-container matColumnDef="editar">
                                 <th mat-header-cell *matHeaderCellDef> Editar </th>
                                 <td mat-cell *matCellDef="let element">
-                                  <mat-icon color="primary" (click)="openDialog({type: 'edit', usuario:element})">edit</mat-icon>
+                                  <button mat-icon-button [disabled]="element.status === false " (click)="openDialog({type: 'edit', usuario:element})" >
+                                    <mat-icon>edit</mat-icon>
+                                 </button>
+                                  <!-- <mat-icon color="primary" (click)="openDialog({type: 'edit', usuario:element})" [disabled]="element.status === true" >edit</mat-icon> -->
                                 </td>
                               </ng-container>
-                            <ng-container matColumnDef="eliminar">
+                            <!-- <ng-container matColumnDef="eliminar">
                               <th mat-header-cell *matHeaderCellDef> Eliminar </th>
                               <td mat-cell *matCellDef="let element">
-                                <mat-icon class="inactivo" (click)="openDialog({type: 'edit', usuario:element})">delete</mat-icon>
+                                <mat-icon class="inactivo" (click)="DeleteUserDialog({type: 'delete', usuario:element})">delete</mat-icon>
                               </td>
-                            </ng-container>
+                            </ng-container> -->
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           </table>

@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators, FormBuilder } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators, FormBuilder, UntypedFormControl } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
-
-
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {
@@ -34,6 +33,25 @@ export default class Validation {
   styleUrls: ['./usuario.component.scss']
 })
 export class UsuarioComponent implements OnInit {
+
+
+  clientList: any = [];
+
+  /** control for the selected item */
+  public clientCtrl: UntypedFormControl = new UntypedFormControl();
+    
+  /** control for the MatSelect filter keyword */
+  public clientFilterCtrl: UntypedFormControl = new UntypedFormControl();
+      
+  /** list of items filtered by search keyword */
+
+  public filteredClient: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
+  @ViewChild('singleSelect3', { static: true })
+  singleSelect3!: MatSelect;
+
+  /** Subject that emits when the component has been destroyed. */
+  protected _onDestroy = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public newUser :any,
@@ -65,12 +83,14 @@ export class UsuarioComponent implements OnInit {
       password    : new FormControl(''),
       confirmPassword : new FormControl(''),
       userType    : new FormControl(''),
-      nameReceive : new FormControl(''),
+      clients : new FormControl(''),
       user_Id: new FormControl(0)
     }
   )
-
+ 
  async  ngOnInit() {
+
+  await this.getCustomers();
 
     this.userId = localStorage.getItem('userId');
     this.type = this.newUser.type;
@@ -101,6 +121,7 @@ export class UsuarioComponent implements OnInit {
         password: ['',[ Validators.required, Validators.minLength(6), Validators.maxLength(40)]],
         confirmPassword: ['', Validators.required],
         userType: ['', Validators.required],
+        clients: ['', Validators.required],
         user_Id: [0]
         
       },
@@ -119,7 +140,6 @@ export class UsuarioComponent implements OnInit {
   }
 
   createNewUser(): void {
-
     this.submitted = true;
     this.userId = localStorage.getItem('userId');
     if (this.formNewUser.invalid) {
@@ -131,7 +151,7 @@ export class UsuarioComponent implements OnInit {
       UserName: this.formNewUser.controls['username'].value,
       name: this.formNewUser.controls['names'].value,
       userType_Id: this.formNewUser.controls['userType'].value,
-      customer_Id: 1,
+      customer_Id: this.formNewUser.controls['clients'].value,
       email: this.formNewUser.controls['email'].value,
       last_Name: this.formNewUser.controls['lastnames'].value,
       password: this.formNewUser.controls['password'].value,
@@ -217,9 +237,6 @@ export class UsuarioComponent implements OnInit {
     await  this.backEndServices.getUserTypes().subscribe(( userType : any ) => { this.userTypeList = userType });
   }
 
-
-
-
   getUserName(){
     let name = this.formNewUser.controls['names'].value?.substring(0,3).toLowerCase();
     let lastName = this.formNewUser.controls['lastnames'].value?.substring(0,3).toLowerCase();
@@ -231,5 +248,47 @@ export class UsuarioComponent implements OnInit {
 
     return this.nickName = nickname;
 
+  }
+
+  async getCustomers(){
+    this.backEndServices.getCustomers().subscribe((responsables: any) => { 
+      if(responsables.length > 0 && responsables.numberRecords !== 0){
+        this.clientList = responsables
+        this.clientCtrl.setValue(this.clientList[4]);
+        this.filteredClient.next(this.clientList.slice());
+        this.clientFilterCtrl.valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.filterClient(); 
+          });
+      }
+    });
+  }
+
+  /**
+   * Sets the initial value after the filteredCompanies are loaded initially
+   */
+  protected setInitialValue() {
+      this.filteredClient
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {       
+        this.singleSelect3.compareWith = (a: any, b: any) => a && b && a.id === b.id;
+      });
+  }
+
+  protected filterClient(){
+    if (!this.clientList){
+      return;
+    }
+    let search = this.clientFilterCtrl.value;
+    if(!search){
+      this.filteredClient.next(this.clientList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredClient.next(
+      this.clientList.filter((client: { name: string; }) => client.name.toLowerCase().indexOf(search) > -1)
+    );
   }
 }

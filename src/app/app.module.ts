@@ -43,6 +43,7 @@ import { UsuarioComponent } from './dialogs/usuario/usuario.component';
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
 import { SelectClientComponent } from './tools/select-client/select-client.component';
+import { DeletesComponent } from './dialogs/deletes/deletes.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { SelectClientComponent } from './tools/select-client/select-client.compo
     UsuarioComponent,
     TiposOperacionesComponent,
     TipoOperacionComponent,
-    SelectClientComponent
+    SelectClientComponent,
+    DeletesComponent
 
   ],
   imports: [

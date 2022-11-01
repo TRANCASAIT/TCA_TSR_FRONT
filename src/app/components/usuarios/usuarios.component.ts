@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { DeletesComponent } from 'src/app/dialogs/deletes/deletes.component';
 import { UsuarioComponent } from 'src/app/dialogs/usuario/usuario.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
@@ -15,7 +16,7 @@ import { ServicesBackendService } from 'src/app/services/services-backend-servic
 export class UsuariosComponent implements OnInit {
 
   dataSource !: MatTableDataSource<any>
-  displayedColumns: string[] = ['usuario','nombre','tipo','cliente', 'correo','habilitado','creacion', 'editar','eliminar'];
+  displayedColumns: string[] = ['usuario','nombre','tipo','cliente', 'correo','habilitado','creacion', 'editar'];
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   dataObs$!: Observable<any>;
   userId!: string|null;
@@ -40,6 +41,18 @@ export class UsuariosComponent implements OnInit {
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
+  DeleteUserDialog(obj:any): void { 
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '15%';
+    dialogConfig.maxWidth = '100vw';
+    dialogConfig.data = obj; 
+    dialogConfig.panelClass = '';
+
+    const dialogRef = this.dialog.open (DeletesComponent, dialogConfig);
+    dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+
+  } 
+
   setPagination() {
     this.userId = localStorage.getItem('userId');
     this.backEndServices.getUsers().subscribe((res: any) => {
@@ -58,9 +71,4 @@ export class UsuariosComponent implements OnInit {
       }
     });
   }
-
-  deleteUser(){
-
-  }
-
 }

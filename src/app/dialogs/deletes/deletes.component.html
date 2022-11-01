@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Eliminar</h1>
+<div mat-dialog-content>
+  ¿Estas seguro de eliminar el siguiente dato? 
+  <br> 
+  <strong>  {{ this.data.usuario['name']  }} {{ this.data.usuario['last_Name']  }} </strong>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close cdkFocusInitial color="primary" >No</button>
+  <button mat-button mat-dialog-close color="warn" (click)="delete(this.data.usuario)">Si</button>
+</div>

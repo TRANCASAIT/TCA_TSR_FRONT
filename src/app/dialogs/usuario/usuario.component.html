@@ -33,6 +33,19 @@
                     <mat-error> Este campo es requerido </mat-error>
                 </mat-form-field>
                 <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-select [formControl]="clientCtrl"  formControlName="clients" placeholder="Clientes" #singleSelect3>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="clientFilterCtrl"  placeholderLabel="Buscar" noEntriesFoundLabel="No se encontró resultado"></ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option *ngFor="let client of filteredClient | async" [value]="client.customer_Id">
+                        {{ client.name }}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field> 
+                <!-- <mat-form-field fxFlex.gt-xs="100" fxFlex="100"> 
+                    <app-select-client  formcontrolName="clients"></app-select-client>
+                </mat-form-field> -->
+                <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
                     <input matInput placeholder="Correo" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
                     <mat-error *ngIf="submitted && f['email'].errors" class="invalid-feedback">
                         <mat-error *ngIf="submitted && f['email'].errors"> Este campo es requerido </mat-error>
