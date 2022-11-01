@@ -8,7 +8,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { LoginComponent } from './login/login.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-
 //Components Material.
 import  { ComponentsMaterialModule } from './components-material/components-material.module';
 import { FormsModule } from '@angular/forms';
@@ -42,8 +41,12 @@ import { ClienteComponent } from './dialogs/cliente/cliente.component';
 import { UsuarioComponent } from './dialogs/usuario/usuario.component';
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 import { TipoOperacionComponent } from './dialogs/tipo-operacion/tipo-operacion.component';
+import { SolicitudComponent } from './dialogs/solicitud/solicitud.component';
 import { SelectClientComponent } from './tools/select-client/select-client.component';
 import { DeletesComponent } from './dialogs/deletes/deletes.component';
+import { UploadFileComponent } from './dialogs/upload-file/upload-file.component';
+import { TmwOrderComponent } from './dialogs/tmw-order/tmw-order.component';
+
 
 
 @NgModule({
@@ -71,7 +74,12 @@ import { DeletesComponent } from './dialogs/deletes/deletes.component';
     TiposOperacionesComponent,
     TipoOperacionComponent,
     SelectClientComponent,
-    DeletesComponent
+    DeletesComponent,
+    SolicitudComponent,
+    SelectClientComponent,
+    UploadFileComponent,
+    TmwOrderComponent
+
 
   ],
   imports: [
@@ -92,7 +100,7 @@ import { DeletesComponent } from './dialogs/deletes/deletes.component';
     MatMenuModule,
     FlexLayoutModule,
     HttpClientModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -58,6 +58,10 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Users/GetUsers`);
   }
 
+  getServiceRequests(): any {
+    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequests`);
+  }
+
 
     ////////////////////////////////INSERT INFORMATION API ///////////////////////////////////
 

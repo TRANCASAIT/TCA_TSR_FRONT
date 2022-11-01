@@ -5,6 +5,22 @@
 export const environment = {
   production: false,
   API_URL: "https://localhost:7014/api/",
+  UserRoles : {
+    Rol1: "SA",
+    Rol2: "AdministrativoA",
+    Rol3: "AdministrativoB",
+    Rol4: "ClienteA",
+    Rol5: "ClienteB"
+  },
+  CustomerCheck: {
+    IsCustomer: true,
+    NotACustomer: false
+  },
+  UserTypes: {
+    Type1: "SA",
+    Type2: "A",
+    Type3: "B"
+  }
 
 };
 

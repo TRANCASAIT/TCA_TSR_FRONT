@@ -104,3 +104,68 @@ color: white;
 .excelColor {
   background-color: rgb(29, 111, 66) !important;
 }
+
+.btnBgPdf{
+  background: url('./assets/svg/PDF.svg');
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 30px;
+  border: none;
+}
+
+.btnBgXlsx{
+  background: url('./assets/svg/Excel.svg');
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 30px;
+  border: none;
+}
+
+.btnBgXml{
+  background: url('./assets/svg/XML.svg');
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 30px;
+  border: none;
+}
+
+.fileStyle {
+  text-indent: -999em;
+  outline: none;
+  width: 35px;
+  height: 30px;
+  position: initial;
+}
+
+.icon-display{
+  transform: scale(2);
+}
+
+.noDisplayed{
+  display: none;
+}
+
+.icon{
+    user-select: none;
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 24px;
+    width: 24px;
+    overflow: hidden;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    color:blue;
+    vertical-align: middle;
+}
