@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
    errorMessage: Boolean = false;
  
   ngOnInit(): void {
+    this.logOut();
   }
 
   login(val: string, userId: number) {
@@ -57,6 +58,10 @@ export class LoginComponent implements OnInit {
     //Hola
   }
 
+  logOut(): void{
+    this.authService.logout();
+  }
+
 
 
   ingresar() {
@@ -70,7 +75,6 @@ export class LoginComponent implements OnInit {
         if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
           this.login(environment.UserRoles.Rol1,data.data.user_Id);
         }
-        //colocar sentencias
       }        
       }).catch(error => {
         console.log(error);

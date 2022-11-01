@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
     let url: string = state.url;
     return this.checkUserLogin(next, url);
   }
+
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
     if (this.authService.isLoggedIn()) {
 
@@ -30,7 +31,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
     return false;
   }
 }

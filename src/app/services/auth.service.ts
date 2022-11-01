@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import axios from 'axios';
 import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,7 +12,7 @@ export class AuthService {
 
   roleAs!: string|null;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   login(value: string) {
     this.isLogin = true;
@@ -29,15 +30,18 @@ export class AuthService {
     localStorage.setItem('userTypeName', '');
     let userId = localStorage.getItem('User_Id');   
     axios.post(`${environment.API_URL}Users/LogOut/${userId}`);
+    localStorage.setItem('User_Id','');
     return of({ success: this.isLogin, role: '' });
   }
 
   isLoggedIn() {
     const loggedIn = localStorage.getItem('STATE');    
-    if (loggedIn == 'true')
+    if (loggedIn == 'true'){
       this.isLogin = true;
-    else
+    }
+    else{
       this.isLogin = false;
+    }
     return this.isLogin;
   }
 
