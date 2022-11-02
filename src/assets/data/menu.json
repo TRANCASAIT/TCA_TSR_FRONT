@@ -1,12 +1,12 @@
 [
-    { "redirect": "/navigation/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "view_list" },
-    { "redirect": "/navigation/clientes",  "type": "link","name": "Clientes", "icon": "history" },
-    { "redirect": "/navigation/reportes",  "type": "link","name": "Reportes", "icon": "workspaces" },
-    { "redirect": "/navigation/usuarios", "type": "link", "name": "Usuarios", "icon": "store" },
+    { "redirect": "/navigation/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "local_shipping" },
+    { "redirect": "/navigation/clientes",  "type": "link","name": "Clientes", "icon": "business_center" },
+    { "redirect": "/navigation/reportes",  "type": "link","name": "Reportes", "icon": "assignment" },
+    { "redirect": "/navigation/usuarios", "type": "link", "name": "Usuarios", "icon": "person" },
     { "redirect": "/navigation/estados", "type": "link", "name": "Estados", "icon": "apartment" },
-    { "redirect": "/navigation/ciudades", "type": "link", "name": "Ciudades", "icon": "supervisor_account" },
-    { "redirect": "/navigation/estatus", "type": "link", "name": "Estatus", "icon": "group" },
-    { "redirect": "/navigation/stops", "type": "link", "name": "Paradas", "icon": "badge" },
-    { "redirect": "/navigation/tipos-usuarios", "type": "link", "name": "Tipos de usuarios", "icon": "person" },
-    { "redirect": "/navigation/tipos-operaciones",  "type": "link","name": "Tipos de operaciones", "icon": "diversity_3" }
+    { "redirect": "/navigation/ciudades", "type": "link", "name": "Ciudades", "icon": "location_city" },
+    { "redirect": "/navigation/estatus", "type": "link", "name": "Estatus", "icon": "rule" },
+    { "redirect": "/navigation/stops", "type": "link", "name": "Paradas", "icon": "location_on" },
+    { "redirect": "/navigation/tipos-usuarios", "type": "link", "name": "Tipos de usuarios", "icon": "group" },
+    { "redirect": "/navigation/tipos-operaciones",  "type": "link","name": "Tipos de operaciones", "icon": "list" }
 ]

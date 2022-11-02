@@ -50,8 +50,6 @@ export class ClientesComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
-        console.log(res);
-        
       }else{
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;
@@ -61,10 +59,16 @@ export class ClientesComponent implements OnInit {
     });
   }
 
+
   ChangeState(element: any){    
-    this.userId = localStorage.getItem('userId');   
-    element.user_Logged = this.userId;    
-    axios.put(`${environment.API_URL}`+"Customers/CustomerPutState",element).then(data => {            
+    this.userId = localStorage.getItem('User_Id');   
+    const {customer_Id, status} = element;
+    let customer = {
+      Customer_Id: customer_Id,
+      Status: status,
+      User_Logged:  this.userId
+    }
+    axios.put(`${environment.API_URL}Customers/CustomerPutState`,customer).then(data => {            
       if(data.data.state===0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,
@@ -88,7 +92,7 @@ export class ClientesComponent implements OnInit {
         verticalPosition:'top',
         panelClass: ['red-snackbar']
       });
-    })
+    });
   }
 
 }
