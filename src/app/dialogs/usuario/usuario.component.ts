@@ -202,9 +202,9 @@ export class UsuarioComponent implements OnInit {
       name: this.formNewUser.controls['names'].value,
       UserType_Id: Number(this.formNewUser.controls['userType'].value),
       email: this.formNewUser.controls['email'].value,
-      customer_Id: 1,
+      customer_Id: this.formNewUser.controls['clients'].value,
       last_Name: this.formNewUser.controls['lastnames'].value,
-      User_Password: this.formNewUser.controls['password'].value,
+      Password: this.formNewUser.controls['password'].value,
       User_Logged: 'na' //this.userId
     }        
     if(tempUserObject.UserType_Id === 3){
