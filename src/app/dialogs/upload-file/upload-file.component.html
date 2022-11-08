@@ -8,9 +8,9 @@
                           <table mat-table [dataSource]="dataSource" class="example-table"
                           matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
 
-                            <ng-container matColumnDef="folio" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Folio </th>
-                              <td mat-cell *matCellDef="let element"> {{element.invoiceNumber}} </td>
+                            <ng-container matColumnDef="stop" sticky>
+                              <th mat-header-cell *matHeaderCellDef> Parada </th>
+                              <td mat-cell *matCellDef="let element"> {{element.stop_Id}} </td>
                             </ng-container>
                             <ng-container matColumnDef="estatus" sticky>
                               <th mat-header-cell *matHeaderCellDef> Estatus </th>
@@ -26,6 +26,12 @@
                                   <button id="btnFacMX{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 1)">
                                     <mat-icon class="icon">publish</mat-icon>
                                   </button>
+                                  <button *ngIf="element.invoiceMXCompleted === true" id="btnFacMX{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.invoiceMX, element.invMXFN, element.serviceRequest_Id)">
+                                    <mat-icon class="icon">file_download</mat-icon>
+                                  </button>
+                                  <button *ngIf="element.invoiceMXCompleted === true" id="btnFacMX{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 1, element.invoiceMX, element.invMXFN)">
+                                    <mat-icon class="icon">remove</mat-icon>
+                                  </button>
                                 </td> 
                             </ng-container>
                             
@@ -38,6 +44,12 @@
                                 <button id="btnFacUSA{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 2)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
+                                <button *ngIf="element.invoiceUSACompleted === true" id="btnFacUSA{{element.document_Id}}"  class="btnIcon" color="primary" (click)="downloadFile(element.invoiceUSA, element.invUSAFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.invoiceUSACompleted === true" id="btnFacUSA{{element.document_Id}}"  class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 2, element.invoiceUSA, element.invUSAFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
+                                </button>
                               </td> 
                             </ng-container>
                             
@@ -48,6 +60,12 @@
                               </button>
                               <button id="btnBol{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 3)">
                                 <mat-icon class="icon">publish</mat-icon>
+                              </button>
+                              <button *ngIf="element.bolCompleted === true" id="btnBol{{element.document_Id}}"  class="btnIcon" color="primary" (click)="downloadFile(element.bol, element.bolFN, element.serviceRequest_Id)">
+                                <mat-icon class="icon">file_download</mat-icon>
+                              </button>
+                              <button *ngIf="element.bolCompleted === true" id="btnBol{{element.document_Id}}"  class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 3, element.bol, element.bolFN)">
+                                <mat-icon class="icon">remove</mat-icon>
                               </button>
                              </td>
                             </ng-container>
@@ -61,6 +79,12 @@
                                 <button id="btnInwd{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 4)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
+                                <button *ngIf="element.inwardCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.inward, element.inwFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.inwardCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 4, element.inward, element.inwFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
+                                </button>
                               </td>
                             </ng-container>
                             
@@ -72,6 +96,12 @@
                                 </button>
                                 <button id="btnAce{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 5)">
                                   <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                                <button *ngIf="element.aceCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.ace, element.aceFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.aceCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 5, element.ace, element.aceFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
                                 </button>
                               </td>
                             </ng-container>
@@ -87,6 +117,9 @@
                                 </button>
                                 <button *ngIf="element.layoutCompleted === true" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.layout, element.layoutFN, element.serviceRequest_Id)">
                                   <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.layoutCompleted === true" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 6, element.layout, element.layoutFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
                                 </button>
                               </td>
                             </ng-container>
@@ -109,6 +142,12 @@
                                 <button id="btnXml{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 7)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
+                                <button *ngIf="element.xmlCompleted === true" id="btnXml{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.xml, element.xmlFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.xmlCompleted === true" id="btnXml{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 7, element.xml, element.xmlFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
+                                </button>
                               </td>
                             </ng-container>
                             
@@ -121,6 +160,12 @@
                                 <button id="btnOriPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element,8)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
+                                <button *ngIf="element.originalPDFCompleted === true" id="btnOriPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.originalPDF, element.oPdfFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.originalPDFCompleted === true" id="btnOriPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 8, element.originalPDF, element.oPdfFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
+                                </button>
                               </td>
                             </ng-container>
                             
@@ -132,6 +177,12 @@
                                 </button>
                                 <button id="btnOpPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 9)">
                                   <mat-icon class="icon">publish</mat-icon>
+                                </button>
+                                <button *ngIf="element.operationsPDFCompleted === true" id="btnOpPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.operationsPDF, element.opPdfFN, element.serviceRequest_Id)">
+                                  <mat-icon class="icon">file_download</mat-icon>
+                                </button>
+                                <button *ngIf="element.operationsPDFCompleted === true" id="btnOpPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 9, element.operationsPDF, element.opPdfFN)">
+                                  <mat-icon class="icon">remove</mat-icon>
                                 </button>
                               </td>
                             </ng-container>

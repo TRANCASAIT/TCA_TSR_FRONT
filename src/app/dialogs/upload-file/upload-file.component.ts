@@ -2,7 +2,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +11,7 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import axios from 'axios';
 import { NumeroCporteComponent } from '../numero-cporte/numero-cporte.component';
+import { environment } from 'src/environments/environment';
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -38,6 +39,7 @@ export class UploadFileComponent implements OnInit {
   opPDF = false;
   progress = 0;
   message = '';
+  folio: number = 0;
 
   dataSource !: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
@@ -80,7 +82,7 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
-  displayedColumns: string[] = ['folio','estatus','factMX','factUS','BOL','InwardManif','ACE','layout','layoutAcep','NumCartPorte','XML','PDFOrig','PDFOper','comentarios'];
+  displayedColumns: string[] = ['stop','estatus','factMX','factUS','BOL','InwardManif','ACE','layout','layoutAcep','NumCartPorte','XML','PDFOrig','PDFOper','comentarios'];
 
 
   range = new FormGroup({
@@ -102,6 +104,7 @@ export class UploadFileComponent implements OnInit {
     private backEndServices : ServicesBackendService,
     private _snackBar: MatSnackBar, private uploadService: FileUploadService,
     @Inject(MAT_DIALOG_DATA) public sr :any,
+    public dialogRef: MatDialogRef<NumeroCporteComponent>,
     ) { }
 
   ngOnInit(): void {
@@ -123,6 +126,7 @@ export class UploadFileComponent implements OnInit {
             } else if (event instanceof HttpResponse) {
               this.message = event.body.message;
             }
+            this.setPagination(el.serviceRequest_Id);
           },
           error: (err: any) => {
             this.progress = 0;
@@ -155,12 +159,13 @@ export class UploadFileComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.data.length = res.length;
       this.dataObs$ = this.dataSource.connect();
+      console.log(res);
+      
       }
     });
   }
 
   downloadFile(url:any, fileName:any, sr:any){
-
     let obj = {
       url: url
     }
@@ -185,7 +190,47 @@ export class UploadFileComponent implements OnInit {
       this.setPagination(sr);
     }).catch(error =>{
     });
+  }
 
+  removeFile(sr:number, dc:number, documentType:number, url:string, fileName:string){
+    this.userId = localStorage.getItem('User_Id');
+    let document = {
+      ServiceRequest_Id: sr,
+      Document_Id: dc,
+      Document_Type: documentType,
+      Url: url,
+      FileName: fileName,
+      User_Logged: this.userId
+    }
+    axios.post(`${environment.API_URL}`+ "ServiceRequests/RemoveFile",document).then(data => {
+      if(data.data.state === 0){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['green-snackbar']
+        });
+        this.dialogRef.close(); 
+      }
+      else if(data.data.state === 1){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+    }
+    
+    }).catch(error => {
+      console.log(error);
+      
+      this._snackBar.open(error,'',{
+        duration:5000,
+        horizontalPosition:'right',
+        verticalPosition:'top',
+        panelClass: ['red-snackbar']
+      });
+    });
     
   }
 
