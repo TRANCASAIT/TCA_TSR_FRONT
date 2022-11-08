@@ -247,7 +247,7 @@
                             <ng-container matColumnDef="upload">
                               <th mat-header-cell *matHeaderCellDef> Subir Archivos </th>
                               <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button matTooltip="Abrir ventana" class="iconbutton" color="success" (click)="uploadFileDialog(({type:'new'}))">
+                                <button mat-icon-button matTooltip="Abrir ventana" class="iconbutton" color="success" (click)="uploadFileDialog(({sr:element.serviceRequest_Id}))">
                                   <mat-icon>publish</mat-icon>
                                 </button> 
                               </td>

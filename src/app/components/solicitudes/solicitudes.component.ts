@@ -123,9 +123,10 @@ export class SolicitudesComponent implements OnInit {
 
   uploadFileDialog(obj:any): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '60%';
+    dialogConfig.width = '80%';
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = obj;
+    obj.type = 'new';
   
     dialogConfig.panelClass = '';
   
@@ -167,7 +168,7 @@ export class SolicitudesComponent implements OnInit {
           horizontalPosition:'right',
           verticalPosition:'top',
           panelClass: ['red-snackbar']
-        });     
+        });
       }else{
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;

@@ -32,7 +32,6 @@ export class ClientesComponent implements OnInit {
     dialogConfig.width = '60%';
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = obj;
-  
     dialogConfig.panelClass = '';
   
     const dialogRef = this.dialog.open( ClienteComponent  , dialogConfig);
@@ -58,7 +57,6 @@ export class ClientesComponent implements OnInit {
       }
     });
   }
-
 
   ChangeState(element: any){    
     this.userId = localStorage.getItem('User_Id');   

@@ -62,6 +62,9 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequests`);
   }
 
+  getServiceRequestsDocuments(elem:any): any {
+    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequestsFull/${elem}`);
+  }
 
     ////////////////////////////////INSERT INFORMATION API ///////////////////////////////////
 

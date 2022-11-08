@@ -63,7 +63,7 @@ export class SolicitudComponent implements OnInit {
   }
 
   createServiceRequest(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.srequestForm.invalid) return;
     const sr = {
       Box_Number: this.formGroup.boxNumber.value,

@@ -55,7 +55,7 @@ export class StopComponent implements OnInit {
   }
 
   createStop(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.stopsForm.invalid) return;
     const stop = {
       Stop_Number: this.formGroup.stopNumber.value,
@@ -69,16 +69,16 @@ export class StopComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['green-snackbar']
         });
-    }
-    else if(data.data.state === 1){
-      this._snackBar.open(data.data.message,'',{
-        duration:5000,
-        horizontalPosition:'right',
-        verticalPosition:'top',
-        panelClass: ['red-snackbar']
-      });
-  }
-      this.dialogRef.close(); 
+        this.dialogRef.close(); 
+      }
+      else if(data.data.state === 1){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+      }
     }).catch(error => {
       this._snackBar.open(error,'',{
         duration:5000,
@@ -94,12 +94,14 @@ export class StopComponent implements OnInit {
   }
 
   updateStop(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const stop = {
       Stop_Id: this.formGroup.stopId.value,
       Stop_Number: this.formGroup.stopNumber.value,
       User_Logged: this.userId
     }
+    console.log(stop);
+    
     axios.put(`${environment.API_URL}`+ "Stops/UpdateStop",stop).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
@@ -116,6 +118,8 @@ export class StopComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
+        console.log(data);
+        
     }
     this.dialogRef.close(); 
     }).catch(error => {
@@ -125,6 +129,8 @@ export class StopComponent implements OnInit {
         verticalPosition:'top',
         panelClass: ['red-snackbar']
       });
+      console.log(error);
+
     });
     
   }
