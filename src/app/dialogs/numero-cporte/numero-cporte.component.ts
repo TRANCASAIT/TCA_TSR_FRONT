@@ -65,7 +65,7 @@ export class NumeroCporteComponent implements OnInit {
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
       Document_Id: this.formGroup.documentId.value,
-      Consigment_Number: this.formGroup.cPorteNumber.value,
+      Consigment_Note: this.formGroup.cPorteNumber.value,
       User_Logged: this.userId
     }
     axios.post(`${environment.API_URL}`+ "ServiceRequests/setConsigmentNote",sr).then(data => {
@@ -88,6 +88,8 @@ export class NumeroCporteComponent implements OnInit {
     }
     
     }).catch(error => {
+      console.log(error);
+      
       this._snackBar.open(error,'',{
         duration:5000,
         horizontalPosition:'right',
