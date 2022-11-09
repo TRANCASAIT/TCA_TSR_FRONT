@@ -1,6 +1,6 @@
 [
-    { "redirect": "/navigation/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "view_list" },
-    { "redirect": "/navigation/clientes",  "type": "link","name": "Clientes", "icon": "history" },
-    { "redirect": "/navigation/reportes",  "type": "link","name": "Reportes", "icon": "workspaces" },
-    { "redirect": "/navigation/usuarios", "type": "link", "name": "Usuarios", "icon": "store" }
+    { "redirect": "/navigate/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "view_list" },
+    { "redirect": "/navigate/clientes",  "type": "link","name": "Clientes", "icon": "history" },
+    { "redirect": "/navigate/reportes",  "type": "link","name": "Reportes", "icon": "workspaces" },
+    { "redirect": "/navigate/usuarios", "type": "link", "name": "Usuarios", "icon": "store" }
 ]

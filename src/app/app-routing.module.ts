@@ -20,6 +20,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path:'login', component:LoginComponent },
 
+
+  //ROL SA.
   { path:'navigation', component: NavigationComponent,
     canActivate: [AuthGuard],
     data: {
@@ -40,6 +42,35 @@ const routes: Routes = [
 
     ]
   },
+
+  //ROL ADMINS.
+  {
+    path:'navigate', component: NavigationComponent,
+    canActivate: [AuthGuard],
+    data: { 
+      role: [ environment.UserRoles.Rol2, environment.UserRoles.Rol3 ]
+    },
+    children: [
+      { path:'solicitudes', component: SolicitudesComponent},
+      { path:'clientes', component: ClientesComponent},
+      { path: 'reportes', component: ReportesComponent },
+      { path: 'usuarios', component: UsuariosComponent}
+    ]
+  },
+
+  //ROL CLIENTS
+  {
+    path:'nav', component: NavigationComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [ environment.UserRoles.Rol4, environment.UserRoles.Rol5 ]
+    },
+    children: [
+      { path:'solicitudes', component: SolicitudesComponent}
+    ]
+  },
+
+
   { path:'**', redirectTo: 'login', pathMatch: 'full'},
 ];  
 
