@@ -37,10 +37,20 @@ export class LoginComponent implements OnInit {
     this.authService.login(val)
       .subscribe(res => {
         if (res.success) {
-          if(res.role === environment.UserRoles.Rol1 || res.role === environment.UserRoles.Rol2 || res.role === environment.UserRoles.Rol3 || res.role === environment.UserRoles.Rol4 || res.role === environment.UserRoles.Rol5){
-            localStorage.setItem('User_Id',String(userId));   
+          localStorage.setItem('User_Id',String(userId));   
+          if(res.role === environment.UserRoles.Rol1){
             setTimeout(() => {
               this.router.navigate(["navigation/solicitudes"]);
+              this.loading = false;
+              },1500);
+          }else if(res.role === environment.UserRoles.Rol2 || res.role === environment.UserRoles.Rol3){
+            setTimeout(() => {
+              this.router.navigate(["navigate/solicitudes"]);
+              this.loading = false;
+              },1500);
+          }else if(res.role === environment.UserRoles.Rol4 || res.role === environment.UserRoles.Rol5){
+            setTimeout(() => {
+              this.router.navigate(["nav/solicitudes"]);
               this.loading = false;
               },1500);
           }

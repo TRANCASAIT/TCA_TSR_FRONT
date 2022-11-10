@@ -165,11 +165,12 @@ export class UploadFileComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
-      }else{
-      this.dataSource = new MatTableDataSource<any>(res);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.data.length = res.length;
-      this.dataObs$ = this.dataSource.connect();
+      }
+      else{
+        this.dataSource = new MatTableDataSource<any>(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.data.length = res.length;
+        this.dataObs$ = this.dataSource.connect();
       }
     });
   }
