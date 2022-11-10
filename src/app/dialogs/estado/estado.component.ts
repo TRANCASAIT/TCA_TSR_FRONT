@@ -58,7 +58,7 @@ export class EstadoComponent implements OnInit {
 
 
   createState(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.stateForm.invalid) return;
     const state = {
       State_Name: this.formGroup.stateName.value,
@@ -97,7 +97,7 @@ export class EstadoComponent implements OnInit {
   }
 
   updateState(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const state = {
       State_Id: this.formGroup.stateId.value,
       State_Name: this.formGroup.stateName.value,

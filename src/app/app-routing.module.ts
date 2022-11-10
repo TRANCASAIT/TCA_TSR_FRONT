@@ -48,7 +48,7 @@ const routes: Routes = [
     path:'navigate', component: NavigationComponent,
     canActivate: [AuthGuard],
     data: { 
-      role: [ environment.UserRoles.Rol2, environment.UserRoles.Rol3 ]
+      role: [ environment.UserRoles.Rol2, environment.UserRoles.Rol3]
     },
     children: [
       { path:'solicitudes', component: SolicitudesComponent},
@@ -63,7 +63,7 @@ const routes: Routes = [
     path:'nav', component: NavigationComponent,
     canActivate: [AuthGuard],
     data: {
-      role: [ environment.UserRoles.Rol4, environment.UserRoles.Rol5 ]
+      role: [ environment.UserRoles.Rol4, environment.UserRoles.Rol5]
     },
     children: [
       { path:'solicitudes', component: SolicitudesComponent}

@@ -82,34 +82,22 @@ export class LoginComponent implements OnInit {
       Password : this.form.value.password
     }
 
-    axios.post(`${environment.API_URL}`+ "Users/PostUserLogin",usuario).then(data => {
-      console.log(data);
-      
+    axios.post(`${environment.API_URL}`+ "Users/PostUserLogin",usuario).then(data => {      
       if(data.data.user_Id > 0 ){
         if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
           this.login(environment.UserRoles.Rol1,data.data.user_Id);
-          console.log(environment.UserRoles.Rol1,data.data.user_Id);
-
         }
         else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type2){
           this.login(environment.UserRoles.Rol2,data.data.user_Id);
-          console.log(environment.UserRoles.Rol2,data.data.user_Id);
-
         }
         else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type3){
           this.login(environment.UserRoles.Rol3,data.data.user_Id);
-          console.log(environment.UserRoles.Rol3,data.data.user_Id);
-
         }
         else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type2){
           this.login(environment.UserRoles.Rol4,data.data.user_Id);
-          console.log(environment.UserRoles.Rol4,data.data.user_Id);
-
         }
         else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type3){
           this.login(environment.UserRoles.Rol5,data.data.user_Id);
-          console.log(environment.UserRoles.Rol5,data.data.user_Id);
-
         }
       }        
       }).catch(error => {

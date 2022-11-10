@@ -56,7 +56,7 @@ export class TipoUsuarioComponent implements OnInit {
   }
 
   createUserType(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.userTypesForm.invalid) return;
     const userType = {
       UserType_Name: this.formGroup.userType_Name.value,
@@ -95,7 +95,7 @@ export class TipoUsuarioComponent implements OnInit {
   }
 
   updateUserType(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const userType = {
       UserType_Id: this.formGroup.userTypeId.value,
       UserType_Name: this.formGroup.userType_Name.value,

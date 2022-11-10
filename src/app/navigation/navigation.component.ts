@@ -13,12 +13,10 @@ import { MenuService } from '../services/menu.service';
 })
 export class NavigationComponent implements OnDestroy{
   mobileQuery: MediaQueryList;
-  _userType = localStorage.getItem("userTypeName");
+  _userType = localStorage.getItem("ROLE");
   menu: menu[] = [];
 
   _mobileQueryListener: () => void;
-
-
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: Router, private _menuService: MenuService, public authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 800px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -33,7 +31,9 @@ export class NavigationComponent implements OnDestroy{
   }
 
   cargarMenu(){
+
     this._menuService.getMenu(this._userType).subscribe(data=>{
+       
       this.menu = data;
     })
   }

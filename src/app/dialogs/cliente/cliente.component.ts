@@ -83,7 +83,7 @@ export class ClienteComponent implements OnInit {
   }
 
   createCustomer(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.customerForm.invalid) return;
     const customer = {
       Name: this.formGroup.name.value,
@@ -144,7 +144,7 @@ export class ClienteComponent implements OnInit {
   }
 
   updateCustomer(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const customer = {
       Customer_Id: this.formGroup.customerId.value,
       Name: this.formGroup.name.value,

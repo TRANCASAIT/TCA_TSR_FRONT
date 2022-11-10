@@ -92,7 +92,7 @@ export class UsuarioComponent implements OnInit {
 
   await this.getCustomers();
 
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     this.type = this.newUser.type;
 
     if (this.type === 'edit') {
@@ -141,7 +141,7 @@ export class UsuarioComponent implements OnInit {
 
   createNewUser(): void {
     this.submitted = true;
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if (this.formNewUser.invalid) {
       return;
     }
@@ -193,7 +193,7 @@ export class UsuarioComponent implements OnInit {
     if (this.formNewUser.invalid) {
       return;
     }
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
 
     //Create Json Object per APi.
     let tempUserObject = { 

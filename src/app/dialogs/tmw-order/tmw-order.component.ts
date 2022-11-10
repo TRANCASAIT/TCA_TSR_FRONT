@@ -56,12 +56,14 @@ export class TmwOrderComponent implements OnInit {
   }
 
   setTMW(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
       TMWOrder: this.formGroup.tmwOrder.value,
       User_Logged: this.userId
     }
+    console.log(sr);
+    
     axios.post(`${environment.API_URL}`+ "ServiceRequests/setTMWOrder",sr).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{

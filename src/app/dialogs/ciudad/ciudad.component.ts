@@ -60,7 +60,7 @@ export class CiudadComponent implements OnInit {
   }
 
   createCity(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.citiesForm.invalid) return;
     const city = {
       City_Name: this.formGroup.cityName.value,
@@ -100,7 +100,7 @@ export class CiudadComponent implements OnInit {
   }
 
   updateCity(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const city = {
       City_Id: this.formGroup.cityId.value,
       City_Name: this.formGroup.cityName.value,

@@ -56,7 +56,7 @@ export class TipoOperacionComponent implements OnInit {
   }
 
   createOperationType(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.operationTypesForm.invalid) return;
     const operationType = {
       OperationType_Name: this.formGroup.operationType_Name.value,
@@ -95,7 +95,7 @@ export class TipoOperacionComponent implements OnInit {
   }
 
   updateOperationType(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const operationType = {
       OperationType_Id: this.formGroup.operationTypeId.value,
       OperationType_Name: this.formGroup.operationType_Name.value,
