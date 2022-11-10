@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
-
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -20,51 +19,47 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'app-numero-cporte',
-  templateUrl: './numero-cporte.component.html',
-  styleUrls: ['./numero-cporte.component.scss']
+  selector: 'app-comment',
+  templateUrl: './comment.component.html',
+  styleUrls: ['./comment.component.scss']
 })
-export class NumeroCporteComponent implements OnInit {
-  consigmentNumbers: any;
+export class CommentComponent implements OnInit {
+  comments:any;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public consigmentNumber :any,
-    public dialogRef: MatDialogRef<NumeroCporteComponent>,
+    @Inject(MAT_DIALOG_DATA) public comment :any,
+    public dialogRef: MatDialogRef<CommentComponent>,
     private _snackBar: MatSnackBar,
   ) { }
-
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
-  solicitudServicio: number = 0;
-  parada: number = 0;
-  cPorteForm = new FormGroup({
-    serviceRequestId: new FormControl(0),
+  commentForm = new FormGroup({
+    serviceRequest_Id: new FormControl(0),
     documentId: new FormControl(0),
-    cPorteNumber : new FormControl('', [Validators.required]),
-  })
+    comment: new FormControl('', [Validators.required]),
+  });
   userId!: string|null;
   show:boolean = false;
-  get formGroup() { return this.cPorteForm.controls; }
+  get formGroup() { return this.commentForm.controls; }
 
   ngOnInit(): void {
-    this.type = this.consigmentNumber.type;
-    const {serviceRequest_Id, document_Id, stop_Id} = this.consigmentNumber;
-    this.cPorteForm.patchValue({
-      serviceRequestId: serviceRequest_Id,
+    this.type = this.comment.type;
+    const {serviceRequest_Id, document_Id} = this.comment;
+    this.commentForm.patchValue({
+      serviceRequest_Id: serviceRequest_Id,
       documentId: document_Id
     });
-    this.solicitudServicio= serviceRequest_Id;
-    this.parada = stop_Id;
   }
 
-  setConsigmentNumber(): void {
+  saveComment(){
     this.userId = localStorage.getItem('User_Id');
-    const sr = {
-      ServiceRequest_Id: this.formGroup.serviceRequestId.value,
+    let comment = {
+      ServiceRequest_Id: this.formGroup.serviceRequest_Id.value,
       Document_Id: this.formGroup.documentId.value,
-      Consigment_Note: this.formGroup.cPorteNumber.value,
-      User_Logged: this.userId
+      Consigment_Note: this.formGroup.comment.value,
     }
-    axios.post(`${environment.API_URL}`+ "ServiceRequests/setConsigmentNote",sr).then(data => {
+
+    axios.post(`${environment.API_URL}`+ "ServiceRequests/sendComment",comment).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,
@@ -94,7 +89,7 @@ export class NumeroCporteComponent implements OnInit {
       });
     });
     
+  
   }
-
 
 }

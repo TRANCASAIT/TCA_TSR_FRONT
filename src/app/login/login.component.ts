@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(val)
       .subscribe(res => {
         if (res.success) {
-          if(res.role === environment.UserRoles.Rol1){
+          if(res.role === environment.UserRoles.Rol1 || res.role === environment.UserRoles.Rol2 || res.role === environment.UserRoles.Rol3 || res.role === environment.UserRoles.Rol4 || res.role === environment.UserRoles.Rol5){
+            localStorage.setItem('User_Id',String(userId));   
             setTimeout(() => {
               this.router.navigate(["navigation/solicitudes"]);
               this.loading = false;
@@ -65,15 +66,40 @@ export class LoginComponent implements OnInit {
 
 
   ingresar() {
+
     var usuario = {
       UserName : this.form.value.email,
       Password : this.form.value.password
     }
+
     axios.post(`${environment.API_URL}`+ "Users/PostUserLogin",usuario).then(data => {
+      console.log(data);
+      
       if(data.data.user_Id > 0 ){
-        localStorage.setItem('User_Id',data.data.user_Id);   
         if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
           this.login(environment.UserRoles.Rol1,data.data.user_Id);
+          console.log(environment.UserRoles.Rol1,data.data.user_Id);
+
+        }
+        else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type2){
+          this.login(environment.UserRoles.Rol2,data.data.user_Id);
+          console.log(environment.UserRoles.Rol2,data.data.user_Id);
+
+        }
+        else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type3){
+          this.login(environment.UserRoles.Rol3,data.data.user_Id);
+          console.log(environment.UserRoles.Rol3,data.data.user_Id);
+
+        }
+        else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type2){
+          this.login(environment.UserRoles.Rol4,data.data.user_Id);
+          console.log(environment.UserRoles.Rol4,data.data.user_Id);
+
+        }
+        else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type3){
+          this.login(environment.UserRoles.Rol5,data.data.user_Id);
+          console.log(environment.UserRoles.Rol5,data.data.user_Id);
+
         }
       }        
       }).catch(error => {

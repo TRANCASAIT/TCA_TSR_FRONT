@@ -1,0 +1,30 @@
+<div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+
+    <form fxLayout="row wrap" fxFlex="100" [formGroup]="commentForm">
+            <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
+                    <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
+                        <!-- <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Numero de Carta Porte</h3> -->
+                        <mat-card-title class="text-bold text-center m-b-20 m-t-0" class="warn">Comentarios</mat-card-title>
+                                <input matInput formControlName="serviceRequest_Id"
+                                        [errorStateMatcher]="matcher" hidden>
+                                <input matInput formControlName="documentId"
+                                [errorStateMatcher]="matcher" hidden>
+                            <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
+                                    <input matInput placeholder="Escriba su comentario" formControlName="comment"
+                                            [errorStateMatcher]="matcher">
+                                    <mat-error> Este campo es requerido </mat-error>
+                            </mat-form-field>
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">
+                                    <div fxFlex="50" fxLayoutAlign="center center">
+                                            <button [disabled]="commentForm.invalid" *ngIf="type === 'new'" class="actionBtn" mat-raised-button (click)="this.saveComment()"> Registrar </button>
+                                    </div>
+                                    <div fxFlex="50"  fxLayoutAlign="center center">
+                                            <button mat-raised-button class="closeBtn" (click)="dialogRef.close()"> Cerrar </button>
+                                    </div>
+                            </div>
+                            
+                    </div>
+            </div>
+           
+    </form>
+</div>

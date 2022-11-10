@@ -47,6 +47,7 @@ import { DeletesComponent } from './dialogs/deletes/deletes.component';
 import { UploadFileComponent } from './dialogs/upload-file/upload-file.component';
 import { TmwOrderComponent } from './dialogs/tmw-order/tmw-order.component';
 import { NumeroCporteComponent } from './dialogs/numero-cporte/numero-cporte.component';
+import { CommentComponent } from './dialogs/comment/comment.component';
 
 
 
@@ -80,7 +81,8 @@ import { NumeroCporteComponent } from './dialogs/numero-cporte/numero-cporte.com
     SelectClientComponent,
     UploadFileComponent,
     TmwOrderComponent,
-    NumeroCporteComponent
+    NumeroCporteComponent,
+    CommentComponent
 
 
   ],

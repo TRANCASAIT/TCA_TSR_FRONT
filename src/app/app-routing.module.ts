@@ -25,7 +25,7 @@ const routes: Routes = [
   { path:'navigation', component: NavigationComponent,
     canActivate: [AuthGuard],
     data: {
-      role: [environment.UserRoles.Rol1]
+      role: [environment.UserRoles.Rol1,environment.UserRoles.Rol2,environment.UserRoles.Rol3,environment.UserRoles.Rol4, environment.UserRoles.Rol5]
     },
     children: [
       { path: 'dashboard', component: DashboardComponent },

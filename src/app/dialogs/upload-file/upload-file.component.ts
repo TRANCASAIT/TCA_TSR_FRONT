@@ -12,6 +12,7 @@ import { ServicesBackendService } from 'src/app/services/services-backend-servic
 import axios from 'axios';
 import { NumeroCporteComponent } from '../numero-cporte/numero-cporte.component';
 import { environment } from 'src/environments/environment';
+import { CommentComponent } from '../comment/comment.component';
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -143,6 +144,17 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
+  openComments(obj:any){
+    obj.type = 'new';
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '25%';
+    dialogConfig.maxWidth = '70vw';
+    dialogConfig.data = obj;
+    dialogConfig.panelClass = '';
+    const dialogRef = this.dialog.open( CommentComponent  , dialogConfig);
+    dialogRef.afterClosed().toPromise().then(() => this.setPagination(obj.serviceRequest_Id));
+  }
+
   setPagination(elem:any) {
     this.userId = localStorage.getItem('User_Id');
     this.backEndServices.getServiceRequestsDocuments(elem).subscribe((res: any) => {
@@ -153,14 +165,11 @@ export class UploadFileComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
-             
       }else{
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.data.length = res.length;
       this.dataObs$ = this.dataSource.connect();
-      console.log(res);
-      
       }
     });
   }
