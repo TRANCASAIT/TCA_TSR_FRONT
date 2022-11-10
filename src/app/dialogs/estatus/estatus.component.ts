@@ -56,7 +56,7 @@ export class EstatusComponentDialog implements OnInit {
   }
 
   createStatus(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     if(this.statusForm.invalid) return;
     const status = {
       Status_Description: this.formGroup.statusDescription.value,
@@ -95,7 +95,7 @@ export class EstatusComponentDialog implements OnInit {
   }
 
   updateStatus(): void {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     const status = {
       Status_Id: this.formGroup.statusId.value,
       Status_Description: this.formGroup.statusDescription.value,
