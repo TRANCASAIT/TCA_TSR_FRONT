@@ -41,7 +41,7 @@ export class UploadFileComponent implements OnInit {
   progress = 0;
   message = '';
   folio: number = 0;
-
+  userRole!: string|null;
   dataSource !: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
   dataObs$!: Observable<any>;
@@ -110,6 +110,7 @@ export class UploadFileComponent implements OnInit {
 
   ngOnInit(): void {
     this.setPagination(this.sr.sr);
+    this.userRole = localStorage.getItem("ROLE");
   }
 
   uploadFile(el:any, fileType:any){
@@ -147,7 +148,7 @@ export class UploadFileComponent implements OnInit {
   openComments(obj:any){
     obj.type = 'new';
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '25%';
+    dialogConfig.width = '50%';
     dialogConfig.maxWidth = '70vw';
     dialogConfig.data = obj;
     dialogConfig.panelClass = '';
@@ -180,7 +181,7 @@ export class UploadFileComponent implements OnInit {
       url: url
     }
     axios({
-      url: 'https://localhost:7014/api/ServiceRequests/DownloadFile', //your url
+      url: `${environment.API_URL}ServiceRequests/DownloadFile`, //your url
       method: 'POST',
       data: obj,
       responseType: 'blob',
@@ -199,6 +200,8 @@ export class UploadFileComponent implements OnInit {
       URL.revokeObjectURL(href);
       this.setPagination(sr);
     }).catch(error =>{
+      console.log(error);
+      
     });
   }
 
@@ -230,10 +233,7 @@ export class UploadFileComponent implements OnInit {
           panelClass: ['red-snackbar']
         });
     }
-    
     }).catch(error => {
-      console.log(error);
-      
       this._snackBar.open(error,'',{
         duration:5000,
         horizontalPosition:'right',
@@ -241,13 +241,51 @@ export class UploadFileComponent implements OnInit {
         panelClass: ['red-snackbar']
       });
     });
+  }
+
+  layoutStatusDC(obj:any, layoutDC:any){
+    const {serviceRequest_Id, document_Id} = obj;
+    const{accepted_Layout, notAccepted_Layout} = layoutDC;
+    console.log(layoutDC);
     
+    this.userId = localStorage.getItem('User_Id');
+    let lyState = {
+      serviceRequest_Id: serviceRequest_Id,
+      Document_Id: document_Id,
+      User_Logged: this.userId,
+      Accepted_LayoutDC: accepted_Layout,
+      NotAccepted_LayoutDC : notAccepted_Layout
+    }
+    axios.put(`${environment.API_URL}`+ "ServiceRequests/LayoutStatusDC",lyState).then(data => {
+      if(data.data.state === 0){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['green-snackbar']
+        });
+        this.dialogRef.close(); 
+      }
+      else if(data.data.state === 1){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+    }
+    }).catch(error => {
+      this._snackBar.open(error,'',{
+        duration:5000,
+        horizontalPosition:'right',
+        verticalPosition:'top',
+        panelClass: ['red-snackbar']
+      });
+    });
   }
 
   setCartaPorte(obj: any) {
     obj.type = 'new';
-    //console.log(obj);
-    
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '25%';
     dialogConfig.maxWidth = '70vw';

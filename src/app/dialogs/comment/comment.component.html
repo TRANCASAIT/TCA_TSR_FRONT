@@ -1,10 +1,16 @@
 <div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
-
+        <h1 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Comentarios</h1> 
+        <mat-list>
+                <mat-list-item *ngFor="let comment of commentsList">
+                        <div mat-line>{{comment.comment_Body}}</div>
+                        <div mat-line>Enviado por: {{comment.userName}}</div>
+                        <div mat-line>{{comment.creation_Date}}</div>
+                        <mat-divider></mat-divider>
+                </mat-list-item>
+        </mat-list>
     <form fxLayout="row wrap" fxFlex="100" [formGroup]="commentForm">
             <div fxFlex.gt-sm="100"  fxFlex="100" class=" danger">
                     <div fxLayout="row wrap " fxLayoutAlign="space-between stretch" class="p-30">
-                        <!-- <h3 fxFlex="100" class="text-bold text-center m-b-20 m-t-0">Numero de Carta Porte</h3> -->
-                        <mat-card-title class="text-bold text-center m-b-20 m-t-0" class="warn">Comentarios</mat-card-title>
                                 <input matInput formControlName="serviceRequest_Id"
                                         [errorStateMatcher]="matcher" hidden>
                                 <input matInput formControlName="documentId"

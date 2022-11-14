@@ -47,9 +47,7 @@ export class CiudadesComponent implements OnInit {
           horizontalPosition:'right',
           verticalPosition:'top',
           panelClass: ['red-snackbar']
-        });
-        console.log(res);
-        
+        });        
       }else{
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;

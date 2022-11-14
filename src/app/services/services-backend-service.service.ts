@@ -54,6 +54,10 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Customers/GetCustomers`);
   }
 
+  getCustomersActive(): any {
+    return this.http.get(`${this._URL}/Customers/GetCustomersActive`);
+  }
+
   getUsers(): any {
     return this.http.get(`${this._URL}/Users/GetUsers`);
   }
@@ -64,6 +68,10 @@ export class ServicesBackendService {
 
   getServiceRequestsDocuments(elem:any): any {
     return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequestsFull/${elem}`);
+  }
+
+  getComments(elem:any):any{
+    return this.http.get(`${this._URL}/ServiceRequests/GetComments/${elem}`);
   }
 
     ////////////////////////////////INSERT INFORMATION API ///////////////////////////////////

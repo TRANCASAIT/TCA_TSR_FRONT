@@ -23,11 +23,11 @@ export class DeletesComponent implements OnInit {
   }
 
   delete( user: any){
-    
+    let userId = localStorage.getItem("User_Id");
     const tempData = {
       User_Id : user.user_Id,
       Status : user.status,
-      User_Logged : "1"
+      User_Logged : userId
 
     }
     this.backEndServices.UserPutState(tempData).subscribe((res: any) => {

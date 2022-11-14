@@ -3,7 +3,9 @@ import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
+import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -25,11 +27,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CommentComponent implements OnInit {
   comments:any;
-
+  commentsList:any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public comment :any,
     public dialogRef: MatDialogRef<CommentComponent>,
     private _snackBar: MatSnackBar,
+    private backEndServices : ServicesBackendService,
   ) { }
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
@@ -49,14 +52,17 @@ export class CommentComponent implements OnInit {
       serviceRequest_Id: serviceRequest_Id,
       documentId: document_Id
     });
+    this.setPagination(document_Id);
   }
 
   saveComment(){
     this.userId = localStorage.getItem('User_Id');
+
     let comment = {
       ServiceRequest_Id: this.formGroup.serviceRequest_Id.value,
       Document_Id: this.formGroup.documentId.value,
-      Consigment_Note: this.formGroup.comment.value,
+      Comment_Body: this.formGroup.comment.value,
+      User_Logged: this.userId
     }
 
     axios.post(`${environment.API_URL}`+ "ServiceRequests/sendComment",comment).then(data => {
@@ -68,6 +74,7 @@ export class CommentComponent implements OnInit {
           panelClass: ['green-snackbar']
         });
         this.dialogRef.close(); 
+        this.setPagination(comment.Document_Id);
       }
       else if(data.data.state === 1){
         this._snackBar.open(data.data.message,'',{
@@ -77,10 +84,7 @@ export class CommentComponent implements OnInit {
           panelClass: ['red-snackbar']
         });
     }
-    
     }).catch(error => {
-      console.log(error);
-      
       this._snackBar.open(error,'',{
         duration:5000,
         horizontalPosition:'right',
@@ -88,8 +92,21 @@ export class CommentComponent implements OnInit {
         panelClass: ['red-snackbar']
       });
     });
-    
-  
   }
 
+  setPagination(doc:any) {
+    this.userId = localStorage.getItem('userId');
+    this.backEndServices.getComments(doc).subscribe((res: any) => {
+      if(res.numberRecords === 0 ){
+        this._snackBar.open('No se encontraron registros','',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });        
+      }else{
+        this.commentsList = res;
+      }
+    });
+  }
 }

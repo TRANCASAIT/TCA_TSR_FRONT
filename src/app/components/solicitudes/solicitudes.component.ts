@@ -46,7 +46,9 @@ export class SolicitudesComponent implements OnInit {
   dataSource !: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
   dataObs$!: Observable<any>;
-
+  status:any;
+  operationTypes:any;
+  customers:any;
 
   selectFile(event: any, elem:any): void {
     this.selectedFiles = event.target.files;
@@ -83,16 +85,7 @@ export class SolicitudesComponent implements OnInit {
     }
   }
 
-  uploadFile(el:any, fileType:any){
-    console.log(el);
-    const { serviceRequest_Id, document_Id, stop_Number } = el;
-    console.log(serviceRequest_Id, document_Id, stop_Number);
-    
-    console.log(fileType);
-    
-  }
-
-  displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW',
+  displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW','estatus',
                                'upload','edit','delete'];
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   // dataSource = ELEMENT_DATA;
@@ -117,8 +110,11 @@ export class SolicitudesComponent implements OnInit {
     private _snackBar: MatSnackBar,
     ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(){
     this.setPagination();
+    this.getStatus();
+    this.getOperationTypes();
+    this.getCustomers();
   }
 
   uploadFileDialog(obj:any): void {
@@ -127,11 +123,8 @@ export class SolicitudesComponent implements OnInit {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = obj;
     obj.type = 'new';
-  
     dialogConfig.panelClass = '';
-  
     const dialogRef = this.dialog.open( UploadFileComponent  , dialogConfig);
-  
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
@@ -151,16 +144,13 @@ export class SolicitudesComponent implements OnInit {
     dialogConfig.width = '60%';
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = obj;
-  
     dialogConfig.panelClass = '';
-  
     const dialogRef = this.dialog.open( SolicitudComponent  , dialogConfig);
-  
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
   
   setPagination() {
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('User_Id');
     this.backEndServices.getServiceRequests().subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
@@ -178,12 +168,20 @@ export class SolicitudesComponent implements OnInit {
     });
   }
 
-  search(){
-    console.log('search');
+  async getStatus(){
+    await this.backEndServices.getStatuses().subscribe((res:any) => {this.status = res})
   }
 
-  add(){
-    console.log('add');
+  async getOperationTypes(){
+    await this.backEndServices.getOperationTypes().subscribe((res:any) => {this.operationTypes = res})
+  }
+
+  async getCustomers(){
+    await this.backEndServices.getCustomersActive().subscribe((res:any) => {this.customers = res})
+  }
+
+  search(){
+    console.log('search');
   }
 
   edit( _element: any ){
