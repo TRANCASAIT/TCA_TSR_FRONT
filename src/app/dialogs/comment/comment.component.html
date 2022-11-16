@@ -17,7 +17,7 @@
                                 [errorStateMatcher]="matcher" hidden>
                             <mat-form-field fxFlex.gt-xs="100" fxFlex="100">
                                     <input matInput placeholder="Escriba su comentario" formControlName="comment"
-                                            [errorStateMatcher]="matcher">
+                                            [errorStateMatcher]="matcher" autocomplete="off">
                                     <mat-error> Este campo es requerido </mat-error>
                             </mat-form-field>
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between end" class="p-t-30 m-auto">

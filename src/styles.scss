@@ -145,6 +145,9 @@ color: white;
   display: none;
 }
 
+.mat-list-base .mat-list-item .mat-line {
+  white-space: break-spaces;
+}
 .icon{
     user-select: none;
     background-repeat: no-repeat;
@@ -193,4 +196,29 @@ color: white;
     border-style: outset;
     border-color: buttonborder;
     border-image: initial;
+}
+
+.mat-cell-ope{
+  background-color: #ff0000 !important;
+  color: white !important;
+  text-align: center !important;
+  border-right: .1rem solid #000000;
+}
+
+.mat-cell-adm{
+  background-color: #ff6060 !important;
+  color: white !important;
+  text-align: center !important;
+  border-right: .1rem solid #000000;
+}
+
+.mat-cell-cte{
+  background-color: #aa0000 !important;
+  color: white !important;  
+  text-align: center !important;
+  border-right: .1rem solid #000000;
+}
+
+.center-cell{
+  text-align: center !important;
 }

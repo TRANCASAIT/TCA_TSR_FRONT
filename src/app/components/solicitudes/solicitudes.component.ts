@@ -11,6 +11,7 @@ import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.componen
 import { TmwOrderComponent } from 'src/app/dialogs/tmw-order/tmw-order.component';
 import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
+import { environment } from 'src/environments/environment';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -42,6 +43,9 @@ export class SolicitudesComponent implements OnInit {
   xml = false;
   oriPDF = false;
   opPDF = false;
+  rol2= environment.UserRoles.Rol2;
+  rol3= environment.UserRoles.Rol3;
+  userRole!: string|null;
 
   dataSource !: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
@@ -115,11 +119,12 @@ export class SolicitudesComponent implements OnInit {
     this.getStatus();
     this.getOperationTypes();
     this.getCustomers();
+    this.userRole = localStorage.getItem("ROLE");
   }
 
   uploadFileDialog(obj:any): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '80%';
+    dialogConfig.width = '85%';
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = obj;
     obj.type = 'new';
@@ -129,6 +134,7 @@ export class SolicitudesComponent implements OnInit {
   }
 
   setTMW(obj: any) {
+    if(this.userRole === this.rol2 || this.userRole === this.rol3){
     obj.type = 'new';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '25%';
@@ -137,6 +143,7 @@ export class SolicitudesComponent implements OnInit {
     dialogConfig.panelClass = '';
     const dialogRef = this.dialog.open( TmwOrderComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+  }
   }
 
   openDialog(obj:any): void {

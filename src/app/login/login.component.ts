@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import axios from 'axios';
@@ -14,7 +16,9 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
   form: FormGroup;
   loading: boolean = false;
-  
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  value = 50;
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,public authService: AuthService
     ) {
     this.form = this.fb.group({
@@ -86,22 +90,27 @@ export class LoginComponent implements OnInit {
       if(data.data.user_Id > 0 ){
         if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
           this.login(environment.UserRoles.Rol1,data.data.user_Id);
+          var el = document.getElementById("logSpinner");
+          el!.style.display ='contents';
         }
         else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type2){
           this.login(environment.UserRoles.Rol2,data.data.user_Id);
+          this.cargarSpinner();
         }
         else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type3){
           this.login(environment.UserRoles.Rol3,data.data.user_Id);
+          this.cargarSpinner();
         }
         else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type2){
           this.login(environment.UserRoles.Rol4,data.data.user_Id);
+          this.cargarSpinner();
         }
         else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type3){
           this.login(environment.UserRoles.Rol5,data.data.user_Id);
+          this.cargarSpinner();
         }
       }        
       }).catch(error => {
-        console.log(error);
         if(error.response.data.state === 1 ){
           console.log(error.response.data.message);
           this.errorMessage = true;
@@ -110,20 +119,9 @@ export class LoginComponent implements OnInit {
         }
       });
     
-
-
-
-    // if(this.email=="admin" && this.password=="admin"){
-    //     this._snackBar.open('Login Successful','',{duration:1000})
-    //     this.router.navigate(['navigation/solicitudes']);
-    // }else{
-    //   this._snackBar.open('Login error','',{duration:1000})
-    // }
-
-
-
-
-    
   }
-
+  cargarSpinner(){
+    var el = document.getElementById("logSpinner");
+    el!.style.display ='contents';
+  }
 }

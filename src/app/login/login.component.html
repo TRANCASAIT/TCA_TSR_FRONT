@@ -27,7 +27,18 @@
                     <!-- col full-->
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
                         <button type="submit" mat-raised-button class="ancho" color="warn" [disabled]="form.invalid">Ingresar</button>
+                        
                     </div>
+                    <div id="logSpinner" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center noDisplayed">
+                        <mat-progress-spinner
+                            class="text-right"
+                            [color]="color"
+                            [mode]="mode"
+                            [value]="value"
+                            [diameter]="20">
+                        </mat-progress-spinner>
+                    </div>
+                   
                     <div *ngIf="errorMessage === true" class="text-center" style="color:red;">{{mensajeError}}</div>
                 </div>
             </form>

@@ -33,7 +33,6 @@ export class TmwOrderComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public tmwOrder :any,
     public dialogRef: MatDialogRef<TmwOrderComponent>,
     private _snackBar: MatSnackBar,
-    private backEndServices : ServicesBackendService,
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -49,9 +48,10 @@ export class TmwOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.type = this.tmwOrder.type;
-    const {serviceRequest_Id } = this.tmwOrder;   
+    const {serviceRequest_Id, tmwOrder } = this.tmwOrder;   
     this.twmOrderForm.patchValue({
-      serviceRequestId : serviceRequest_Id
+      serviceRequestId : serviceRequest_Id,
+      tmwOrder: tmwOrder
     });
   }
 

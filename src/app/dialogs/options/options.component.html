@@ -1,0 +1,34 @@
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h3 mat-dialog-title class="text-center">Opciones</h3>
+          <mat-card>
+                  <mat-card-content>
+                      <div class="example-table-container">
+                          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+                          matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+                          
+                          <ng-container matColumnDef="descargar">
+                            <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Descargar </th>
+                            <td class="center-cell" mat-cell *matCellDef="let element"> 
+                                <mat-icon (click)="downloadFile( element.url,element.fileName, element.serviceRequest_Id, element.documentType)" class="icon">file_download</mat-icon>
+                            </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="remover">
+                            <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Remover </th>
+                            <td class="center-cell" mat-cell *matCellDef="let element"> 
+                                <mat-icon (click)="removeFile(element.sr, element.document_Id, element.documentType, element.url, element.fileName, element.status_Id)" class="icon">remove</mat-icon>
+                            </td>
+                          </ng-container>
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
+                    </div>
+                    <mat-paginator
+                      [pageSizeOptions]="[5]"
+                      [pageSize]="5"
+                    ></mat-paginator>
+                  </mat-card-content>        
+          </mat-card>
+    </div>
+  </div>

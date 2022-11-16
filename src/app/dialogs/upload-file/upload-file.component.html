@@ -1,136 +1,122 @@
 <div fxLayout="row wrap">
-    <h1>Solicitudes de servicio de transporte</h1>
+    <h1>Solicitud de servicio: {{solicitudFolio}}</h1>
 
     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
           <mat-card>
                   <mat-card-content>
                       <div class="example-table-container">
-                          <table mat-table [dataSource]="dataSource" class="example-table"
+                          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
                           matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
 
-                            <ng-container matColumnDef="stop" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Parada </th>
-                              <td mat-cell *matCellDef="let element"> {{element.stop_Id}} </td>
+                            <ng-container matColumnDef="stop">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Parada </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> {{element.stop_Id}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="estatus" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Estatus </th>
-                              <td mat-cell *matCellDef="let element"> {{element.status_Description}} </td>
+                            <ng-container matColumnDef="estatus">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Estatus </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> {{element.status_Description}} </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="factMX" sticky> 
-                              <th mat-header-cell *matHeaderCellDef>Factura MX</th>
-                              <td mat-cell *matCellDef="let element">
+                            <ng-container matColumnDef="factMX"> 
+                              <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef>Factura MX</th>
+                              <td class="center-cell" mat-cell *matCellDef="let element">
                                   <button class="btnBgPdf">
-                                    <input *ngIf="element.notAccepted_LayoutDC === false" id="facMx{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                    <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="facMx{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                   </button>
                                   <button id="btnFacMX{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 1)">
                                     <mat-icon class="icon">publish</mat-icon>
                                   </button>
-                                  <button *ngIf="element.invoiceMXCompleted === true" id="btnFacMX{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.invoiceMX, element.invMXFN, element.serviceRequest_Id)">
-                                    <mat-icon class="icon">file_download</mat-icon>
-                                  </button>
-                                  <button *ngIf="element.invoiceMXCompleted === true" id="btnFacMX{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 1, element.invoiceMX, element.invMXFN)">
-                                    <mat-icon class="icon">remove</mat-icon>
-                                  </button>
+                                  <mat-icon *ngIf="element.invoiceMXCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 1)">
+                                    more_vert
+                                  </mat-icon>
                                 </td> 
                             </ng-container>
                             
-                            <ng-container matColumnDef="factUS" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Factura USA </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="factUS">
+                              <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef> Factura USA </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button class="btnBgPdf">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false" id="facUsa{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="facUsa{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button id="btnFacUSA{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 2)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.invoiceUSACompleted === true" id="btnFacUSA{{element.document_Id}}"  class="btnIcon" color="primary" (click)="downloadFile(element.invoiceUSA, element.invUSAFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.invoiceUSACompleted === true" id="btnFacUSA{{element.document_Id}}"  class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 2, element.invoiceUSA, element.invUSAFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                <mat-icon *ngIf="element.invoiceUSACompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 2)">
+                                  more_vert
+                                </mat-icon>
                               </td> 
                             </ng-container>
                             
-                            <ng-container matColumnDef="BOL" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Bill of Lading </th>
-                              <td mat-cell *matCellDef="let element"> <button class="btnBgPdf">
-                                <input *ngIf="element.notAccepted_LayoutDC === false" id="bol{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                            <ng-container matColumnDef="BOL">
+                              <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef> Bill of Lading </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> <button class="btnBgPdf">
+                                <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="bol{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                               </button>
                               <button id="btnBol{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 3)">
                                 <mat-icon class="icon">publish</mat-icon>
                               </button>
-                              <button *ngIf="element.bolCompleted === true" id="btnBol{{element.document_Id}}"  class="btnIcon" color="primary" (click)="downloadFile(element.bol, element.bolFN, element.serviceRequest_Id)">
-                                <mat-icon class="icon">file_download</mat-icon>
-                              </button>
-                              <button *ngIf="element.bolCompleted === true" id="btnBol{{element.document_Id}}"  class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 3, element.bol, element.bolFN)">
-                                <mat-icon class="icon">remove</mat-icon>
-                              </button>
+                              <mat-icon *ngIf="element.bolCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 3)">
+                                  more_vert
+                              </mat-icon>
                              </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="InwardManif" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Inward / Manifest </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="InwardManif">
+                              <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef> Inward / Manifest </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button class="btnBgPdf">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false" id="inwd{{element.document_Id}}"  type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="inwd{{element.document_Id}}"  type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button id="btnInwd{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 4)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.inwardCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.inward, element.inwFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.inwardCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 4, element.inward, element.inwFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                <mat-icon *ngIf="element.inwardCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 4)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="ACE" sticky>
-                              <th mat-header-cell *matHeaderCellDef> ACE </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="ACE">
+                              <th class="mat-cell-ope" mat-header-cell *matHeaderCellDef> ACE </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button class="btnBgPdf">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false && userRole === 'AdministrativoA' || userRole ==='AdministrativoB'" id="ace{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol2 || userRole === rol3) && (element.status_Id<5)" id="ace{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button id="btnAce{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 5)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <div *ngIf="userRole === 'AdministrativoA' || userRole ==='AdministrativoB'">
-                                  <button *ngIf="element.aceCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.ace, element.aceFN, element.serviceRequest_Id)">
-                                    <mat-icon class="icon">file_download</mat-icon>
-                                  </button>
-                                  <button *ngIf="element.aceCompleted === true" id="btnInwd{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 5, element.ace, element.aceFN)">
-                                    <mat-icon class="icon">remove</mat-icon>
-                                  </button>
-                                </div>
+                                <mat-icon *ngIf="element.aceCompleted === true && (userRole === rol4 || userRole === rol3 || userRole === rol2)" class="icon" (click)="openOptions(element, 5)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="layout" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Layout </th>
-                              <td mat-cell *matCellDef="let element">
+                            <ng-container matColumnDef="layout">
+                              <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef> Layout </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element">
                                 <button class="btnBgXlsx">
-                                  <input  *ngIf="element.layoutCompleted === false && element.notAccepted_LayoutDC === false" id="layout{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input  *ngIf="element.layoutCompleted === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="layout{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button *ngIf="element.layoutCompleted === false" id="btnLayout{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 6)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.layoutCompleted === true" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.layout, element.layoutFN, element.serviceRequest_Id)">
+                                <!-- <button *ngIf="element.layoutCompleted === true" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.layout, element.layoutFN, element.serviceRequest_Id)">
                                   <mat-icon class="icon">file_download</mat-icon>
                                 </button>
                                 <button *ngIf="element.layoutCompleted === true && element.accepted_LayoutDC === false" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 6, element.layout, element.layoutFN)">
                                   <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                </button> -->
+                                <mat-icon *ngIf="element.layoutCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 6)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="layoutAcep" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Layout Aceptado</th>
-                              <td mat-cell *matCellDef="let element" >
-                                <div *ngIf="element.layoutCompleted=== true && element.accepted_LayoutDC === false && element.notAccepted_LayoutDC === false && userRole === 'AdministrativoA' || userRole ==='AdministrativoB'">
+                            <ng-container matColumnDef="layoutAcep">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Layout Aceptado</th>
+                              <td class="center-cell" mat-cell *matCellDef="let element" >
+                                <div *ngIf="element.layoutCompleted=== true && (element.accepted_LayoutDC === false) && (element.notAccepted_LayoutDC === false) && (userRole === rol2)">
                                   <button  class="btnIcon" color="primary" (click)="layoutStatusDC(element, ({accepted_Layout: true, notAccepted_Layout:false}))">
                                     <mat-icon class="icon">check_circle</mat-icon>
                                   </button>
@@ -144,74 +130,65 @@
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="NumCartPorte" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Núm. Carta Porte </th>
-                              <td mat-cell *matCellDef="let element" (click)="setCartaPorte(element)"> {{element.consigment_Note}} </td>
+                            <ng-container matColumnDef="NumCartPorte">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Núm. Carta Porte </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element" (click)="setCartaPorte(element, userRole)"> {{element.consigment_Note}} </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="XML" sticky>
-                              <th mat-header-cell *matHeaderCellDef> XML </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="XML">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> XML </th>
+                              <td class="center-cell" class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button class="btnBgXml">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false" id="xml{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"  accept="text/xml"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol2) && (element.status_Id<5)" id="xml{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"  accept="text/xml"/>
                                 </button>
                                 <button id="btnXml{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 7)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.xmlCompleted === true" id="btnXml{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.xml, element.xmlFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.xmlCompleted === true" id="btnXml{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 7, element.xml, element.xmlFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                <mat-icon *ngIf="element.xmlCompleted === true && (userRole === rol4 || userRole === rol2)" class="icon" (click)="openOptions(element, 7)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="PDFOrig" sticky>
-                              <th mat-header-cell *matHeaderCellDef> PDF Original </th>
-                              <td mat-cell *matCellDef="let element">
+                            <ng-container matColumnDef="PDFOrig">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> PDF Original </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element">
                                 <button class="btnBgPdf">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false" id="oriPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol2) && (element.status_Id<5)" id="oriPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button id="btnOriPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element,8)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.originalPDFCompleted === true" id="btnOriPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.originalPDF, element.oPdfFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.originalPDFCompleted === true" id="btnOriPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 8, element.originalPDF, element.oPdfFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                <mat-icon *ngIf="element.originalPDFCompleted === true && (userRole === rol4 || userRole === rol2)" class="icon" (click)="openOptions(element, 7)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="PDFOper" sticky>
-                              <th mat-header-cell *matHeaderCellDef> PDF operacional </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="PDFOper">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> PDF operacional </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button class="btnBgPdf">
-                                  <input *ngIf="element.notAccepted_LayoutDC === false" id="opPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input *ngIf="element.notAccepted_LayoutDC === false && (userRole === rol2) && (element.status_Id<5)" id="opPDF{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button id="btnOpPDF{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 9)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <button *ngIf="element.operationsPDFCompleted === true" id="btnOpPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.operationsPDF, element.opPdfFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.operationsPDFCompleted === true" id="btnOpPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 9, element.operationsPDF, element.opPdfFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button>
+                                <mat-icon *ngIf="element.operationsPDFCompleted === true && (userRole === rol4 || userRole === rol2)" class="icon" (click)="openOptions(element, 9)">
+                                  more_vert
+                                </mat-icon>
                               </td>
                             </ng-container>
                             
-                            <ng-container matColumnDef="comentarios" sticky>
-                              <th mat-header-cell *matHeaderCellDef> Comentarios </th>
-                              <td mat-cell *matCellDef="let element"> 
+                            <ng-container matColumnDef="comentarios">
+                              <th class="mat-cell-adm" mat-header-cell *matHeaderCellDef> Comentarios </th>
+                              <td class="center-cell" mat-cell *matCellDef="let element"> 
                                 <button  id="btnOpPDF{{element.document_Id}}" class="btnIcon" color="primary" (click)="openComments(element)">
                                   <mat-icon class="icon">chat</mat-icon>
                                 </button>
                               </td>
                             </ng-container>                            
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           </table>
                       </div>

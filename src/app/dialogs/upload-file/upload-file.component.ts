@@ -13,6 +13,7 @@ import axios from 'axios';
 import { NumeroCporteComponent } from '../numero-cporte/numero-cporte.component';
 import { environment } from 'src/environments/environment';
 import { CommentComponent } from '../comment/comment.component';
+import { OptionsComponent } from '../options/options.component';
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,7 +47,12 @@ export class UploadFileComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
   dataObs$!: Observable<any>;
   fileInfos?: Observable<any>;
-
+  rol1= environment.UserRoles.Rol1;
+  rol2= environment.UserRoles.Rol2;
+  rol3= environment.UserRoles.Rol3;
+  rol4= environment.UserRoles.Rol4;
+  rol5=environment.UserRoles.Rol5;
+  solicitudFolio: number = 0;
   selectFile(event: any, elem:any): void {
     this.selectedFiles = event.target.files;
     var target = event.target || event.srcElement || event.currentTarget;
@@ -84,8 +90,6 @@ export class UploadFileComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['stop','estatus','factMX','factUS','BOL','InwardManif','ACE','layout','layoutAcep','NumCartPorte','XML','PDFOrig','PDFOper','comentarios'];
-
-
   range = new FormGroup({
   start: new FormControl<Date | null>(null),
   end: new FormControl<Date | null>(null),
@@ -168,6 +172,7 @@ export class UploadFileComponent implements OnInit {
         });
       }
       else{
+        this.solicitudFolio = res[0].invoiceNumber;
         this.dataSource = new MatTableDataSource<any>(res);
         this.dataSource.paginator = this.paginator;
         this.dataSource.data.length = res.length;
@@ -284,14 +289,29 @@ export class UploadFileComponent implements OnInit {
     });
   }
 
-  setCartaPorte(obj: any) {
+  setCartaPorte(obj: any, userRole: any) {
+    if(userRole === this.rol2)
+    {
+      obj.type = 'new';
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '25%';
+      dialogConfig.maxWidth = '70vw';
+      dialogConfig.data = obj;
+      dialogConfig.panelClass = '';
+      const dialogRef = this.dialog.open( NumeroCporteComponent  , dialogConfig);
+      dialogRef.afterClosed().toPromise().then(() => this.setPagination(obj.serviceRequest_Id));
+    }
+  }
+
+  openOptions(obj: any, docNumber: number) {
+    obj.typeNumber = docNumber;
     obj.type = 'new';
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '25%';
-    dialogConfig.maxWidth = '70vw';
+    dialogConfig.width = '20%';
+    dialogConfig.maxWidth = '50vw';
     dialogConfig.data = obj;
     dialogConfig.panelClass = '';
-    const dialogRef = this.dialog.open( NumeroCporteComponent  , dialogConfig);
+    const dialogRef = this.dialog.open( OptionsComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination(obj.serviceRequest_Id));
   }
 }

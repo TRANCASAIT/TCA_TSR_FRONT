@@ -47,10 +47,12 @@ export class NumeroCporteComponent implements OnInit {
 
   ngOnInit(): void {
     this.type = this.consigmentNumber.type;
-    const {serviceRequest_Id, document_Id, stop_Id} = this.consigmentNumber;
+    const {serviceRequest_Id, document_Id, stop_Id, consigment_Note} = this.consigmentNumber;
+    
     this.cPorteForm.patchValue({
       serviceRequestId: serviceRequest_Id,
-      documentId: document_Id
+      documentId: document_Id,
+      cPorteNumber: consigment_Note
     });
     this.solicitudServicio= serviceRequest_Id;
     this.parada = stop_Id;

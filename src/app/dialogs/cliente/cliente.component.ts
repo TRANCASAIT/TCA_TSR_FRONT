@@ -58,11 +58,9 @@ export class ClienteComponent implements OnInit {
   
   async ngOnInit() {
     this.type = this.customer.type;
-    console.log(this.type);
-    
     if(this.type === 'edit'){
       const {customer_Id, name, rfc, street, streetExt, streetInt, zipCode, suburb, city_Id, state_Id, phoneNumber, 
-        email} = this.customer.customer;        
+        email} = this.customer.customer;
       this.customerForm.patchValue({
         customerId: customer_Id,
         name: name,
