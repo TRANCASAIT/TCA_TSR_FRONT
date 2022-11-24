@@ -4,7 +4,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
-import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -20,49 +19,45 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     );
   }
 }
-
 @Component({
-  selector: 'app-tmw-order',
-  templateUrl: './tmw-order.component.html',
-  styleUrls: ['./tmw-order.component.scss']
+  selector: 'app-box-number',
+  templateUrl: './box-number.component.html',
+  styleUrls: ['./box-number.component.scss']
 })
-export class TmwOrderComponent implements OnInit {
-
-  tmwOrders: any;
+export class BoxNumberComponent implements OnInit {
+  boxNumbers: any;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public tmwOrder :any,
-    public dialogRef: MatDialogRef<TmwOrderComponent>,
+    @Inject(MAT_DIALOG_DATA) public boxNumber :any,
+    public dialogRef: MatDialogRef<BoxNumberComponent>,
     private _snackBar: MatSnackBar,
   ) { }
 
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
-  twmOrderForm = new FormGroup({
+  boxNumberForm = new FormGroup({
     serviceRequestId: new FormControl({value: 0, disabled: true}),
-    tmwOrder : new FormControl('', [Validators.required]),
+    boxNumber : new FormControl('', [Validators.required]),
   });
-
   userId!: string|null;
   show:boolean = false;
-  get formGroup() { return this.twmOrderForm.controls; }
+  get formGroup() { return this.boxNumberForm.controls; }
 
   ngOnInit(): void {
-    this.type = this.tmwOrder.type;
-    const {serviceRequest_Id, tmwOrder } = this.tmwOrder;   
-    this.twmOrderForm.patchValue({
+    const {serviceRequest_Id, box_Number } = this.boxNumber;
+    this.boxNumberForm.patchValue({
       serviceRequestId : serviceRequest_Id,
-      tmwOrder: tmwOrder
+      boxNumber: box_Number
     });
   }
 
-  setTMW(): void {
+  updateBoxNumber(): void {
     this.userId = localStorage.getItem('User_Id');
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
-      TMWOrder: this.formGroup.tmwOrder.value,
+      Box_Number: this.formGroup.boxNumber.value,
       User_Logged: this.userId
     }
-    axios.post(`${environment.API_URL}`+ "ServiceRequests/setTMWOrder",sr).then(data => {
+    axios.put(`${environment.API_URL}`+ "ServiceRequests/UpdateBoxNumber",sr).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,

@@ -49,6 +49,8 @@ import { TmwOrderComponent } from './dialogs/tmw-order/tmw-order.component';
 import { NumeroCporteComponent } from './dialogs/numero-cporte/numero-cporte.component';
 import { CommentComponent } from './dialogs/comment/comment.component';
 import { OptionsComponent } from './dialogs/options/options.component';
+import { BoxNumberComponent } from './dialogs/box-number/box-number.component';
+import { OperationTypeComponent } from './dialogs/operation-type/operation-type.component';
 
 
 
@@ -84,7 +86,9 @@ import { OptionsComponent } from './dialogs/options/options.component';
     TmwOrderComponent,
     NumeroCporteComponent,
     CommentComponent,
-    OptionsComponent
+    OptionsComponent,
+    BoxNumberComponent,
+    OperationTypeComponent
 
 
   ],

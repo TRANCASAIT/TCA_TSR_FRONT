@@ -314,4 +314,7 @@ export class UploadFileComponent implements OnInit {
     const dialogRef = this.dialog.open( OptionsComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination(obj.serviceRequest_Id));
   }
+
+  
+
 }

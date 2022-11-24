@@ -6,7 +6,9 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import axios from 'axios';
 import { Observable } from 'rxjs';
+import { BoxNumberComponent } from 'src/app/dialogs/box-number/box-number.component';
 import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.component';
 import { TmwOrderComponent } from 'src/app/dialogs/tmw-order/tmw-order.component';
 import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
@@ -45,6 +47,7 @@ export class SolicitudesComponent implements OnInit {
   opPDF = false;
   rol2= environment.UserRoles.Rol2;
   rol3= environment.UserRoles.Rol3;
+  rol4= environment.UserRoles.Rol4;
   userRole!: string|null;
 
   dataSource !: MatTableDataSource<any>;
@@ -90,7 +93,7 @@ export class SolicitudesComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW','estatus',
-                               'upload','edit','delete'];
+                               'upload','delete'];
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   // dataSource = ELEMENT_DATA;
 
@@ -134,17 +137,30 @@ export class SolicitudesComponent implements OnInit {
   }
 
   setTMW(obj: any) {
-    if(this.userRole === this.rol2 || this.userRole === this.rol3){
+      if(this.userRole === this.rol2 || this.userRole === this.rol3){
+      obj.type = 'new';
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '25%';
+      dialogConfig.maxWidth = '70vw';
+      dialogConfig.data = obj;
+      dialogConfig.panelClass = '';
+      const dialogRef = this.dialog.open( TmwOrderComponent  , dialogConfig);
+      dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+    }
+  }
+
+  boxNumber(obj: any) {
+    if((this.userRole === this.rol2 || this.userRole === this.rol4) && (obj.status_Id != 5)){
     obj.type = 'new';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '25%';
     dialogConfig.maxWidth = '70vw';
     dialogConfig.data = obj;
     dialogConfig.panelClass = '';
-    const dialogRef = this.dialog.open( TmwOrderComponent  , dialogConfig);
+    const dialogRef = this.dialog.open( BoxNumberComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
-  }
+}
 
   openDialog(obj:any): void {
     const dialogConfig = new MatDialogConfig();
@@ -187,6 +203,88 @@ export class SolicitudesComponent implements OnInit {
     await this.backEndServices.getCustomersActive().subscribe((res:any) => {this.customers = res})
   }
 
+  removeService(sr:number, status: number){
+    if((this.userRole === this.rol2 || this.userRole === this.rol4) && (status != 5)){
+      axios.put(`${environment.API_URL}`+ `ServiceRequests/RemoveServiceRequest/${sr}`).then(data=> {
+        if(data.data.state === 0){
+          this._snackBar.open(data.data.message,'',{
+            duration:5000,
+            horizontalPosition:'right',
+            verticalPosition:'top',
+            panelClass: ['green-snackbar']
+          });
+          this.setPagination();
+        }
+        else if(data.data.state === 1){
+          this._snackBar.open(data.data.message,'',{
+            duration:5000,
+            horizontalPosition:'right',
+            verticalPosition:'top',
+            panelClass: ['red-snackbar']
+          });
+        }
+      }).catch(error => {
+        this._snackBar.open(error,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+      });
+    }else{
+      this._snackBar.open('No puede realizar esta accion','',{
+        duration:5000,
+        horizontalPosition:'right',
+        verticalPosition:'top',
+        panelClass: ['red-snackbar']
+      });
+    }
+  }
+
+  changePriority(sr:number, priority:boolean, status:number){
+    if((this.userRole === this.rol2 || this.userRole === this.rol4) && (status != 5)){
+      this.userId = localStorage.getItem('User_Id');
+      let Service = {
+        ServiceRequest_Id: sr,
+        Priority: priority,
+        User_Logged: this.userId
+      }
+      axios.put(`${environment.API_URL}`+ `ServiceRequests/PrioritizeRequest`, Service).then(data=> {
+        if(data.data.state === 0){
+          this._snackBar.open(data.data.message,'',{
+            duration:5000,
+            horizontalPosition:'right',
+            verticalPosition:'top',
+            panelClass: ['green-snackbar']
+          });
+          this.setPagination();
+        }
+        else if(data.data.state === 1){
+          this._snackBar.open(data.data.message,'',{
+            duration:5000,
+            horizontalPosition:'right',
+            verticalPosition:'top',
+            panelClass: ['red-snackbar']
+          });
+        }
+      }).catch(error => {
+        this._snackBar.open(error,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+      });
+    }else{
+      this._snackBar.open('No puede realizar esta accion','',{
+        duration:5000,
+        horizontalPosition:'right',
+        verticalPosition:'top',
+        panelClass: ['red-snackbar']
+      });
+    }
+  }
+
   search(){
     console.log('search');
   }
@@ -195,13 +293,6 @@ export class SolicitudesComponent implements OnInit {
     console.log('update', _element);
   }
 
-  delete( _folio: number ){
-    console.log('delete', _folio);
-  }
-
-  pdfclick( _id: any ){
-
-  }
 
 
 }
