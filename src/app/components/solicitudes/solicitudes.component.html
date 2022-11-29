@@ -95,12 +95,12 @@
 
                             <ng-container matColumnDef="numCaja">
                               <th mat-header-cell *matHeaderCellDef> Núm. Caja </th>
-                              <td mat-cell *matCellDef="let element" matTooltip="Agregar Numero de Caja" (click)="boxNumber(element)"> {{element.box_Number}} </td>
+                              <td mat-cell *matCellDef="let element" matTooltip="Editar Numero de Caja" (click)="boxNumber(element)"> {{element.box_Number}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="tipoOp">
                               <th mat-header-cell *matHeaderCellDef> Núm. tipoOp </th>
-                              <td mat-cell *matCellDef="let element"> {{element.operationType_Name}} </td>
+                              <td mat-cell *matCellDef="let element" matTooltip="Editar tipo de operación" (click)="changeOperationType(element)"> {{element.operationType_Name}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="stops">

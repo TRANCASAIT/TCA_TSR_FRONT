@@ -25,12 +25,16 @@ export class AuthService {
   logout() {
     this.isLogin = false;
     this.roleAs = '';
-    localStorage.setItem('STATE', 'false');
-    localStorage.setItem('ROLE', '');
-    localStorage.setItem('userTypeName', '');
+    
     let userId = localStorage.getItem('User_Id');   
-    axios.post(`${environment.API_URL}Users/LogOut/${userId}`);
-    localStorage.setItem('User_Id','');
+    axios.post(`${environment.API_URL}Users/LogOut/${userId}`).then( data =>{
+      localStorage.setItem('STATE', 'false');
+      localStorage.setItem('ROLE', '');
+      localStorage.setItem('userTypeName', '');
+      localStorage.setItem('User_Id','');
+    }).catch(error=>{
+      
+    })
     return of({ success: this.isLogin, role: '' });
   }
 

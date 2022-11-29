@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
 import { Observable } from 'rxjs';
 import { BoxNumberComponent } from 'src/app/dialogs/box-number/box-number.component';
+import { OperationTypeComponent } from 'src/app/dialogs/operation-type/operation-type.component';
 import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.component';
 import { TmwOrderComponent } from 'src/app/dialogs/tmw-order/tmw-order.component';
 import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
@@ -48,6 +49,7 @@ export class SolicitudesComponent implements OnInit {
   rol2= environment.UserRoles.Rol2;
   rol3= environment.UserRoles.Rol3;
   rol4= environment.UserRoles.Rol4;
+  rol5= environment.UserRoles.Rol5;
   userRole!: string|null;
 
   dataSource !: MatTableDataSource<any>;
@@ -57,40 +59,40 @@ export class SolicitudesComponent implements OnInit {
   operationTypes:any;
   customers:any;
 
-  selectFile(event: any, elem:any): void {
-    this.selectedFiles = event.target.files;
-    var target = event.target || event.srcElement || event.currentTarget;
-    var idAttr = target.attributes.id;
-    var value = idAttr.nodeValue;
-    if(value === "facMx" + elem){
-      var el = document.getElementById("btnFacMX" + elem);
-      el!.style.display ='contents';
-    }else if(value === "facUsa" + elem){      
-      var el = document.getElementById("btnFacUSA" + elem);
-      el!.style.display ='contents';
-    }else if(value === "bol"+ elem){
-      var el = document.getElementById("btnBol" + elem);
-      el!.style.display ='contents';
-    }else if(value === "inwd"+ elem){
-      var el = document.getElementById("btnInwd" + elem);
-            el!.style.display ='contents';
-    }else if(value === "ace"+ elem){
-      var el = document.getElementById("btnAce" + elem);
-            el!.style.display ='contents';
-    }else if(value === "layout"+ elem){
-      var el = document.getElementById("btnLayout" + elem);
-            el!.style.display ='contents';
-    }else if(value === "xml"+ elem){
-      var el = document.getElementById("btnXml" + elem);
-            el!.style.display ='contents';
-    }else if(value === "oriPDF"+ elem){
-      var el = document.getElementById("btnOriPDF" + elem);
-            el!.style.display ='contents';
-    }else if(value === "opPDF"+ elem){
-      var el = document.getElementById("btnOpPDF" + elem);
-            el!.style.display ='contents';
-    }
-  }
+  // selectFile(event: any, elem:any): void {
+  //   this.selectedFiles = event.target.files;
+  //   var target = event.target || event.srcElement || event.currentTarget;
+  //   var idAttr = target.attributes.id;
+  //   var value = idAttr.nodeValue;
+  //   if(value === "facMx" + elem){
+  //     var el = document.getElementById("btnFacMX" + elem);
+  //     el!.style.display ='contents';
+  //   }else if(value === "facUsa" + elem){      
+  //     var el = document.getElementById("btnFacUSA" + elem);
+  //     el!.style.display ='contents';
+  //   }else if(value === "bol"+ elem){
+  //     var el = document.getElementById("btnBol" + elem);
+  //     el!.style.display ='contents';
+  //   }else if(value === "inwd"+ elem){
+  //     var el = document.getElementById("btnInwd" + elem);
+  //           el!.style.display ='contents';
+  //   }else if(value === "ace"+ elem){
+  //     var el = document.getElementById("btnAce" + elem);
+  //           el!.style.display ='contents';
+  //   }else if(value === "layout"+ elem){
+  //     var el = document.getElementById("btnLayout" + elem);
+  //           el!.style.display ='contents';
+  //   }else if(value === "xml"+ elem){
+  //     var el = document.getElementById("btnXml" + elem);
+  //           el!.style.display ='contents';
+  //   }else if(value === "oriPDF"+ elem){
+  //     var el = document.getElementById("btnOriPDF" + elem);
+  //           el!.style.display ='contents';
+  //   }else if(value === "opPDF"+ elem){
+  //     var el = document.getElementById("btnOpPDF" + elem);
+  //           el!.style.display ='contents';
+  //   }
+  // }
 
   displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW','estatus',
                                'upload','delete'];
@@ -150,7 +152,7 @@ export class SolicitudesComponent implements OnInit {
   }
 
   boxNumber(obj: any) {
-    if((this.userRole === this.rol2 || this.userRole === this.rol4) && (obj.status_Id != 5)){
+    if((this.userRole === this.rol4 || this.userRole === this.rol5) && (obj.status_Id != 5)){
     obj.type = 'new';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '25%';
@@ -282,6 +284,19 @@ export class SolicitudesComponent implements OnInit {
         verticalPosition:'top',
         panelClass: ['red-snackbar']
       });
+    }
+  }
+
+  changeOperationType(obj:any){
+    if((this.userRole === this.rol4 || this.userRole === this.rol5) && (obj.status_Id < 2)){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '40%';
+      obj.type = 'edit';
+      dialogConfig.maxWidth = '50vw';
+      dialogConfig.data = obj;
+      dialogConfig.panelClass = '';
+      const dialogRef = this.dialog.open( OperationTypeComponent  , dialogConfig);
+      dialogRef.afterClosed().toPromise().then(() => this.setPagination());
     }
   }
 

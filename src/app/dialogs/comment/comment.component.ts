@@ -98,7 +98,7 @@ export class CommentComponent implements OnInit {
     this.userId = localStorage.getItem('userId');
     this.backEndServices.getComments(doc).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
-        this._snackBar.open('No se encontraron registros','',{
+        this._snackBar.open('Sin comentarios registrados','',{
           duration:5000,
           horizontalPosition:'right',
           verticalPosition:'top',
