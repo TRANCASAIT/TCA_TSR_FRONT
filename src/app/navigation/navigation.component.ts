@@ -15,7 +15,7 @@ export class NavigationComponent implements OnDestroy{
   mobileQuery: MediaQueryList;
   _userType = localStorage.getItem("ROLE");
   menu: menu[] = [];
-
+  userActive!:string|null;
   _mobileQueryListener: () => void;
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: Router, private _menuService: MenuService, public authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 800px)');

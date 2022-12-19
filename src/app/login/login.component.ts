@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
    }
-
+   UserActive!:string|null;
    @Input() usuario:any;
    UserName: string = "";
    User_Password: string = "";

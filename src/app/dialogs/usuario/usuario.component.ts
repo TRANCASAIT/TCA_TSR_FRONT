@@ -6,6 +6,7 @@ import { MatSelect } from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
+import { environment } from 'src/environments/environment';
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {
@@ -73,6 +74,7 @@ export class UsuarioComponent implements OnInit {
   disabledEmail = true;
   submitted = false;
   userId!: string|null;
+  userRole!:string|null;
   userTypeAuthorized = false;
   formNewUser: FormGroup = new FormGroup(
     {
@@ -91,13 +93,11 @@ export class UsuarioComponent implements OnInit {
  async  ngOnInit() {
 
   await this.getCustomers();
-
     this.userId = localStorage.getItem('User_Id');
     this.type = this.newUser.type;
-
     if (this.type === 'edit') {
       const {  userName, userType_Id, name,
-        email, user_Id,  last_Name, user_Name, user_Number } = this.newUser.usuario;
+        email, user_Id,  last_Name, user_Name, user_Number, customer_Id } = this.newUser.usuario;
         this.formNewUser.controls['userType'].setValue(userType_Id);
         this.formNewUser.patchValue({
           username: userName,
@@ -106,6 +106,8 @@ export class UsuarioComponent implements OnInit {
           lastnames: last_Name,
           user_Id: user_Id
         });
+        this.formNewUser.controls['clients'].setValue(customer_Id);
+
         if(userType_Id === 1 || userType_Id === 2){
           this.formNewUser.patchValue({
             email: email
@@ -155,7 +157,7 @@ export class UsuarioComponent implements OnInit {
       email: this.formNewUser.controls['email'].value,
       last_Name: this.formNewUser.controls['lastnames'].value,
       password: this.formNewUser.controls['password'].value,
-      User_Logged: 'NAAA'
+      User_Logged: this.userId 
     }    
     
     // Sent information to api
@@ -194,22 +196,28 @@ export class UsuarioComponent implements OnInit {
       return;
     }
     this.userId = localStorage.getItem('User_Id');
-
+    this.userRole = localStorage.getItem('ROLE');
     //Create Json Object per APi.
     let tempUserObject = { 
       User_Id: this.formNewUser.controls['user_Id'].value, 
       UserName: this.formNewUser.controls['username'].value,
-      name: this.formNewUser.controls['names'].value,
+      Name: this.formNewUser.controls['names'].value,
       UserType_Id: Number(this.formNewUser.controls['userType'].value),
-      email: this.formNewUser.controls['email'].value,
-      customer_Id: this.formNewUser.controls['clients'].value,
-      last_Name: this.formNewUser.controls['lastnames'].value,
+      Email: this.formNewUser.controls['email'].value,
+      Customer_Id: this.formNewUser.controls['clients'].value,
+      Last_Name: this.formNewUser.controls['lastnames'].value,
+      User_Logged: this.userId, //this.userId
       Password: this.formNewUser.controls['password'].value,
-      User_Logged: 'na' //this.userId
-    }        
-    if(tempUserObject.UserType_Id === 3){
-      tempUserObject.email = 'NA';
+      UserType_Name: this.userRole //this.userId
     }
+    if(this.userRole === environment.UserRoles.Rol1){
+      tempUserObject.Password = this.formNewUser.controls['password'].value;
+    }   
+    //Por que NA?     
+    if(tempUserObject.UserType_Id === 3){
+      tempUserObject.Email = 'NA';
+    }  
+    console.log(tempUserObject);
     
     //Sent information to api
     this.backEndServices.UpdateUser(tempUserObject).subscribe((response: any) => { 
@@ -223,6 +231,14 @@ export class UsuarioComponent implements OnInit {
         });
         this.formNewUser.reset();
         this.dialogRef.close();
+      }
+      if (response['state'] === 1){
+        this._snackBar.open(response['message'],'',{
+          duration:5000,
+          horizontalPosition:'center',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
       }
     },(error: any) => {
       this._snackBar.open(error,'',{

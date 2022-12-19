@@ -28,7 +28,6 @@ export class DeletesComponent implements OnInit {
       User_Id : user.user_Id,
       Status : user.status,
       User_Logged : userId
-
     }
     this.backEndServices.UserPutState(tempData).subscribe((res: any) => {
       if(res.state === 0 ){
@@ -38,6 +37,7 @@ export class DeletesComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['green-snackbar']
         });
+        this.dialogRef.close();
       }else{
         this._snackBar.open(res.message,'',{
           duration:5000,
@@ -46,7 +46,6 @@ export class DeletesComponent implements OnInit {
           panelClass: ['red-snackbar']
         });
       }
-      this.dialogRef.close();
     });
     
   }

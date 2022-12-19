@@ -28,6 +28,7 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.setPagination();
+    this.userId = localStorage.getItem('userId');
   }
 
   openDialog(obj:any): void {
@@ -55,34 +56,38 @@ export class UsuariosComponent implements OnInit {
 
   } 
 
-  LogOutUser(user:number): void{
-    if(this.userRole === environment.UserRoles.Rol1){
-      axios.post(`${environment.API_URL}Users/LogOut/${user}`).then(data=>{
-        if(data.data.state === 0){
-          this._snackBar.open(data.data.message,'',{
-            duration:5000,
-            horizontalPosition:'right',
-            verticalPosition:'top',
-            panelClass: ['green-snackbar']
-          });
-          this.setPagination();
-        }
-        else if(data.data.state === 1){
-          this._snackBar.open(data.data.message,'',{
-            duration:5000,
-            horizontalPosition:'right',
-            verticalPosition:'top',
-            panelClass: ['red-snackbar']
-          });
+  LogOutUser(user:number): void
+  {
+    if(user !== Number(this.userId))
+      {
+        if(this.userRole === environment.UserRoles.Rol1){
+          axios.post(`${environment.API_URL}Users/LogOut/${user}`).then(data=>{
+            if(data.data.state === 0){
+              this._snackBar.open(data.data.message,'',{
+                duration:5000,
+                horizontalPosition:'right',
+                verticalPosition:'top',
+                panelClass: ['green-snackbar']
+              });
+              this.setPagination();
+            }
+            else if(data.data.state === 1){
+              this._snackBar.open(data.data.message,'',{
+                duration:5000,
+                horizontalPosition:'right',
+                verticalPosition:'top',
+                panelClass: ['red-snackbar']
+              });
+          }
+          }).catch(error =>{
+            this._snackBar.open(error,'',{
+              duration:5000,
+              horizontalPosition:'right',
+              verticalPosition:'top',
+              panelClass: ['red-snackbar']
+            });
+          })
       }
-      }).catch(error =>{
-        this._snackBar.open(error,'',{
-          duration:5000,
-          horizontalPosition:'right',
-          verticalPosition:'top',
-          panelClass: ['red-snackbar']
-        });
-      })
     }
   }
 

@@ -59,41 +59,6 @@ export class SolicitudesComponent implements OnInit {
   operationTypes:any;
   customers:any;
 
-  // selectFile(event: any, elem:any): void {
-  //   this.selectedFiles = event.target.files;
-  //   var target = event.target || event.srcElement || event.currentTarget;
-  //   var idAttr = target.attributes.id;
-  //   var value = idAttr.nodeValue;
-  //   if(value === "facMx" + elem){
-  //     var el = document.getElementById("btnFacMX" + elem);
-  //     el!.style.display ='contents';
-  //   }else if(value === "facUsa" + elem){      
-  //     var el = document.getElementById("btnFacUSA" + elem);
-  //     el!.style.display ='contents';
-  //   }else if(value === "bol"+ elem){
-  //     var el = document.getElementById("btnBol" + elem);
-  //     el!.style.display ='contents';
-  //   }else if(value === "inwd"+ elem){
-  //     var el = document.getElementById("btnInwd" + elem);
-  //           el!.style.display ='contents';
-  //   }else if(value === "ace"+ elem){
-  //     var el = document.getElementById("btnAce" + elem);
-  //           el!.style.display ='contents';
-  //   }else if(value === "layout"+ elem){
-  //     var el = document.getElementById("btnLayout" + elem);
-  //           el!.style.display ='contents';
-  //   }else if(value === "xml"+ elem){
-  //     var el = document.getElementById("btnXml" + elem);
-  //           el!.style.display ='contents';
-  //   }else if(value === "oriPDF"+ elem){
-  //     var el = document.getElementById("btnOriPDF" + elem);
-  //           el!.style.display ='contents';
-  //   }else if(value === "opPDF"+ elem){
-  //     var el = document.getElementById("btnOpPDF" + elem);
-  //           el!.style.display ='contents';
-  //   }
-  // }
-
   displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW','estatus',
                                'upload','delete'];
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
@@ -106,7 +71,7 @@ export class SolicitudesComponent implements OnInit {
   options = this._formBuilder.group({
     numCaja: new FormControl(''),
     folio: new FormControl(''),
-    estatus: new FormControl(''),
+    estatusSol: new FormControl(''),
     type: new FormControl(''),
     cliente: new FormControl(''),
     prioridad: false
@@ -301,7 +266,100 @@ export class SolicitudesComponent implements OnInit {
   }
 
   search(){
-    console.log('search');
+    //FORM CONTROLS: estatus/type/start/end/folio/numcaja/cliente/prioridad 
+    let estatus!:number|null, type!:number|null, start, end, folio!:number|null, numCaja!:string|null, cliente!:number|null, prioridad!:boolean|null;
+    estatus= Number(this.options.controls['estatusSol'].value);
+    type = Number(this.options.controls['type'].value);
+    start = this.range.controls['start'].value;
+    end=this.range.controls['end'].value;
+    folio = Number(this.options.controls['folio'].value);
+    numCaja = this.options.controls['numCaja'].value;
+    cliente = Number(this.options.controls['cliente'].value);
+    prioridad = this.options.controls['prioridad'].value;
+    let obj = {
+      Status_Id: estatus,
+      OperationType_Id: type,
+      StartDate: start,
+      EndDate: end,
+      InvoiceNumber: folio,
+      Box_Number: numCaja,
+      Customer_Id: cliente,
+      Priority: prioridad
+    }
+
+    this.backEndServices.getServiceRequestsFiltered(obj).subscribe((res: any) => {
+      if(res.numberRecords === 0 ){
+        this._snackBar.open('No se encontraron registros','',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+      }else{
+      this.dataSource = new MatTableDataSource<any>(res);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.data.length = res.length;
+      this.dataObs$ = this.dataSource.connect();
+      }
+    });
+    // console.log(estatus,type,start,end,folio,numCaja, cliente);
+    // if((estatus > 0) && (type>0) && (start!==null) && (end!== null) && (folio>0) && (numCaja!=='') && (cliente>0)){
+    //   /* 
+    //     ! Opcion 1
+    //   */
+    //  console.log('1');
+     
+    //   console.log(estatus,type,start,end,folio,numCaja, cliente);
+    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente === 0)){
+    //   /* 
+    //     ! Opcion 2
+    //   */
+    //     console.log('2');
+
+    //     console.log(estatus,type,start,end,folio,numCaja);
+    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja==='') && (cliente>0)){
+    //   /* 
+    //     ! Opcion 3
+    //   */
+    //     console.log('3');
+
+    //   console.log(estatus,type,start,end,folio, cliente);
+    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio===0) && (numCaja!=='') && (cliente>0)){
+    //   /* 
+    //     ! Opcion 4
+    //   */
+    //     console.log('4');
+
+    //     console.log(estatus,type,start,end,folio,numCaja, cliente);
+    // }
+    // else if((estatus>0) && (type===0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente>0)){
+    //    /* 
+    //     ! Opcion 5
+    //   */
+    //     console.log('5');
+
+    //     console.log(estatus,start,end,folio,numCaja, cliente);
+    // }else if((estatus===0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente>0)){
+    //   /* 
+    //    ! Opcion 6
+    //  */
+    //    console.log('6');
+
+    //    console.log(type,start,end,folio,numCaja, cliente);
+    // }else if((estatus>0) && (type>0) && (folio>0) && (numCaja!='') && (cliente>0)){
+    //   /* 
+    //    ! Opcion 7
+    //  */
+    //    console.log('7');   
+    //    this._snackBar.open('Debe seleccionar un rango de fechas','',{
+    //     duration:5000,
+    //     horizontalPosition:'right',
+    //     verticalPosition:'top',
+    //     panelClass: ['red-snackbar']
+    //   });
+    // }else{
+    //   console.log('sin opcion');
+    // }
   }
 
   edit( _element: any ){

@@ -66,6 +66,14 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequests`);
   }
 
+  getServiceRequestsFiltered(obj:any): any {
+    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequestsFiltered`,obj);
+  }
+
+  getServiceReports(): any {
+    return this.http.get(`${this._URL}/ServiceRequests/GetServiceReport`);
+  }
+
   getServiceRequestsDocuments(elem:any): any {
     return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequestsFull/${elem}`);
   }

@@ -9,7 +9,7 @@
                             <div>
                                 <mat-form-field  fxFlex.gt-sm="20" fxFlex.gt-xs="100" fxFlex="100">
                                     <mat-label>Estatus</mat-label>
-                                    <mat-select placeholder="Seleccione un estatus" formControlName="estatus">
+                                    <mat-select placeholder="Seleccione un estatus" formControlName="estatusSol">
                                       <mat-option 
                                               *ngFor="let item of status " 
                                               [value]="item.status_Id" >
@@ -38,7 +38,7 @@
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
                                 <mat-form-field >
-                                    <input matInput placeholder="Folio" formControlName="folio">
+                                    <input type="number" matInput placeholder="Folio" formControlName="folio">
                                 </mat-form-field>
                                 <mat-form-field >
                                     <input matInput placeholder="Núm. de caja" formControlName="numCaja">

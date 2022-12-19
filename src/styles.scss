@@ -36,11 +36,14 @@ $TCA_TSR_FrontEnd-theme: mat.define-light-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: small;
+}
 
 table{
   width: 100%;
+  font-size: small;
 }
+
 
 .green-snackbar {
   background: #34d813;
@@ -108,24 +111,24 @@ color: white;
 .btnBgPdf{
   background: url('./assets/svg/PDF.svg');
   background-repeat: no-repeat;
-  width: 35px;
-  height: 30px;
+  width: 30px;
+  height: 25px;
   border: none;
 }
 
 .btnBgXlsx{
   background: url('./assets/svg/Excel.svg');
   background-repeat: no-repeat;
-  width: 35px;
-  height: 30px;
+  width: 30px;
+  height: 25px;
   border: none;
 }
 
 .btnBgXml{
   background: url('./assets/svg/XML.svg');
   background-repeat: no-repeat;
-  width: 35px;
-  height: 30px;
+  width: 30px;
+  height: 25px;
   border: none;
 }
 

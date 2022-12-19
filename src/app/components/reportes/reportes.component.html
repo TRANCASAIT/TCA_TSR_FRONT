@@ -1,1 +1,112 @@
-<p>reportes works!</p>
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+          <mat-card>
+                  <mat-card-content>
+                      <mat-card-title>Reporte de solicitudes</mat-card-title>
+                      <!-- <div fxLayoutAlign="end center">
+                          <button class="bg-danger" mat-raised-button (click)="openDialog(({type:'new'}))">Crear ciudad</button>
+                      </div> -->
+                      <div>
+                          <table mat-table [dataSource]="dataSource" id="table-report">
+                            <ng-container matColumnDef="folio">
+                                <th mat-header-cell *matHeaderCellDef>  Folio </th>
+                                <td mat-cell *matCellDef="let element"> {{element.serviceRequest_Id}} </td>
+                              </ng-container>
+                            <ng-container matColumnDef="cliente">
+                              <th mat-header-cell *matHeaderCellDef>  Cliente </th>
+                              <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+                            </ng-container>
+                           
+                            <ng-container matColumnDef="numCaja">
+                                <th mat-header-cell *matHeaderCellDef>  Numero de Caja </th>
+                                <td mat-cell *matCellDef="let element"> {{element.box_Number}} </td>
+                              </ng-container>
+                            
+                            <ng-container matColumnDef="operacion">
+                                <th mat-header-cell *matHeaderCellDef>  Tipo de operacion </th>
+                                <td mat-cell *matCellDef="let element"> {{element.operationType_Name}} </td>
+                            </ng-container>
+                            
+                            
+                            <ng-container matColumnDef="stop">
+                                <th mat-header-cell *matHeaderCellDef>  STOPs </th>
+                                <td mat-cell *matCellDef="let element"> {{element.stop_Number}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fecha">
+                                <th mat-header-cell *matHeaderCellDef>  Fecha-Hora </th>
+                                <td mat-cell *matCellDef="let element"> {{element.creation_Date}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="tmw">
+                                <th mat-header-cell *matHeaderCellDef>  Orden en TMW </th>
+                                <td mat-cell *matCellDef="let element"> {{element.tmwOrder}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estatus">
+                                <th mat-header-cell *matHeaderCellDef>  Estatus </th>
+                                <td mat-cell *matCellDef="let element"> {{element.status_Description}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="manifiesto">
+                                <th mat-header-cell *matHeaderCellDef>  Entry/Manifiesto </th>
+                                <td mat-cell *matCellDef="let element"> {{element.inward}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ace">
+                                <th mat-header-cell *matHeaderCellDef>  ACE </th>
+                                <td mat-cell *matCellDef="let element"> {{element.ace}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="layout">
+                                <th mat-header-cell *matHeaderCellDef>  Layout </th>
+                                <td mat-cell *matCellDef="let element"> {{element.layout}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="layoutaceptado">
+                                <th mat-header-cell *matHeaderCellDef>  Layout Aceptado </th>
+                                <td mat-cell *matCellDef="let element"> {{element.layoutAccepteddtm}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="aceptadopor">
+                                <th mat-header-cell *matHeaderCellDef>  Aceptado por </th>
+                                <td mat-cell *matCellDef="let element"> {{element.accepted_By}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cporte">
+                                <th mat-header-cell *matHeaderCellDef>  Num. carta porte </th>
+                                <td mat-cell *matCellDef="let element"> {{element.consignment_Note}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="xml">
+                                <th mat-header-cell *matHeaderCellDef>  XML </th>
+                                <td mat-cell *matCellDef="let element"> {{element.xml}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="pdforiginal">
+                                <th mat-header-cell *matHeaderCellDef>  Original </th>
+                                <td mat-cell *matCellDef="let element"> {{element.originalPDF}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="pdfoperaciones">
+                                <th mat-header-cell *matHeaderCellDef>  Operaciones </th>
+                                <td mat-cell *matCellDef="let element"> {{element.operationsPDF}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
+                          <mat-paginator
+                            [pageSizeOptions]="[5, 10, 25, 100]"
+                            [pageSize]="5"
+                          ></mat-paginator>
+
+                          <button mat-flat-button color="primary" class="excelColor" aria-label="Example icon button with a delete icon" (click)="exportExcel()">
+                            <mat-icon>download</mat-icon>
+                            Exportar a Excel
+                          </button>
+                        </div>
+                  </mat-card-content>        
+          </mat-card>
+    </div>
+</div>

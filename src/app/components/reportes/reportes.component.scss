@@ -1,0 +1,12 @@
+
+th.mat-header-cell {
+    text-align: revert !important;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    padding: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    text-align: center;
+    font-size: smaller;
+}
