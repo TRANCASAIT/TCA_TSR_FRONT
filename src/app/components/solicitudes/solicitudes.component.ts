@@ -68,6 +68,7 @@ export class SolicitudesComponent implements OnInit {
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
+
   options = this._formBuilder.group({
     numCaja: new FormControl(''),
     folio: new FormControl(''),
@@ -103,6 +104,13 @@ export class SolicitudesComponent implements OnInit {
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
+  convert(str:any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
   setTMW(obj: any) {
       if(this.userRole === this.rol2 || this.userRole === this.rol3){
       obj.type = 'new';
@@ -126,8 +134,8 @@ export class SolicitudesComponent implements OnInit {
     dialogConfig.panelClass = '';
     const dialogRef = this.dialog.open( BoxNumberComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
+    }
   }
-}
 
   openDialog(obj:any): void {
     const dialogConfig = new MatDialogConfig();
@@ -141,7 +149,7 @@ export class SolicitudesComponent implements OnInit {
   
   setPagination() {
     this.userId = localStorage.getItem('User_Id');
-    this.backEndServices.getServiceRequests().subscribe((res: any) => {
+    this.backEndServices.getServiceRequests(this.userId).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
           duration:5000,
@@ -150,6 +158,18 @@ export class SolicitudesComponent implements OnInit {
           panelClass: ['red-snackbar']
         });
       }else{
+      this.options.patchValue({
+        numCaja:'',
+        folio: '',
+        estatusSol: '',
+        type: '',
+        cliente: '',
+        prioridad: false
+      });
+      this.range.patchValue({
+        start:null,
+        end:null
+      });
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.data.length = res.length;
@@ -276,6 +296,19 @@ export class SolicitudesComponent implements OnInit {
     numCaja = this.options.controls['numCaja'].value;
     cliente = Number(this.options.controls['cliente'].value);
     prioridad = this.options.controls['prioridad'].value;
+    
+    if(start === null){
+      start=''
+    }else{
+      start = this.convert(start);
+    }
+
+    if(end=== null){
+      end=''
+    }else{
+      end = this.convert(end);
+    }
+
     let obj = {
       Status_Id: estatus,
       OperationType_Id: type,
@@ -286,7 +319,6 @@ export class SolicitudesComponent implements OnInit {
       Customer_Id: cliente,
       Priority: prioridad
     }
-
     this.backEndServices.getServiceRequestsFiltered(obj).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
@@ -302,70 +334,6 @@ export class SolicitudesComponent implements OnInit {
       this.dataObs$ = this.dataSource.connect();
       }
     });
-    // console.log(estatus,type,start,end,folio,numCaja, cliente);
-    // if((estatus > 0) && (type>0) && (start!==null) && (end!== null) && (folio>0) && (numCaja!=='') && (cliente>0)){
-    //   /* 
-    //     ! Opcion 1
-    //   */
-    //  console.log('1');
-     
-    //   console.log(estatus,type,start,end,folio,numCaja, cliente);
-    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente === 0)){
-    //   /* 
-    //     ! Opcion 2
-    //   */
-    //     console.log('2');
-
-    //     console.log(estatus,type,start,end,folio,numCaja);
-    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja==='') && (cliente>0)){
-    //   /* 
-    //     ! Opcion 3
-    //   */
-    //     console.log('3');
-
-    //   console.log(estatus,type,start,end,folio, cliente);
-    // }else if((estatus>0) && (type>0) && (start!==null) && (end!==null) && (folio===0) && (numCaja!=='') && (cliente>0)){
-    //   /* 
-    //     ! Opcion 4
-    //   */
-    //     console.log('4');
-
-    //     console.log(estatus,type,start,end,folio,numCaja, cliente);
-    // }
-    // else if((estatus>0) && (type===0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente>0)){
-    //    /* 
-    //     ! Opcion 5
-    //   */
-    //     console.log('5');
-
-    //     console.log(estatus,start,end,folio,numCaja, cliente);
-    // }else if((estatus===0) && (type>0) && (start!==null) && (end!==null) && (folio>0) && (numCaja!=='') && (cliente>0)){
-    //   /* 
-    //    ! Opcion 6
-    //  */
-    //    console.log('6');
-
-    //    console.log(type,start,end,folio,numCaja, cliente);
-    // }else if((estatus>0) && (type>0) && (folio>0) && (numCaja!='') && (cliente>0)){
-    //   /* 
-    //    ! Opcion 7
-    //  */
-    //    console.log('7');   
-    //    this._snackBar.open('Debe seleccionar un rango de fechas','',{
-    //     duration:5000,
-    //     horizontalPosition:'right',
-    //     verticalPosition:'top',
-    //     panelClass: ['red-snackbar']
-    //   });
-    // }else{
-    //   console.log('sin opcion');
-    // }
+   
   }
-
-  edit( _element: any ){
-    console.log('update', _element);
-  }
-
-
-
 }

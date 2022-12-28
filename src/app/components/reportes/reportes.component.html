@@ -3,9 +3,57 @@
           <mat-card>
                   <mat-card-content>
                       <mat-card-title>Reporte de solicitudes</mat-card-title>
-                      <!-- <div fxLayoutAlign="end center">
-                          <button class="bg-danger" mat-raised-button (click)="openDialog(({type:'new'}))">Crear ciudad</button>
-                      </div> -->
+                      <div class="example-container">
+                        <form [formGroup]="options">
+                            <div>
+                                <mat-form-field  fxFlex.gt-sm="20" fxFlex.gt-xs="100" fxFlex="100">
+                                    <mat-label>Estatus</mat-label>
+                                    <mat-select placeholder="Seleccione un estatus" formControlName="estatusSol">
+                                      <mat-option 
+                                              *ngFor="let item of status " 
+                                              [value]="item.status_Id" >
+                                              {{ item['status_Description'] }}
+                                      </mat-option>
+                                      </mat-select>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                                    <mat-label>Tipo de Operacion</mat-label>
+                                    <mat-select placeholder="Seleccione un tipo de operacion" formControlName="type">
+                                      <mat-option 
+                                              *ngFor="let item of operationTypes " 
+                                              [value]="item.operationType_Id" >
+                                              {{ item['operationType_Name'] }}
+                                      </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex.gt-sm="25" fxFlex.gt-xs="25" fxFlex="100">
+                                    <mat-label>Seleccione un rango de fechas</mat-label>
+                                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                    <input matStartDate type="datetime" formControlName="start" placeholder="Fecha inicial">
+                                    <input matEndDate type="datetime" placeholder="Fecha Final" formControlName="end">
+                                    </mat-date-range-input>
+                                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                                <mat-form-field >
+                                    <input type="number" matInput placeholder="Folio" formControlName="folio">
+                                </mat-form-field>
+                                <mat-form-field >
+                                    <input matInput placeholder="Núm. de caja" formControlName="numCaja">
+                                </mat-form-field>
+                            </div>
+                          <div>
+                              <section class="example-section">
+                                <button mat-raised-button color="warn" class="example-margin" (click)="search()">Buscar</button>
+                                <button mat-raised-button color="warn" class="example-margin" (click)="setPagination()">Limpiar Filtro</button>
+                                <button mat-raised-button color="warn" class="excelColor" (click)="exportExcel()">
+                                    <mat-icon>download</mat-icon>
+                                    Exportar</button>
+                              </section>
+                          </div>
+                        </form>
+                      </div>
                       <div>
                           <table mat-table [dataSource]="dataSource" id="table-report">
                             <ng-container matColumnDef="folio">
@@ -97,14 +145,9 @@
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           </table>
                           <mat-paginator
-                            [pageSizeOptions]="[5, 10, 25, 100]"
-                            [pageSize]="5"
+                            [pageSizeOptions]="[10, 25, 100, 1000, 2000]"
+                            [pageSize]="10"
                           ></mat-paginator>
-
-                          <button mat-flat-button color="primary" class="excelColor" aria-label="Example icon button with a delete icon" (click)="exportExcel()">
-                            <mat-icon>download</mat-icon>
-                            Exportar a Excel
-                          </button>
                         </div>
                   </mat-card-content>        
           </mat-card>

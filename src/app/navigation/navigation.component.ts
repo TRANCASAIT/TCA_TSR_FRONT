@@ -28,6 +28,7 @@ export class NavigationComponent implements OnDestroy{
 
   ngOnInit(): void {
     this.cargarMenu();
+    this.userActive = localStorage.getItem("unme");
   }
 
   cargarMenu(){

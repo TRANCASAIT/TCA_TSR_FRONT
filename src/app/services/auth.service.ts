@@ -30,8 +30,8 @@ export class AuthService {
     axios.post(`${environment.API_URL}Users/LogOut/${userId}`).then( data =>{
       localStorage.setItem('STATE', 'false');
       localStorage.setItem('ROLE', '');
-      localStorage.setItem('userTypeName', '');
       localStorage.setItem('User_Id','');
+      localStorage.setItem('unme','');
     }).catch(error=>{
       
     })

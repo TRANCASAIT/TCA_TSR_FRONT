@@ -2,20 +2,23 @@
   <mat-toolbar class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name">Solicitudes de servicio</h1>
+    <span class="example-spacer"></span>
+    <h2>Usuario: {{userActive}}</h2>
   </mat-toolbar>
   
-  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0" autosize="true">
     <mat-sidenav #snav id="snav" class="snav-menu" mode="side" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" >
       <mat-nav-list appAccordion>
-        <a mat-list-item [routerLink]="item.redirect" (click)="snav.toggle()" (click)="cerrarNav()" *ngFor="let item of menu" class="matList">
+        <a mat-list-item [routerLink]="item.redirect" [routerLinkActive]="['is-active']" (click)="snav.toggle()" (click)="cerrarNav()" *ngFor="let item of menu" class="matList">
           <mat-icon> {{item.icon}} </mat-icon>
           <span> {{item.name}} </span>
-          <span fxFlex></span>
+          <!-- <span fxFlex></span> -->
         </a>
-        <a mat-list-item (click)="logout()" class="matList">
-          <mat-icon>arrow_forward</mat-icon>
-          <span>Cerrar sesion</span>
-          <span fxFlex></span>
+        <a mat-list-item>
+          <span class="logOutStyle">Cerrar Sesión</span>
+          <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon" matTooltip="Cerrar Sesión">
+            <mat-icon (click)="logout()">logout</mat-icon>
+          </button>
         </a>
       </mat-nav-list>
     </mat-sidenav>

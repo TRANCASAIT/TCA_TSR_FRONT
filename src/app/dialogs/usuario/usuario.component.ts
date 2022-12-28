@@ -91,7 +91,6 @@ export class UsuarioComponent implements OnInit {
   )
  
  async  ngOnInit() {
-
   await this.getCustomers();
     this.userId = localStorage.getItem('User_Id');
     this.type = this.newUser.type;
@@ -125,7 +124,6 @@ export class UsuarioComponent implements OnInit {
         userType: ['', Validators.required],
         clients: ['', Validators.required],
         user_Id: [0]
-        
       },
       {
         validators: [Validation.match('password', 'confirmPassword')],
@@ -216,9 +214,7 @@ export class UsuarioComponent implements OnInit {
     //Por que NA?     
     if(tempUserObject.UserType_Id === 3){
       tempUserObject.Email = 'NA';
-    }  
-    console.log(tempUserObject);
-    
+    }     
     //Sent information to api
     this.backEndServices.UpdateUser(tempUserObject).subscribe((response: any) => { 
 

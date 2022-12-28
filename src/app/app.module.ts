@@ -51,6 +51,7 @@ import { CommentComponent } from './dialogs/comment/comment.component';
 import { OptionsComponent } from './dialogs/options/options.component';
 import { BoxNumberComponent } from './dialogs/box-number/box-number.component';
 import { OperationTypeComponent } from './dialogs/operation-type/operation-type.component';
+import { ForgetPasswordComponent } from './dialogs/forget-password/forget-password.component';
 
 
 
@@ -88,7 +89,8 @@ import { OperationTypeComponent } from './dialogs/operation-type/operation-type.
     CommentComponent,
     OptionsComponent,
     BoxNumberComponent,
-    OperationTypeComponent
+    OperationTypeComponent,
+    ForgetPasswordComponent
 
 
   ],

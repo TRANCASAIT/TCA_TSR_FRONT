@@ -2,7 +2,7 @@
     <div class="login-register-box">
       <mat-card>
         <mat-card-content class="shadow">
-            <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="ingresar()">
+            <form *ngIf="!loading" [formGroup]="form" [hidden]="!isDisplayed" (ngSubmit)="ingresar()" id="logIn">
                 <div class="text-center">
                     <img alt="homepage" src="./assets/img/logo 1.png">
                     <h4>Inicio de Sesión</h4>
@@ -19,15 +19,18 @@
                     <!-- col full-->
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
                         <mat-form-field  class="example-full-width">
-                            <input matInput type="password" placeholder="Contraseña" formControlName="password">
-                            <mat-icon matSuffix>visibility_off</mat-icon>
+                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña" formControlName="password">
+                            <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </mat-form-field>
                     </div>
 
                     <!-- col full-->
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
                         <button type="submit" mat-raised-button class="ancho" color="warn" [disabled]="form.invalid">Ingresar</button>
-                        
+                    </div>
+
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center btnForgetPass">
+                        <button mat-flat-button color="primary" (click)="changePass()">Cambiar contraseña</button>
                     </div>
                     <div id="logSpinner" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center noDisplayed">
                         <mat-progress-spinner
@@ -40,6 +43,72 @@
                     </div>
                    
                     <div *ngIf="errorMessage === true" class="text-center" style="color:red;">{{mensajeError}}</div>
+                </div>
+            </form>
+
+            <form *ngIf="!loading" [hidden]="isDisplayed" [formGroup]="formForget" (ngSubmit)="ingresar()" id="logIn2">
+                <div class="text-center">
+                    <img alt="homepage" src="./assets/img/logo 1.png">
+                    <h4>Inicio de Sesión</h4>
+                </div>
+
+                <div fxLayout="row wrap">
+                    <!-- col full-->
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                        <mat-form-field  class="example-full-width">
+                            <input matInput placeholder="Correo o usuario" formControlName="email">
+                            <mat-icon matSuffix>account_circle</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
+                        <mat-form-field  class="example-full-width">
+                            <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Contraseña anterior" formControlName="oldPassword">
+                            <mat-icon matSuffix (click)="hide2 = !hide2">{{ hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
+                        <mat-form-field  class="example-full-width">
+                            <input matInput [type]="hide3 ? 'password' : 'text'" placeholder="Contraseña nueva" formControlName="newPassword">
+                            <mat-error *ngIf="submitted && f['newPassword'].errors" class="invalid-feedback">
+                                <mat-error *ngIf="f['newPassword'].errors['required']">Este campo es requerido</mat-error>
+                                <mat-error *ngIf="f['newPassword'].errors['minlength']">La contraseña debe de contener al menos 6 caracteres</mat-error>
+                                <mat-error *ngIf="f['newPassword'].errors['maxlength']">La contraseña no debe de exceder 40 caracteres</mat-error>
+                        </mat-error>
+                            <mat-icon matSuffix (click)="hide3 = !hide3">{{ hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
+                        <mat-form-field  class="example-full-width">
+                            <input matInput [type]="hide4 ? 'password' : 'text'" placeholder="Contraseña nueva confirmación" formControlName="newPasswordConfirmation"
+                            [ngClass]="{ 'is-invalid': submitted && f['newPasswordConfirmation'].errors }" class="invalid-feedback">
+                            <mat-error  *ngIf="submitted && f['newPasswordConfirmation'].errors" >
+                                <mat-error *ngIf="f['newPasswordConfirmation'].errors['required']"> Este campo es requerido</mat-error>
+                                <mat-error *ngIf="f['newPasswordConfirmation'].errors['matching']">No coinciden las contraseñas</mat-error>
+                            </mat-error>
+                            <mat-icon matSuffix (click)="hide4 = !hide4">{{ hide4 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
+                        <button type="submit" mat-raised-button class="ancho" color="warn" [disabled]="formForget.invalid" (click)="resetPassword()">Guardar</button> ||
+                        <button type="submit" mat-raised-button class="ancho" color="primary" (click)="hiden()">Cancelar</button>
+                    </div>
+
+                    
+                    <div id="logSpinner" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center noDisplayed">
+                        <mat-progress-spinner
+                            class="text-right"
+                            [color]="color"
+                            [mode]="mode"
+                            [value]="value"
+                            [diameter]="20">
+                        </mat-progress-spinner>
+                    </div>
+                   
+                    <div *ngIf="(errorMessage === true) && (isDisplayed)" class="text-center" style="color:red;">{{mensajeError}}</div>
                 </div>
             </form>
         </mat-card-content>

@@ -62,12 +62,16 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Users/GetUsers`);
   }
 
-  getServiceRequests(): any {
-    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequests`);
+  getServiceRequests(usId:any): any {
+    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequests/${usId}`);
   }
 
   getServiceRequestsFiltered(obj:any): any {
-    return this.http.get(`${this._URL}/ServiceRequests/GetServiceRequestsFiltered`,obj);
+    return this.http.post(`${this._URL}/ServiceRequests/GetServiceRequestsFiltered`,obj);
+  }
+
+  getServiceReportFiltered(obj:any): any {
+    return this.http.post(`${this._URL}/ServiceRequests/GetServiceReportFiltered`,obj);
   }
 
   getServiceReports(): any {
@@ -103,6 +107,13 @@ export class ServicesBackendService {
 
     UserPutState(user:any): any {
       return this.http.put(`${this._URL}/Users/UserPutState`,user).pipe( map (
+        (response: { [x: string]: any; }) => response ),
+        catchError ( this.manejarError )
+      );
+    }
+
+    ChangePassword(obj:any): any {
+      return this.http.post(`${this._URL}/Tools/ResetPassword`,obj).pipe( map (
         (response: { [x: string]: any; }) => response ),
         catchError ( this.manejarError )
       );

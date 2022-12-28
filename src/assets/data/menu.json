@@ -1,7 +1,7 @@
 [
+    { "redirect": "/navigation/reportes",  "type": "link","name": "Reportes", "icon": "assignment" },
     { "redirect": "/navigation/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "local_shipping" },
     { "redirect": "/navigation/clientes",  "type": "link","name": "Clientes", "icon": "business_center" },
-    { "redirect": "/navigation/reportes",  "type": "link","name": "Reportes", "icon": "assignment" },
     { "redirect": "/navigation/usuarios", "type": "link", "name": "Usuarios", "icon": "person" },
     { "redirect": "/navigation/estados", "type": "link", "name": "Estados", "icon": "apartment" },
     { "redirect": "/navigation/ciudades", "type": "link", "name": "Ciudades", "icon": "location_city" },

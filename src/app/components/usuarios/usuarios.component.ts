@@ -40,7 +40,6 @@ export class UsuariosComponent implements OnInit {
     dialogConfig.panelClass = '';
   
     const dialogRef = this.dialog.open( UsuarioComponent  , dialogConfig);
-  
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
