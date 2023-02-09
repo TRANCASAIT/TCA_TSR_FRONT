@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -31,6 +32,7 @@ export class StopComponent implements OnInit {
     public dialogRef: MatDialogRef<StopComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -44,6 +46,7 @@ export class StopComponent implements OnInit {
   get formGroup() { return this.stopsForm.controls; }
 
   ngOnInit(): void {
+    this.userId = this._AESEncryptDecryptService.uid();
     this.type = this.stop.type;
     if(this.type === 'edit'){
       const {stop_Id, stop_Number} = this.stop.stop;
@@ -55,10 +58,9 @@ export class StopComponent implements OnInit {
   }
 
   createStop(): void {
-    this.userId = localStorage.getItem('User_Id');
     if(this.stopsForm.invalid) return;
     const stop = {
-      Stop_Number: this.formGroup.stopNumber.value,
+      Stop_Number: this.formGroup.stopNumber.value?.toString(),
       User_Logged: this.userId
     }
     axios.post(`${environment.API_URL}`+"Stops/CreateStop",stop).then(data => {
@@ -94,15 +96,12 @@ export class StopComponent implements OnInit {
   }
 
   updateStop(): void {
-    this.userId = localStorage.getItem('User_Id');
-    const stop = {
+    const StopsPut = {
       Stop_Id: this.formGroup.stopId.value,
-      Stop_Number: this.formGroup.stopNumber.value,
+      Stop_Number: this.formGroup.stopNumber.value?.toString(),
       User_Logged: this.userId
-    }
-    console.log(stop);
-    
-    axios.put(`${environment.API_URL}`+ "Stops/UpdateStop",stop).then(data => {
+    }    
+    axios.put(`${environment.API_URL}`+ "Stops/UpdateStop",StopsPut).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
           duration:5000,
@@ -117,9 +116,7 @@ export class StopComponent implements OnInit {
           horizontalPosition:'right',
           verticalPosition:'top',
           panelClass: ['red-snackbar']
-        });
-        console.log(data);
-        
+        });       
     }
     this.dialogRef.close(); 
     }).catch(error => {
@@ -130,9 +127,8 @@ export class StopComponent implements OnInit {
         panelClass: ['red-snackbar']
       });
       console.log(error);
-
+      
     });
-    
   }
 
 }

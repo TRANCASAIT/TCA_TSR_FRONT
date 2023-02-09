@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -29,6 +30,7 @@ export class OperationTypeComponent implements OnInit {
     private _formBuilder: FormBuilder, public dialog : MatDialog,
     private backEndServices : ServicesBackendService,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
   operations: any;
   type: string | undefined;
@@ -57,7 +59,7 @@ export class OperationTypeComponent implements OnInit {
   }
 
   updateOperationType(){
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     let operationType = {
       ServiceRequest_Id : this.formGroup.srId.value,
       OperationType_Id: this.formGroup.operationType.value,

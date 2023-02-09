@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -32,6 +33,7 @@ export class ClienteComponent implements OnInit {
     public dialogRef: MatDialogRef<ClienteComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -81,7 +83,7 @@ export class ClienteComponent implements OnInit {
   }
 
   createCustomer(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.customerForm.invalid) return;
     const customer = {
       Name: this.formGroup.name.value,
@@ -142,7 +144,7 @@ export class ClienteComponent implements OnInit {
   }
 
   updateCustomer(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const customer = {
       Customer_Id: this.formGroup.customerId.value,
       Name: this.formGroup.name.value,
@@ -157,7 +159,7 @@ export class ClienteComponent implements OnInit {
       City_Id: this.formGroup.city.value,
       State_Id: this.formGroup.state.value,
       User_Logged: this.userId
-    }
+    }   
     axios.put(`${environment.API_URL}`+ "Customers/UpdateCustomer",customer).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{

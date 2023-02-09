@@ -2,9 +2,15 @@
     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
           <mat-card>
                   <mat-card-content>
-                      <mat-card-title>Clientes</mat-card-title>
+                      <mat-card-title>Empresas</mat-card-title>
                       <div fxLayoutAlign="end center">
-                          <button class="bg-danger" mat-raised-button (click)="openDialog(({type:'new'}))">Crear cliente</button>
+                          <button class="bg-danger" *ngIf="(userRole === rol1 || userRole === rol2)" mat-raised-button (click)="openDialog(({type:'new'}))">Crear empresa</button>
+                      </div>
+                      <div class="mat-mdc-form-field-infix">
+                        <mat-form-field class="mat-mdc-form-field">
+                          <mat-label>Filtrar empresas <mat-icon>search</mat-icon></mat-label>
+                          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+                        </mat-form-field>
                       </div>
                       <div>
                           <table mat-table [dataSource]="dataSource" >

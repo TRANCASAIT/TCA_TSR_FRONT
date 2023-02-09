@@ -7,9 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
-import { ForgetPasswordComponent } from '../dialogs/forget-password/forget-password.component';
 import { AuthService } from '../services/auth.service';
 import { ServicesBackendService } from '../services/services-backend-service.service';
+import { AESEncryptDecryptServiceService } from '../services/aesencrypt-decrypt-service.service';
+import * as crypto from "crypto-js";
 
 export default class Validation {
   static match(controlName: string, checkControlName: string): ValidatorFn {
@@ -49,8 +50,7 @@ export class LoginComponent implements OnInit {
   hide3 = true;
   hide4 = true;
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,public authService: AuthService,
-    public dialog: MatDialog,    private backEndServices : ServicesBackendService,
-
+    public dialog: MatDialog,    private backEndServices : ServicesBackendService, private _AESEncryptDecryptService: AESEncryptDecryptServiceService
     ) {
     this.form = this.fb.group({
       email: ['', Validators.required],
@@ -83,8 +83,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(val)
       .subscribe(res => {
         if (res.success) {
-          localStorage.setItem('User_Id',String(userId));   
-          localStorage.setItem('unme',String(userName));   
+          localStorage.setItem('uid',this._AESEncryptDecryptService.encrypt(String(userId)));  
+          localStorage.setItem('unme',this._AESEncryptDecryptService.encrypt(String(userName)));  
           if(res.role === environment.UserRoles.Rol1){
             setTimeout(() => {
               this.router.navigate(["navigation/solicitudes"]);
@@ -123,37 +123,37 @@ export class LoginComponent implements OnInit {
       UserName : this.form.value.email,
       Password : this.form.value.password
     }
-    axios.post(`${environment.API_URL}`+ "Users/PostUserLogin",usuario).then(data => {      
-      if(data.data.user_Id > 0 ){       
-        if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
-          this.login(environment.UserRoles.Rol1,data.data.user_Id,data.data.userName);
-          var el = document.getElementById("logSpinner");
-          el!.style.display ='contents';
-        }
-        else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type2){
-          this.login(environment.UserRoles.Rol2,data.data.user_Id,data.data.userName);
-          this.cargarSpinner();
-        }
-        else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type3){
-          this.login(environment.UserRoles.Rol3,data.data.user_Id,data.data.userName);
-          this.cargarSpinner();
-        }
-        else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type2){
-          this.login(environment.UserRoles.Rol4,data.data.user_Id,data.data.userName);
-          this.cargarSpinner();
-        }
-        else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type3){
-          this.login(environment.UserRoles.Rol5,data.data.user_Id,data.data.userName);
-          this.cargarSpinner();
-        }
-      }        
-      }).catch(error => {
-        if(error.response.data.state === 1 ){
-          this.errorMessage = true;
-          this.mensajeError = error.response.data.message;
-          this.resetMessage();
-        }
-      });
+      axios.post(`${environment.API_URL}`+ "Users/PostUserLogin",usuario).then(data => {      
+        if(data.data.user_Id > 0 ){       
+          if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type1){
+            this.login(environment.UserRoles.Rol1,data.data.user_Id,data.data.userName);
+            var el = document.getElementById("logSpinner");
+            el!.style.display ='contents';
+          }
+          else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type2){
+            this.login(environment.UserRoles.Rol2,data.data.user_Id,data.data.userName);
+            this.cargarSpinner();
+          }
+          else if(data.data.isCustomer === environment.CustomerCheck.NotACustomer && data.data.userType_Name === environment.UserTypes.Type3){
+            this.login(environment.UserRoles.Rol3,data.data.user_Id,data.data.userName);
+            this.cargarSpinner();
+          }
+          else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type2){
+            this.login(environment.UserRoles.Rol4,data.data.user_Id,data.data.userName);
+            this.cargarSpinner();
+          }
+          else if(data.data.isCustomer === environment.CustomerCheck.IsCustomer && data.data.userType_Name === environment.UserTypes.Type3){
+            this.login(environment.UserRoles.Rol5,data.data.user_Id,data.data.userName);
+            this.cargarSpinner();
+          }
+        }        
+        }).catch(error => {
+          if(error.response.data.state === 1 ){
+            this.errorMessage = true;
+            this.mensajeError = error.response.data.message;
+            this.resetMessage();
+          }
+        });
   }
 
   cargarSpinner(){
@@ -178,6 +178,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    
     let obj= {
       Email: this.formForget.controls['email'].value,
       OldPassword: this.formForget.controls['oldPassword'].value,

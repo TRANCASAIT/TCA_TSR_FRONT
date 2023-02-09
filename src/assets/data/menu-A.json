@@ -1,6 +1,6 @@
 [
     { "redirect": "/navigate/solicitudes",  "type": "link","name": "Solicitudes de servicio", "icon": "view_list" },
-    { "redirect": "/navigate/clientes",  "type": "link","name": "Clientes", "icon": "history" },
-    { "redirect": "/navigate/reportes",  "type": "link","name": "Reportes", "icon": "workspaces" },
-    { "redirect": "/navigate/usuarios", "type": "link", "name": "Usuarios", "icon": "store" }
+    { "redirect": "/navigate/usuarios", "type": "link", "name": "Usuarios Administrativos", "icon": "person" },
+    { "redirect": "/navigate/usuarios-clientes",  "type": "link","name": "Clientes", "icon": "group" },
+    { "redirect": "/navigate/reportes",  "type": "link","name": "Reportes", "icon": "workspaces" }
 ]

@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -32,6 +33,7 @@ export class TipoUsuarioComponent implements OnInit {
     public dialogRef: MatDialogRef<TipoUsuarioComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -46,6 +48,7 @@ export class TipoUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
     this.type = this.userType.type;
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.type === 'edit'){
       const {userType_Id, userType_Name} = this.userType.userType;
       this.userTypesForm.patchValue({
@@ -56,12 +59,13 @@ export class TipoUsuarioComponent implements OnInit {
   }
 
   createUserType(): void {
-    this.userId = localStorage.getItem('User_Id');
     if(this.userTypesForm.invalid) return;
     const userType = {
       UserType_Name: this.formGroup.userType_Name.value,
       User_Logged: this.userId
     }
+    console.log(userType);
+    
     axios.post(`${environment.API_URL}`+"UserTypes/CreateUserType",userType).then(data => {
       if(data.data.state === 0){
         this._snackBar.open(data.data.message,'',{
@@ -70,15 +74,15 @@ export class TipoUsuarioComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['green-snackbar']
         });
-    }
-    else if(data.data.state === 1){
-      this._snackBar.open(data.data.message,'',{
-        duration:5000,
-        horizontalPosition:'right',
-        verticalPosition:'top',
-        panelClass: ['red-snackbar']
-      });
-  }
+      }
+      else if(data.data.state === 1){
+        this._snackBar.open(data.data.message,'',{
+          duration:5000,
+          horizontalPosition:'right',
+          verticalPosition:'top',
+          panelClass: ['red-snackbar']
+        });
+      }
       this.dialogRef.close(); 
     }).catch(error => {
       this._snackBar.open(error,'',{
@@ -87,6 +91,8 @@ export class TipoUsuarioComponent implements OnInit {
         verticalPosition:'top',
         panelClass: ['red-snackbar']
       });
+      console.log(error);
+
     });
   }
 
@@ -95,7 +101,6 @@ export class TipoUsuarioComponent implements OnInit {
   }
 
   updateUserType(): void {
-    this.userId = localStorage.getItem('User_Id');
     const userType = {
       UserType_Id: this.formGroup.userTypeId.value,
       UserType_Name: this.formGroup.userType_Name.value,

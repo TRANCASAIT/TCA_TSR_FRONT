@@ -96,18 +96,12 @@
                               <th class="mat-cell-cte" mat-header-cell *matHeaderCellDef> Layout </th>
                               <td class="center-cell" mat-cell *matCellDef="let element">
                                 <button class="btnBgXlsx">
-                                  <input  *ngIf="element.layoutCompleted === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="layout{{element.document_Id}}" type="file" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
+                                  <input  *ngIf="element.layoutCompleted === false && (userRole === rol4 || userRole === rol5) && (element.status_Id<5)" id="layout{{element.document_Id}}" type="file" accept=".xls, .xlsx" class="fileStyle" (change)="selectFile($event, element.document_Id)"/>
                                 </button>
                                 <button *ngIf="element.layoutCompleted === false" id="btnLayout{{element.document_Id}}" class="noDisplayed" color="primary" (click)="uploadFile(element, 6)">
                                   <mat-icon class="icon">publish</mat-icon>
                                 </button>
-                                <!-- <button *ngIf="element.layoutCompleted === true" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="downloadFile(element.layout, element.layoutFN, element.serviceRequest_Id)">
-                                  <mat-icon class="icon">file_download</mat-icon>
-                                </button>
-                                <button *ngIf="element.layoutCompleted === true && element.accepted_LayoutDC === false" id="btnLayout{{element.document_Id}}" class="btnIcon" color="primary" (click)="removeFile(element.serviceRequest_Id, element.document_Id, 6, element.layout, element.layoutFN)">
-                                  <mat-icon class="icon">remove</mat-icon>
-                                </button> -->
-                                <mat-icon *ngIf="element.layoutCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2)" class="icon" (click)="openOptions(element, 6)">
+                                <mat-icon *ngIf="element.layoutCompleted === true && (userRole === rol4 || userRole === rol5 || userRole === rol2 || userRole === rol3)" class="icon" (click)="openOptions(element, 6)">
                                   more_vert
                                 </mat-icon>
                               </td>

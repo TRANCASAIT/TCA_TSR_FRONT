@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -33,6 +34,7 @@ export class CommentComponent implements OnInit {
     public dialogRef: MatDialogRef<CommentComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
@@ -56,7 +58,7 @@ export class CommentComponent implements OnInit {
   }
 
   saveComment(){
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
 
     let comment = {
       ServiceRequest_Id: this.formGroup.serviceRequest_Id.value,
@@ -95,7 +97,7 @@ export class CommentComponent implements OnInit {
   }
 
   setPagination(doc:any) {
-    this.userId = localStorage.getItem('userId');
+    this.userId = this._AESEncryptDecryptService.uid();
     this.backEndServices.getComments(doc).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('Sin comentarios registrados','',{

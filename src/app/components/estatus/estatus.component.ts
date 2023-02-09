@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { EstatusComponentDialog } from 'src/app/dialogs/estatus/estatus.component';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class EstatusComponent implements OnInit {
   userId!: string|null;
   constructor(public dialog : MatDialog, 
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService,
     private _snackBar: MatSnackBar,) { }
 
   async ngOnInit() {
@@ -40,7 +42,7 @@ export class EstatusComponent implements OnInit {
   }
 
   setPagination() {
-    this.userId = localStorage.getItem('userId');
+    this.userId = this._AESEncryptDecryptService.uid();
     this.backEndServices.getStatuses().subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{

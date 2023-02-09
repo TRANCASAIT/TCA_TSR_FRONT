@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -32,6 +33,7 @@ export class TipoOperacionComponent implements OnInit {
     public dialogRef: MatDialogRef<TipoOperacionComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -45,6 +47,7 @@ export class TipoOperacionComponent implements OnInit {
   get formGroup() { return this.operationTypesForm.controls; }
 
   ngOnInit(): void {
+    this.userId = this._AESEncryptDecryptService.uid();
     this.type = this.operationType.type;
     if(this.type === 'edit'){
       const {operationType_Id, operationType_Name} = this.operationType.operationType;
@@ -56,7 +59,6 @@ export class TipoOperacionComponent implements OnInit {
   }
 
   createOperationType(): void {
-    this.userId = localStorage.getItem('User_Id');
     if(this.operationTypesForm.invalid) return;
     const operationType = {
       OperationType_Name: this.formGroup.operationType_Name.value,
@@ -95,7 +97,6 @@ export class TipoOperacionComponent implements OnInit {
   }
 
   updateOperationType(): void {
-    this.userId = localStorage.getItem('User_Id');
     const operationType = {
       OperationType_Id: this.formGroup.operationTypeId.value,
       OperationType_Name: this.formGroup.operationType_Name.value,

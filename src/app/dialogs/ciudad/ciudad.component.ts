@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -32,8 +33,7 @@ export class CiudadComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public city :any,
     public dialogRef: MatDialogRef<CiudadComponent>,
     private _snackBar: MatSnackBar,
-    private backEndServices : ServicesBackendService,
-  ) { }
+    private backEndServices : ServicesBackendService,    private _AESEncryptDecryptService: AESEncryptDecryptServiceService  ) { }
   states: any;
   matcher = new MyErrorStateMatcher();
   type: string | undefined;
@@ -60,7 +60,7 @@ export class CiudadComponent implements OnInit {
   }
 
   createCity(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.citiesForm.invalid) return;
     const city = {
       City_Name: this.formGroup.cityName.value,
@@ -100,7 +100,7 @@ export class CiudadComponent implements OnInit {
   }
 
   updateCity(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const city = {
       City_Id: this.formGroup.cityId.value,
       City_Name: this.formGroup.cityName.value,

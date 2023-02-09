@@ -34,8 +34,8 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Stops/GetStops`);
   }
 
-  getUserTypes(): any {
-    return this.http.get(`${this._URL}/UserTypes/GetUserTypes`);
+  getUserTypes(elem: any): any {
+    return this.http.get(`${this._URL}/UserTypes/GetUserTypes/${elem}`);
   }
 
   getOperationTypes(): any {
@@ -50,16 +50,24 @@ export class ServicesBackendService {
     return this.http.get(`${this._URL}/Cities/GetCitiesFiltered/${stateId}`);
   }
 
-  getCustomers(): any {
-    return this.http.get(`${this._URL}/Customers/GetCustomers`);
+  getCustomers(elem:any): any {
+    return this.http.get(`${this._URL}/Customers/GetCustomers/${elem}`);
   }
 
   getCustomersActive(): any {
     return this.http.get(`${this._URL}/Customers/GetCustomersActive`);
   }
 
+  getCustomersActiveCustomer(uid:any): any {
+    return this.http.get(`${this._URL}/Customers/GetCustomersActiveCustomer/${uid}`);
+  }
+
   getUsers(): any {
     return this.http.get(`${this._URL}/Users/GetUsers`);
+  }  
+  
+  getUsersCustomers(): any {
+    return this.http.get(`${this._URL}/Users/GetUsersCustomers`);
   }
 
   getServiceRequests(usId:any): any {

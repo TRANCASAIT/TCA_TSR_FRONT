@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -33,6 +34,7 @@ export class TmwOrderComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public tmwOrder :any,
     public dialogRef: MatDialogRef<TmwOrderComponent>,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -56,7 +58,7 @@ export class TmwOrderComponent implements OnInit {
   }
 
   setTMW(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
       TMWOrder: this.formGroup.tmwOrder.value,

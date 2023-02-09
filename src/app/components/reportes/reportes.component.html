@@ -3,6 +3,12 @@
           <mat-card>
                   <mat-card-content>
                       <mat-card-title>Reporte de solicitudes</mat-card-title>
+                      <div class="mat-mdc-form-field-infix">
+                        <mat-form-field class="mat-mdc-form-field">
+                          <mat-label>Filtrar solicitudes de servicio <mat-icon>search</mat-icon></mat-label>
+                          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+                        </mat-form-field>
+                      </div>
                       <div class="example-container">
                         <form [formGroup]="options">
                             <div>
@@ -142,7 +148,7 @@
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'completed': row.status_Id === 5 , 'refused': row.status_Id === 6 }"></tr>
                           </table>
                           <mat-paginator
                             [pageSizeOptions]="[10, 25, 100, 1000, 2000]"

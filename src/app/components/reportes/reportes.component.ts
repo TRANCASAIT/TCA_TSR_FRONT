@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import * as XLSX from 'xlsx';
 
@@ -37,7 +38,9 @@ export class ReportesComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private backEndServices: ServicesBackendService,
-    private _snackBar: MatSnackBar,) { }
+    private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService,
+    ) { }
 
   ngOnInit(): void {
     this.setPagination();
@@ -54,7 +57,7 @@ export class ReportesComponent implements OnInit {
   }
 
   setPagination() {
-    this.userId = localStorage.getItem('userId');
+    this.userId = this._AESEncryptDecryptService.uid();
     this.backEndServices.getServiceReports().subscribe((res: any) => {
       if (res.numberRecords === 0) {
         this._snackBar.open('No se encontraron registros', '', {
@@ -142,6 +145,12 @@ export class ReportesComponent implements OnInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb,ws,'Sheet1');
     XLSX.writeFile(wb, this.nameDocument); 
+  }
+
+  
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;   
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

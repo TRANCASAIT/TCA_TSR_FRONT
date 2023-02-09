@@ -51,7 +51,8 @@ import { CommentComponent } from './dialogs/comment/comment.component';
 import { OptionsComponent } from './dialogs/options/options.component';
 import { BoxNumberComponent } from './dialogs/box-number/box-number.component';
 import { OperationTypeComponent } from './dialogs/operation-type/operation-type.component';
-import { ForgetPasswordComponent } from './dialogs/forget-password/forget-password.component';
+import { UsuariosClientesComponent } from './components/usuarios-clientes/usuarios-clientes.component';
+import { UsuarioClienteComponent } from './dialogs/usuario-cliente/usuario-cliente.component';
 
 
 
@@ -90,8 +91,8 @@ import { ForgetPasswordComponent } from './dialogs/forget-password/forget-passwo
     OptionsComponent,
     BoxNumberComponent,
     OperationTypeComponent,
-    ForgetPasswordComponent
-
+    UsuariosClientesComponent,
+    UsuarioClienteComponent,
 
   ],
   imports: [

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -33,6 +34,7 @@ export class EstadoComponent implements OnInit {
     public dialogRef: MatDialogRef<EstadoComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -58,7 +60,7 @@ export class EstadoComponent implements OnInit {
 
 
   createState(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.stateForm.invalid) return;
     const state = {
       State_Name: this.formGroup.stateName.value,
@@ -97,7 +99,7 @@ export class EstadoComponent implements OnInit {
   }
 
   updateState(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const state = {
       State_Id: this.formGroup.stateId.value,
       State_Name: this.formGroup.stateName.value,

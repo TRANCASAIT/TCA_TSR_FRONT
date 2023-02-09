@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { menu } from '../interfaces/menu';
 import { MenuService } from '../services/menu.service';
+import { AESEncryptDecryptServiceService } from '../services/aesencrypt-decrypt-service.service';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -13,11 +14,12 @@ import { MenuService } from '../services/menu.service';
 })
 export class NavigationComponent implements OnDestroy{
   mobileQuery: MediaQueryList;
-  _userType = localStorage.getItem("ROLE");
+  _userType = this._AESEncryptDecryptService.urol();
   menu: menu[] = [];
   userActive!:string|null;
   _mobileQueryListener: () => void;
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: Router, private _menuService: MenuService, public authService: AuthService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: Router, private _menuService: MenuService, public authService: AuthService, private _AESEncryptDecryptService: AESEncryptDecryptServiceService
+    ) {
     this.mobileQuery = media.matchMedia('(max-width: 800px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -28,14 +30,13 @@ export class NavigationComponent implements OnDestroy{
 
   ngOnInit(): void {
     this.cargarMenu();
-    this.userActive = localStorage.getItem("unme");
+    this.userActive = this._AESEncryptDecryptService.unme();
   }
 
   cargarMenu(){
 
     this._menuService.getMenu(this._userType).subscribe(data=>{
-       
-      this.menu = data;
+      this.menu = data;      
     })
   }
 

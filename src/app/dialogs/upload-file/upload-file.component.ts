@@ -14,6 +14,7 @@ import { NumeroCporteComponent } from '../numero-cporte/numero-cporte.component'
 import { environment } from 'src/environments/environment';
 import { CommentComponent } from '../comment/comment.component';
 import { OptionsComponent } from '../options/options.component';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -41,6 +42,7 @@ export class UploadFileComponent implements OnInit {
   opPDF = false;
   progress = 0;
   message = '';
+  state = 0;
   folio: number = 0;
   userRole!: string|null;
   dataSource !: MatTableDataSource<any>;
@@ -58,7 +60,13 @@ export class UploadFileComponent implements OnInit {
     var target = event.target || event.srcElement || event.currentTarget;
     var idAttr = target.attributes.id;
     var value = idAttr.nodeValue;
-   
+    let fileNames = ['btnFacMX', 'btnFacUSA', 'btnBol', 'btnInwd', 'btnAce', 'btnLayout', 'btnXml', 'btnOriPDF', 'btnOpPDF'];
+    fileNames.forEach(function(value){
+      var el = document.getElementById(value + elem); 
+      if(el !== null){
+        el!.style.display ='none';
+      }
+    });
     if(value === "facMx" + elem){
       var el = document.getElementById("btnFacMX" + elem);
       el!.style.display ='contents';
@@ -89,6 +97,7 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
+  
   displayedColumns: string[] = ['stop','estatus','factMX','factUS','BOL','InwardManif','ACE','layout','layoutAcep','NumCartPorte','XML','PDFOrig','PDFOper','comentarios'];
   range = new FormGroup({
   start: new FormControl<Date | null>(null),
@@ -110,15 +119,16 @@ export class UploadFileComponent implements OnInit {
     private _snackBar: MatSnackBar, private uploadService: FileUploadService,
     @Inject(MAT_DIALOG_DATA) public sr :any,
     public dialogRef: MatDialogRef<NumeroCporteComponent>,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
     ) { }
 
   ngOnInit(): void {
     this.setPagination(this.sr.sr);
-    this.userRole = localStorage.getItem("ROLE");
+    this.userRole = this._AESEncryptDecryptService.urol();
   }
 
   uploadFile(el:any, fileType:any){
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     el.userId = this.userId;
     el.fileType = fileType;
     if (this.selectedFiles) {
@@ -131,6 +141,22 @@ export class UploadFileComponent implements OnInit {
               this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
               this.message = event.body.message;
+              this.state = event.body.state
+              if(this.state === 1){
+                this._snackBar.open(this.message,'',{
+                  duration:5000,
+                  horizontalPosition:'right',
+                  verticalPosition:'top',
+                  panelClass: ['red-snackbar']
+                });
+              }else if(this.state === 0){
+                this._snackBar.open(this.message,'',{
+                  duration:5000,
+                  horizontalPosition:'right',
+                  verticalPosition:'top',
+                  panelClass: ['green-snackbar']
+                });
+              }
             }
             this.setPagination(el.serviceRequest_Id);
           },
@@ -161,7 +187,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   setPagination(elem:any) {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     this.backEndServices.getServiceRequestsDocuments(elem).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
@@ -205,13 +231,12 @@ export class UploadFileComponent implements OnInit {
       URL.revokeObjectURL(href);
       this.setPagination(sr);
     }).catch(error =>{
-      console.log(error);
       
     });
   }
 
   removeFile(sr:number, dc:number, documentType:number, url:string, fileName:string){
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     let document = {
       ServiceRequest_Id: sr,
       Document_Id: dc,
@@ -251,9 +276,7 @@ export class UploadFileComponent implements OnInit {
   layoutStatusDC(obj:any, layoutDC:any){
     const {serviceRequest_Id, document_Id} = obj;
     const{accepted_Layout, notAccepted_Layout} = layoutDC;
-    console.log(layoutDC);
-    
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     let lyState = {
       serviceRequest_Id: serviceRequest_Id,
       Document_Id: document_Id,
@@ -289,8 +312,8 @@ export class UploadFileComponent implements OnInit {
     });
   }
 
-  setCartaPorte(obj: any, userRole: any) {
-    if(userRole === this.rol2)
+  setCartaPorte(obj: any, userRole: any) {    
+    if(userRole === this.rol2 && obj.status_Id < 5)
     {
       obj.type = 'new';
       const dialogConfig = new MatDialogConfig();

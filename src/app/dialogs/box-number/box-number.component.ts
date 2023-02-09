@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { environment } from 'src/environments/environment';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,6 +31,7 @@ export class BoxNumberComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public boxNumber :any,
     public dialogRef: MatDialogRef<BoxNumberComponent>,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -51,7 +53,7 @@ export class BoxNumberComponent implements OnInit {
   }
 
   updateBoxNumber(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
       Box_Number: this.formGroup.boxNumber.value,
@@ -75,7 +77,6 @@ export class BoxNumberComponent implements OnInit {
           panelClass: ['red-snackbar']
         });
     }
-    
     }).catch(error => {
       this._snackBar.open(error,'',{
         duration:5000,

@@ -19,7 +19,7 @@
                     <!-- col full-->
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
                         <mat-form-field  class="example-full-width">
-                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña" formControlName="password">
+                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña" formControlName="password" autocomplete="on">
                             <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </mat-form-field>
                     </div>
@@ -63,14 +63,14 @@
 
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
                         <mat-form-field  class="example-full-width">
-                            <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Contraseña anterior" formControlName="oldPassword">
+                            <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Contraseña anterior" formControlName="oldPassword" autocomplete="on">
                             <mat-icon matSuffix (click)="hide2 = !hide2">{{ hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </mat-form-field>
                     </div>
 
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
                         <mat-form-field  class="example-full-width">
-                            <input matInput [type]="hide3 ? 'password' : 'text'" placeholder="Contraseña nueva" formControlName="newPassword">
+                            <input matInput [type]="hide3 ? 'password' : 'text'" placeholder="Contraseña nueva" formControlName="newPassword" autocomplete="on">
                             <mat-error *ngIf="submitted && f['newPassword'].errors" class="invalid-feedback">
                                 <mat-error *ngIf="f['newPassword'].errors['required']">Este campo es requerido</mat-error>
                                 <mat-error *ngIf="f['newPassword'].errors['minlength']">La contraseña debe de contener al menos 6 caracteres</mat-error>
@@ -83,7 +83,7 @@
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" >
                         <mat-form-field  class="example-full-width">
                             <input matInput [type]="hide4 ? 'password' : 'text'" placeholder="Contraseña nueva confirmación" formControlName="newPasswordConfirmation"
-                            [ngClass]="{ 'is-invalid': submitted && f['newPasswordConfirmation'].errors }" class="invalid-feedback">
+                            [ngClass]="{ 'is-invalid': submitted && f['newPasswordConfirmation'].errors }" class="invalid-feedback" autocomplete="on">
                             <mat-error  *ngIf="submitted && f['newPasswordConfirmation'].errors" >
                                 <mat-error *ngIf="f['newPasswordConfirmation'].errors['required']"> Este campo es requerido</mat-error>
                                 <mat-error *ngIf="f['newPasswordConfirmation'].errors['matching']">No coinciden las contraseñas</mat-error>

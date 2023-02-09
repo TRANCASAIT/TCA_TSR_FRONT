@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
 import { Observable } from 'rxjs';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -30,10 +31,11 @@ export class OptionsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public option :any,
     public dialogRef: MatDialogRef<OptionsComponent>,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem("ROLE");
+    this.userRole = this._AESEncryptDecryptService.urol();
     const { typeNumber, invoiceMX, invMXFN, serviceRequest_Id, document_Id,
       invoiceUSA, invUSAFN, bol, bolFN, inward, inwFN, ace, aceFN, layout, layoutFN,
       xml, xmlFN, originalPDF, oPdfFN, operationsPDF, opPdfFN, accepted_LayoutDC, status_Id} = this.option;
@@ -134,7 +136,7 @@ downloadFile(url:any, fileName:any, sr:any, documentType:number){
   }
 
   removeFile(sr:number, dc:number, documentType:number, url:string, fileName:string, status:number){
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(((documentType <= 4 || documentType === 6) && (this.userRole === this.rol4 || this.userRole === this.rol5) && (status !== 5)) || (documentType === 5 && (this.userRole === this.rol2 || this.userRole === this.rol3) && (status !== 5)) || 
     (documentType >= 7 && documentType <= 9 && (this.userRole === this.rol2) && (status !== 5)))
     {

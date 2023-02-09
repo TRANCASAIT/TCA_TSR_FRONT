@@ -98,3 +98,28 @@
     width: 35px;
     height: 30px;
   }
+
+  .completed {
+    background-color: #c6e0b1 !important;
+  }
+
+  .refused {
+    background-color: #ffc0c0 !important;
+  }
+
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+.mat-mdc-form-field-infix{
+    flex: auto;
+    min-width: 0;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.white-icon{
+  color: transparent;
+}

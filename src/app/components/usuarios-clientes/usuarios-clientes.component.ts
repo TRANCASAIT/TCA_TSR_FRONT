@@ -3,20 +3,19 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import axios from 'axios';
 import { Observable } from 'rxjs';
 import { DeletesComponent } from 'src/app/dialogs/deletes/deletes.component';
-import { UsuarioComponent } from 'src/app/dialogs/usuario/usuario.component';
+import { UsuarioClienteComponent } from 'src/app/dialogs/usuario-cliente/usuario-cliente.component';
 import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
-
+import  axios  from 'axios';
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.scss']
+  selector: 'app-usuarios-clientes',
+  templateUrl: './usuarios-clientes.component.html',
+  styleUrls: ['./usuarios-clientes.component.scss']
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosClientesComponent implements OnInit {
 
   dataSource !: MatTableDataSource<any>
   displayedColumns: string[] = ['usuario','nombre','tipo','cliente', 'correo','habilitado','sesion','creacion', 'editar'];
@@ -46,7 +45,7 @@ export class UsuariosComponent implements OnInit {
   
     dialogConfig.panelClass = '';
   
-    const dialogRef = this.dialog.open( UsuarioComponent  , dialogConfig);
+    const dialogRef = this.dialog.open( UsuarioClienteComponent  , dialogConfig);
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
 
@@ -100,7 +99,7 @@ export class UsuariosComponent implements OnInit {
 
   setPagination() {
     this.userId = this._AESEncryptDecryptService.uid();
-    this.backEndServices.getUsers().subscribe((res: any) => {
+    this.backEndServices.getUsersCustomers().subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
           duration:5000,
@@ -121,4 +120,5 @@ export class UsuariosComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
 }

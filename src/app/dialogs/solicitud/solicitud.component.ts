@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -33,6 +34,7 @@ export class SolicitudComponent implements OnInit {
     public dialogRef: MatDialogRef<SolicitudComponent>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -50,20 +52,12 @@ export class SolicitudComponent implements OnInit {
 
   async ngOnInit() {
     this.type = this.request.type;
-    // if(this.type === 'edit'){
-    //   const {stop_Id, stop_Number} = this.stop.stop;
-    //   this.stopsForm.patchValue({
-    //     stopId: stop_Id,
-    //     stopNumber: stop_Number
-    //   })
-    // }
-
     await this.getOperations();
     await this.getStops();
   }
 
   createServiceRequest(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.srequestForm.invalid) return;
     const sr = {
       Box_Number: this.formGroup.boxNumber.value,

@@ -13,6 +13,7 @@ import { OperationTypeComponent } from 'src/app/dialogs/operation-type/operation
 import { SolicitudComponent } from 'src/app/dialogs/solicitud/solicitud.component';
 import { TmwOrderComponent } from 'src/app/dialogs/tmw-order/tmw-order.component';
 import { UploadFileComponent } from 'src/app/dialogs/upload-file/upload-file.component';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -30,9 +31,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./solicitudes.component.scss']
 })
 
-
-
-
 export class SolicitudesComponent implements OnInit {
   userId!: string|null;
   selectedFiles?: FileList;
@@ -46,23 +44,23 @@ export class SolicitudesComponent implements OnInit {
   xml = false;
   oriPDF = false;
   opPDF = false;
+  rol1= environment.UserRoles.Rol1;
   rol2= environment.UserRoles.Rol2;
   rol3= environment.UserRoles.Rol3;
   rol4= environment.UserRoles.Rol4;
   rol5= environment.UserRoles.Rol5;
   userRole!: string|null;
-
+  customerValue= 0;
   dataSource !: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator; 
   dataObs$!: Observable<any>;
   status:any;
   operationTypes:any;
   customers:any;
+  showAddSRButton = false;
 
   displayedColumns: string[] = ['prioridad', 'folio', 'cliente','numCaja','tipoOp','stops','fechaHora','ordTMW','estatus',
                                'upload','delete'];
-  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  // dataSource = ELEMENT_DATA;
 
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -83,14 +81,18 @@ export class SolicitudesComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder, public dialog : MatDialog,
     private backEndServices : ServicesBackendService,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
     ) { }
 
   async ngOnInit(){
+    this.userId = this._AESEncryptDecryptService.uid();
     this.setPagination();
     this.getStatus();
     this.getOperationTypes();
-    this.getCustomers();
-    this.userRole = localStorage.getItem("ROLE");
+    this.userRole = this._AESEncryptDecryptService.urol();
+    if((this.userRole === environment.UserRoles.Rol4) || (this.userRole === environment.UserRoles.Rol5)){
+      this.showAddSRButton = true;
+    }
   }
 
   uploadFileDialog(obj:any): void {
@@ -147,8 +149,8 @@ export class SolicitudesComponent implements OnInit {
     dialogRef.afterClosed().toPromise().then(() => this.setPagination());
   }
   
-  setPagination() {
-    this.userId = localStorage.getItem('User_Id');
+  async setPagination() {
+    this.userId = this._AESEncryptDecryptService.uid()
     this.backEndServices.getServiceRequests(this.userId).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
@@ -157,24 +159,31 @@ export class SolicitudesComponent implements OnInit {
           verticalPosition:'top',
           panelClass: ['red-snackbar']
         });
+        this.setToNull();
+        this.dataSource = new MatTableDataSource<any>(res);
       }else{
-      this.options.patchValue({
-        numCaja:'',
-        folio: '',
-        estatusSol: '',
-        type: '',
-        cliente: '',
-        prioridad: false
-      });
-      this.range.patchValue({
-        start:null,
-        end:null
-      });
+      this.setToNull();
       this.dataSource = new MatTableDataSource<any>(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.data.length = res.length;
       this.dataObs$ = this.dataSource.connect();
       }
+      this.getCustomers();
+    });
+  }
+
+  setToNull():any{
+    this.options.patchValue({
+      numCaja:'',
+      folio: '',
+      estatusSol: '',
+      type: '',
+      cliente: '',
+      prioridad: false
+    });
+    this.range.patchValue({
+      start:null,
+      end:null
     });
   }
 
@@ -187,12 +196,26 @@ export class SolicitudesComponent implements OnInit {
   }
 
   async getCustomers(){
-    await this.backEndServices.getCustomersActive().subscribe((res:any) => {this.customers = res})
+    if(this.userRole === this.rol1 || this.userRole === this.rol2 || this.userRole === this.rol3){
+      await this.backEndServices.getCustomersActive().subscribe((res:any) => {this.customers = res})
+    }else{
+      await this.backEndServices.getCustomersActiveCustomer(this.userId).subscribe((res:any) => {
+        this.customers = res;
+        this.options.patchValue({
+          cliente: res[0].customer_Id
+        });
+        //var results = res.filter(function (reses:any) { return reses.customer_Id == customer; });
+      });
+    }
   }
 
   removeService(sr:number, status: number){
     if((this.userRole === this.rol2 || this.userRole === this.rol4) && (status != 5)){
-      axios.put(`${environment.API_URL}`+ `ServiceRequests/RemoveServiceRequest/${sr}`).then(data=> {
+      let removeService = {
+        User_Logged: this.userId,
+        ServiceRequest_Id : sr
+      }
+      axios.put(`${environment.API_URL}`+ `ServiceRequests/RemoveServiceRequest`,removeService).then(data=> {
         if(data.data.state === 0){
           this._snackBar.open(data.data.message,'',{
             duration:5000,
@@ -229,8 +252,8 @@ export class SolicitudesComponent implements OnInit {
   }
 
   changePriority(sr:number, priority:boolean, status:number){
-    if((this.userRole === this.rol2 || this.userRole === this.rol4) && (status != 5)){
-      this.userId = localStorage.getItem('User_Id');
+    if((this.userRole === this.rol2) && (status != 5)){
+      this.userId = this._AESEncryptDecryptService.uid();
       let Service = {
         ServiceRequest_Id: sr,
         Priority: priority,
@@ -296,7 +319,6 @@ export class SolicitudesComponent implements OnInit {
     numCaja = this.options.controls['numCaja'].value;
     cliente = Number(this.options.controls['cliente'].value);
     prioridad = this.options.controls['prioridad'].value;
-    
     if(start === null){
       start=''
     }else{
@@ -308,7 +330,6 @@ export class SolicitudesComponent implements OnInit {
     }else{
       end = this.convert(end);
     }
-
     let obj = {
       Status_Id: estatus,
       OperationType_Id: type,
@@ -317,7 +338,8 @@ export class SolicitudesComponent implements OnInit {
       InvoiceNumber: folio,
       Box_Number: numCaja,
       Customer_Id: cliente,
-      Priority: prioridad
+      Priority: prioridad,
+      User_Id: this.userId
     }
     this.backEndServices.getServiceRequestsFiltered(obj).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
@@ -334,6 +356,10 @@ export class SolicitudesComponent implements OnInit {
       this.dataObs$ = this.dataSource.connect();
       }
     });
-   
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;   
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

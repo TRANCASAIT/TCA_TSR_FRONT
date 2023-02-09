@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -32,6 +33,7 @@ export class EstatusComponentDialog implements OnInit {
     public dialogRef: MatDialogRef<EstatusComponentDialog>,
     private _snackBar: MatSnackBar,
     private backEndServices : ServicesBackendService,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -56,7 +58,7 @@ export class EstatusComponentDialog implements OnInit {
   }
 
   createStatus(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     if(this.statusForm.invalid) return;
     const status = {
       Status_Description: this.formGroup.statusDescription.value,
@@ -95,7 +97,7 @@ export class EstatusComponentDialog implements OnInit {
   }
 
   updateStatus(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const status = {
       Status_Id: this.formGroup.statusId.value,
       Status_Description: this.formGroup.statusDescription.value,

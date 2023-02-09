@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { TipoUsuarioComponent } from 'src/app/dialogs/tipo-usuario/tipo-usuario.component';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
 
 @Component({
@@ -20,7 +21,9 @@ export class TiposUsuariosComponent implements OnInit {
   userId!: string|null;
   constructor(public dialog : MatDialog, 
     private backEndServices : ServicesBackendService,
-    private _snackBar: MatSnackBar,) { }
+    private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService,
+    ) { }
 
   async ngOnInit() {
     this.setPagination();
@@ -39,8 +42,9 @@ export class TiposUsuariosComponent implements OnInit {
   }
 
   setPagination() {
-    this.userId = localStorage.getItem('userId');
-    this.backEndServices.getUserTypes().subscribe((res: any) => {
+    this.userId = this._AESEncryptDecryptService.uid();
+    const utp = 1;
+    this.backEndServices.getUserTypes(utp).subscribe((res: any) => {
       if(res.numberRecords === 0 ){
         this._snackBar.open('No se encontraron registros','',{
           duration:5000,

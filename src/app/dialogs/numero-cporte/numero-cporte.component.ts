@@ -4,6 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import axios from 'axios';
+import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { environment } from 'src/environments/environment';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,6 +31,7 @@ export class NumeroCporteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public consigmentNumber :any,
     public dialogRef: MatDialogRef<NumeroCporteComponent>,
     private _snackBar: MatSnackBar,
+    private _AESEncryptDecryptService: AESEncryptDecryptServiceService
   ) { }
 
   matcher = new MyErrorStateMatcher();
@@ -59,7 +61,7 @@ export class NumeroCporteComponent implements OnInit {
   }
 
   setConsigmentNumber(): void {
-    this.userId = localStorage.getItem('User_Id');
+    this.userId = this._AESEncryptDecryptService.uid();
     const sr = {
       ServiceRequest_Id: this.formGroup.serviceRequestId.value,
       Document_Id: this.formGroup.documentId.value,

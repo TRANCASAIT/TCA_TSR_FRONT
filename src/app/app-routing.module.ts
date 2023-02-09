@@ -15,6 +15,7 @@ import { TiposUsuariosComponent } from './components/tipos-usuarios/tipos-usuari
 import { TiposOperacionesComponent } from './components/tipos-operaciones/tipos-operaciones.component';
 import { AuthGuard } from './services/auth.guard';
 import { environment } from 'src/environments/environment';
+import { UsuariosClientesComponent } from './components/usuarios-clientes/usuarios-clientes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: 'stops', component: StopsComponent},
       { path: 'tipos-usuarios', component: TiposUsuariosComponent},
       { path: 'tipos-operaciones', component: TiposOperacionesComponent},
+      { path: 'usuarios-clientes', component: UsuariosClientesComponent},
 
     ]
   },
@@ -54,11 +56,13 @@ const routes: Routes = [
       { path:'solicitudes', component: SolicitudesComponent},
       { path:'clientes', component: ClientesComponent},
       { path: 'reportes', component: ReportesComponent },
-      { path: 'usuarios', component: UsuariosComponent}
+      { path: 'usuarios', component: UsuariosComponent},
+      { path: 'usuarios-clientes', component: UsuariosClientesComponent},
+
     ]
   },
 
-  //ROL CLIENTS
+  //ROL CUSTOMERS
   {
     path:'nav', component: NavigationComponent,
     canActivate: [AuthGuard],

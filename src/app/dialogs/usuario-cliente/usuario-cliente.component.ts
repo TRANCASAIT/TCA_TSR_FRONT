@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators, FormBuilder, UntypedFormControl } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AbstractControl, FormControl, FormGroup, UntypedFormControl, ValidatorFn, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { AESEncryptDecryptServiceService } from 'src/app/services/aesencrypt-decrypt-service.service';
 import { ServicesBackendService } from 'src/app/services/services-backend-service.service';
@@ -30,14 +29,13 @@ export default class Validation {
 }
 
 @Component({
-  selector: 'app-usuario',
-  templateUrl: './usuario.component.html',
-  styleUrls: ['./usuario.component.scss']
+  selector: 'app-usuario-cliente',
+  templateUrl: './usuario-cliente.component.html',
+  styleUrls: ['./usuario-cliente.component.scss']
 })
-export class UsuarioComponent implements OnInit {
-  rol1= environment.UserRoles.Rol1;
-  rol2= environment.UserRoles.Rol2;
-  rol3= environment.UserRoles.Rol3;
+export class UsuarioClienteComponent implements OnInit {
+
+
   clientList: any = [];
 
   /** control for the selected item */
@@ -52,14 +50,14 @@ export class UsuarioComponent implements OnInit {
 
   @ViewChild('singleSelect3', { static: true })
   singleSelect3!: MatSelect;
-
+  utp = 0;
   /** Subject that emits when the component has been destroyed. */
   protected _onDestroy = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public newUser :any,
     private backEndServices : ServicesBackendService,
-    public dialogRef: MatDialogRef<UsuarioComponent>,
+    public dialogRef: MatDialogRef<UsuarioClienteComponent>,
     private _snackBar: MatSnackBar,
     private FormBuilder: FormBuilder,
     private _AESEncryptDecryptService: AESEncryptDecryptServiceService
@@ -79,7 +77,10 @@ export class UsuarioComponent implements OnInit {
   userId!: string|null;
   userRole!:string|null;
   userTypeAuthorized = false;
-  utp = 0;
+  rol1= environment.UserRoles.Rol1;
+  rol2= environment.UserRoles.Rol2;
+  rol3= environment.UserRoles.Rol3;
+
   formNewUser: FormGroup = new FormGroup(
     {
       names       : new FormControl(''),
@@ -95,9 +96,10 @@ export class UsuarioComponent implements OnInit {
   )
  
  async  ngOnInit() {
-    this.userRole = this._AESEncryptDecryptService.urol();
+    this.userId = this._AESEncryptDecryptService.uid();
     await this.getCustomers();
     this.userId = this._AESEncryptDecryptService.uid();
+    this.userRole = this._AESEncryptDecryptService.urol();
     this.type = this.newUser.type;
     if (this.type === 'edit') {
       const {  userName, userType_Id, name,
@@ -150,7 +152,7 @@ export class UsuarioComponent implements OnInit {
     if (this.formNewUser.invalid) {
       return;
     }
-    //Create Json Object per APi.
+
     let tempUserObject = { 
       UserName: this.formNewUser.controls['username'].value,
       name: this.formNewUser.controls['names'].value,
@@ -164,7 +166,6 @@ export class UsuarioComponent implements OnInit {
     
     // Sent information to api
     this.backEndServices.InsertUser(tempUserObject).subscribe((response: any) => { 
-
       if (response['state'] === 0){
         this._snackBar.open(response['message'],'',{
           duration:5000,
@@ -207,9 +208,6 @@ export class UsuarioComponent implements OnInit {
       });
       return;
     }
-    // this.userId = localStorage.getItem('User_Id');
-    // this.userRole = localStorage.getItem('ROLE');
-    //Create Json Object per APi.
     let tempUserObject = { 
       User_Id: this.formNewUser.controls['user_Id'].value, 
       UserName: this.formNewUser.controls['username'].value,
@@ -225,10 +223,10 @@ export class UsuarioComponent implements OnInit {
     if(this.userRole === environment.UserRoles.Rol1){
       tempUserObject.Password = this.formNewUser.controls['password'].value;
     }   
-    //Por que NA?     
-    if(tempUserObject.UserType_Id === 3){
-      tempUserObject.Email = 'NA';
-    }     
+    // //Por que NA?     
+    // if(tempUserObject.UserType_Id === 3){
+    //   tempUserObject.Email = 'NA';
+    // }     
     //Sent information to api
     this.backEndServices.UpdateUser(tempUserObject).subscribe((response: any) => { 
 
@@ -260,13 +258,8 @@ export class UsuarioComponent implements OnInit {
     });
   }
   async getUserType(){
-    let ut = 0;
-    if(this.userRole === this.rol1){
-      ut = 1;
-    }else if((this.userRole === this.rol2) || (this.userRole === this.rol3)){
-      ut = 2;
-    }
-    await  this.backEndServices.getUserTypes(ut).subscribe(( userType : any ) => { this.userTypeList = userType });
+    const utp = 2;
+    await  this.backEndServices.getUserTypes(utp).subscribe(( userType : any ) => { this.userTypeList = userType });
   }
 
   getUserName(){
@@ -283,7 +276,9 @@ export class UsuarioComponent implements OnInit {
   }
 
   async getCustomers(){
-    this.utp = 2
+    this.userRole = this._AESEncryptDecryptService.urol();
+    this.utp = 3;
+    
     this.backEndServices.getCustomers(this.utp).subscribe((responsables: any) => { 
       if(responsables.length > 0 && responsables.numberRecords !== 0){
         this.clientList = responsables
